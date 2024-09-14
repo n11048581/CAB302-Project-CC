@@ -24,7 +24,7 @@
                             <Font name="Arial Rounded MT Bold" size="33.0" />
                         </font>
                     </Label>
-                    <Button fx:id="button_create_account" layoutX="223.0" layoutY="234.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="Create Account">
+                    <Button fx:id="button_create_account" layoutX="223.0" layoutY="234.0" mnemonicParsing="false" onAction="#CreateAccount" style="-fx-cursor: hand;" text="Create Account">
                         <font>
                             <Font size="19.0" />
                         </font>
