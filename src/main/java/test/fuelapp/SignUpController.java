@@ -6,6 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
@@ -33,10 +36,20 @@ public class SignUpController implements Initializable {
                 System.out.println("Name taken");
             }
             else {
+                Connection conn = DriverManager.getConnection("jdbc:sqlite:users.db");
+                String sql = "INSERT INTO users(username,password) VALUES(?,?)";
 
-                System.out.println("Wrong");
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+                preparedStatement.setString(1, tf_username.getText());
+                preparedStatement.setString(2, tf_password.getText());
+                preparedStatement.executeUpdate();
+
+                System.out.println("User added");
+                sqLiteLink.changeScene(event, "Home.fxml", "Home");
             }
         } catch (Exception e) {
+            e.printStackTrace();
 
         }
     }
