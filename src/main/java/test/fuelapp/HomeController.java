@@ -15,6 +15,7 @@ public class HomeController implements Initializable {
     }
 
     public void LogOut (ActionEvent event) {
+        // Redirect to log in page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
 }

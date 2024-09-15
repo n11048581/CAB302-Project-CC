@@ -10,6 +10,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
+            // Set initial scene as the login page
             FXMLLoader opening = new FXMLLoader(Main.class.getResource("LogInPage.fxml"));
             Scene scene = new Scene(opening.load());
             stage.setTitle("Log In");
