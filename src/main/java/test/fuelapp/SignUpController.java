@@ -46,6 +46,7 @@ public class SignUpController implements Initializable {
                 preparedStatement.executeUpdate();
 
                 System.out.println("User added");
+
                 sqLiteLink.changeScene(event, "Home.fxml", "Home");
             }
         } catch (Exception e) {
