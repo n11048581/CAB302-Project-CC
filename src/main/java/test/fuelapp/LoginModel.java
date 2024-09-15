@@ -22,6 +22,30 @@ public class LoginModel {
             return false;
         }
     }
+    public  boolean isExistingAccount(String username) throws SQLException {
+        // Take username and initialise prepared statements
+        PreparedStatement prepStatement = null;
+        ResultSet resultSet = null;
+        // Set SQL query to read all existing usernames from the database
+        String query = "SELECT * FROM users WHERE username = ?";
+        try {
+            // Execute query with given username
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, username);
+            resultSet = prepStatement.executeQuery();
+            return resultSet.next();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            // Close prepared statement
+            prepStatement.close();
+            resultSet.close();
+        }
+    }
+
 
     public boolean isLogin(String username, String password) throws SQLException {
         // Take username and password and initialise prepared statements
@@ -48,4 +72,7 @@ public class LoginModel {
             resultSet.close();
         }
     }
+
+
+
 }
