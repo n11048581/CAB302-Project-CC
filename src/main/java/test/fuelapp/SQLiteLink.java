@@ -16,7 +16,8 @@ public class SQLiteLink {
         // Method to set database connection
         try {
             Class.forName("org.sqlite.JDBC");
-            return DriverManager.getConnection("jdbc:sqlite:users.db");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:users.db");
+            return conn;
         }
         catch (Exception e){
             System.out.println(e);
