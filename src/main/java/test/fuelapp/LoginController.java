@@ -4,8 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -14,36 +16,39 @@ public class LoginController implements Initializable {
 
     // Declare JavaFX elements
     @FXML
-    private Label isConnected;
+    private Label isConnectedUsername;
     @FXML
     private TextField tf_username;
     @FXML
-    private TextField tf_password;
+    private PasswordField pf_password;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Check to test if database connection is working, not needed for final submission
-        if (loginModel.isDbConnected()) {
-            isConnected.setText("Connected");
-        }
-        else {
-            isConnected.setText("Not Connected");
-        }
+    public void initialize(URL url, ResourceBundle resourceBundle) { // Check to test if database connection is working, not needed for final submission
+    //  if (loginModel.isDbConnected()) {
+    //      // isConnectedUsername.setText("Connected");
+    //  }
+    //  else {
+    //      isConnectedUsername.setText("Not Connected");
+    //  }
     }
 
     public void Login (ActionEvent event) {
         try {
+            // Ensure textfields aren't empty
+            if (tf_username.getText().isEmpty() || pf_password.getText().isEmpty()) {
+                isConnectedUsername.setText("Please enter username and password");
+            }
             // If entered login details match an entry in the database, log user in
-            if (loginModel.isLogin(tf_username.getText(), tf_password.getText())){
-                isConnected.setText("Credentials are correct");
+            else if (loginModel.isLogin(tf_username.getText(), pf_password.getText())){
+                isConnectedUsername.setText("");
                 sqLiteLink.changeScene(event, "Home.fxml", "Home");
             }
             // Else display error message
             else {
-                isConnected.setText("Credentials are incorrect");
+                isConnectedUsername.setText("Credentials are incorrect");
             }
         }
-        catch (Exception e){
+        catch (SQLException e){
             e.printStackTrace();
         }
     }

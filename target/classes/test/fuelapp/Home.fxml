@@ -6,13 +6,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.HomeController">
-    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.HomeController">
+    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
         <children>
-            <AnchorPane prefHeight="400.0" prefWidth="600.0">
+            <AnchorPane prefHeight="800.0" prefWidth="1200.0">
                 <children>
-                    <Button fx:id="button_logout" layoutX="271.0" layoutY="240.0" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
-               <Label fx:id="label_welcome_user" layoutX="167.0" layoutY="135.0" text="Welcome User!">
+                    <Button fx:id="button_logout" layoutX="560.0" layoutY="365.0" mnemonicParsing="false" onAction="#LogOut" text="Log Out">
+                  <font>
+                     <Font size="16.0" />
+                  </font></Button>
+               <Label fx:id="label_welcome_user" layoutX="467.0" layoutY="248.0" text="Welcome User!">
                   <font>
                      <Font name="Arial Rounded MT Bold" size="36.0" />
                   </font>
