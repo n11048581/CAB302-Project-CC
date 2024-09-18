@@ -1,5 +1,6 @@
 package test.fuelapp;
 
+import com.sun.jdi.connect.Connector;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,9 +51,8 @@ public class SignUpController implements Initializable {
 
                 sqLiteLink.changeScene(event, "Home.fxml", "Home");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 }

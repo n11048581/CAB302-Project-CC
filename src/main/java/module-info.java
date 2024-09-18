@@ -4,6 +4,7 @@ module test.fuelapp {
     requires java.sql;
     requires org.xerial.sqlitejdbc;
     requires java.desktop;
+    requires jdk.jdi;
 
 
     opens test.fuelapp to javafx.fxml;
