@@ -41,7 +41,7 @@ public class LoginController implements Initializable {
             // If entered login details match an entry in the database, log user in
             else if (loginModel.isValidLogin(tf_username.getText(), pf_password.getText())){
                 isConnectedUsername.setText("");
-                sqLiteLink.changeScene(event, "Home.fxml", "Home");
+                sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
             }
             // Else display error message
             else {

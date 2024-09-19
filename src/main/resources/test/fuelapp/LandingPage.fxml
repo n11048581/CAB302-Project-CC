@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="test.fuelapp.LandingPageController"
+      spacing="20" alignment="CENTER" prefWidth="400" prefHeight="300">
+
+    <Label text="Gas Station Price Tracker" style="-fx-font-size: 24;"/>
+
+    <!-- Login, Register, Search Buttons -->
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Login" onAction="#handleLogin"/>
+        <Button text="Register" onAction="#handleRegister"/>
+        <Button text="Search" onAction="#handleSearch"/>
+    </HBox>
+
+    <!-- Menu for Price Compare, Calculator, Map, and Settings -->
+    <VBox spacing="10" alignment="CENTER">
+        <Button text="Price Compare" onAction="#handlePriceCompare"/>
+        <Button text="Fuel Efficient Calculator" onAction="#handleCalculator"/>
+        <Button text="Map" onAction="#handleMap"/>
+        <Button text="Settings" onAction="#handleSettings"/>
+        <Button fx:id="button_logout" layoutX="560.0" layoutY="365.0" mnemonicParsing="false" onAction="#LogOut" text="Log Out"/>
+    </VBox>
+
+</VBox>
