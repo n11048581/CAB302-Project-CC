@@ -11,52 +11,57 @@
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.SignUpController">
     <VBox layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
       <children>
-            <AnchorPane prefHeight="100.0" prefWidth="1200.0" style="-fx-background-color: grey;">
-                <children>
-                    <Label layoutX="581.0" layoutY="17.0" text="Header" textAlignment="CENTER" />
-                </children>
-            </AnchorPane>
-            <AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ede7e5;">
-            <children>
-                    <TextField fx:id="tf_username" layoutX="505.0" layoutY="217.0" prefHeight="32.0" prefWidth="191.0" promptText="Username">
+          <AnchorPane prefHeight="100.0" prefWidth="1200.0" style="-fx-background-color: grey;">
+              <Label layoutX="581.0" layoutY="17.0" text="Header" textAlignment="CENTER"/>
+          </AnchorPane>
+          <AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ede7e5;">
+              <TextField fx:id="tf_username" layoutX="505.0" layoutY="217.0" prefHeight="32.0" prefWidth="191.0"
+                         promptText="Username">
+            <font>
+                <Font size="14.0"/>
+            </font>
+              </TextField>
+              <PasswordField fx:id="pf_password" layoutX="505.0" layoutY="265.0" prefHeight="32.0" prefWidth="191.0"
+                             promptText="Password">
+                 <font>
+                     <Font size="14.0"/>
+                 </font>
+              </PasswordField>
+              <PasswordField fx:id="pf_password_repeat" layoutX="504.0" layoutY="312.0" prefHeight="32.0"
+                             prefWidth="191.0" promptText="Repeat Password">
+                 <font>
+                     <Font size="14.0"/>
+                 </font>
+              </PasswordField>
+              <Label layoutX="493.0" layoutY="101.0" text="Sign Up!">
                   <font>
-                     <Font size="14.0" />
+                      <Font name="Arial Rounded MT Bold" size="51.0"/>
                   </font>
-               </TextField>
-               <PasswordField fx:id="pf_password" layoutX="505.0" layoutY="265.0" prefHeight="32.0" prefWidth="191.0" promptText="Password">
+              </Label>
+              <Button fx:id="button_create_account" layoutX="521.0" layoutY="437.0" mnemonicParsing="false"
+                      onAction="#CreateAccount" style="-fx-cursor: hand;" text="Create Account">
                   <font>
-                     <Font size="14.0" />
+                      <Font size="19.0"/>
                   </font>
-               </PasswordField>
-               <PasswordField fx:id="pf_passwordRepeat" layoutX="504.0" layoutY="312.0" prefHeight="32.0" prefWidth="191.0" promptText="Repeat Password">
+              </Button>
+              <Label layoutX="504.0" layoutY="360.0" text="Already a User?">
                   <font>
-                     <Font size="14.0" />
+                      <Font name="Arial Rounded MT Bold" size="12.0"/>
                   </font>
-               </PasswordField>
-                    <Label layoutX="493.0" layoutY="101.0" text="Sign Up!">
-                        <font>
-                            <Font name="Arial Rounded MT Bold" size="51.0" />
-                        </font>
-                    </Label>
-                    <Button fx:id="button_create_account" layoutX="521.0" layoutY="437.0" mnemonicParsing="false" onAction="#CreateAccount" style="-fx-cursor: hand;" text="Create Account">
-                        <font>
-                            <Font size="19.0" />
-                        </font>
-                    </Button>
-                    <Label layoutX="504.0" layoutY="360.0" text="Already a User?">
-                        <font>
-                            <Font name="Arial Rounded MT Bold" size="12.0" />
-                        </font>
-                    </Label>
-                    <Button fx:id="button_already_a_user" layoutX="629.0" layoutY="356.0" mnemonicParsing="false" onAction="#BackToLogin" style="-fx-background-color: transparent;" text="Log In!" textFill="#0400ff" underline="true">
-                        <font>
-                            <Font name="Arial Rounded MT Bold" size="12.0" />
-                        </font>
-                    </Button>
-               <Label fx:id="usernameTaken" layoutX="706.0" layoutY="223.0" prefHeight="17.0" prefWidth="474.0" textFill="RED" />
-               <Label fx:id="passwordNotSecure" alignment="TOP_LEFT" layoutX="706.0" layoutY="272.0" prefHeight="259.0" prefWidth="373.0" textFill="RED" />
-               <Label fx:id="passwordNotMatch" alignment="TOP_LEFT" contentDisplay="TOP" layoutX="706.0" layoutY="320.0" prefHeight="40.0" prefWidth="345.0" textFill="RED" />
-            </children>
-            </AnchorPane>
+              </Label>
+              <Button fx:id="button_already_a_user" layoutX="629.0" layoutY="356.0" mnemonicParsing="false"
+                      onAction="#BackToLogin" style="-fx-background-color: transparent;" text="Log In!"
+                      textFill="#0400ff" underline="true">
+                  <font>
+                      <Font name="Arial Rounded MT Bold" size="12.0"/>
+                  </font>
+              </Button>
+              <Label fx:id="usernameTaken" layoutX="706.0" layoutY="223.0" prefHeight="17.0" prefWidth="474.0"
+                     textFill="RED"/>
+              <Label fx:id="passwordNotSecure" alignment="TOP_LEFT" layoutX="706.0" layoutY="272.0" prefHeight="259.0"
+                     prefWidth="373.0" textFill="RED"/>
+              <Label fx:id="passwordNotMatch" alignment="TOP_LEFT" contentDisplay="TOP" layoutX="706.0" layoutY="320.0"
+                     prefHeight="40.0" prefWidth="345.0" textFill="RED"/>
+          </AnchorPane>
       </children></VBox>
 </AnchorPane>

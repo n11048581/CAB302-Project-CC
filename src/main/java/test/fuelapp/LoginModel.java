@@ -22,6 +22,7 @@ public class LoginModel {
             return false;
         }
     }
+
     public  boolean isExistingAccount(String username) throws SQLException {
         // Take username and initialise prepared statements
         PreparedStatement prepStatement = null;
@@ -47,7 +48,8 @@ public class LoginModel {
     }
 
 
-    public boolean isLogin(String username, String password) throws SQLException {
+
+    public boolean isValidLogin(String username, String password) throws SQLException {
         // Take username and password and initialise prepared statements
         PreparedStatement prepStatement = null;
         ResultSet resultSet = null;
@@ -73,6 +75,27 @@ public class LoginModel {
         }
     }
 
+    public void canCreateAccount(String username, String password) throws SQLException {
+        PreparedStatement prepStatement = null;
+        try {
+            String sql = "INSERT INTO users(username,password) VALUES(?,?)";
 
+            // Initialise prepared statement and replace question marks in SQL string with data entered by user
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.executeUpdate();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            // Close prepared statement
+            prepStatement.close();
+        }
+
+    }
 }
+
+

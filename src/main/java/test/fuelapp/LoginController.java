@@ -34,12 +34,12 @@ public class LoginController implements Initializable {
 
     public void Login (ActionEvent event) {
         try {
-            // Ensure textfields aren't empty
+            // Ensure text fields aren't empty
             if (tf_username.getText().isEmpty() || pf_password.getText().isEmpty()) {
                 isConnectedUsername.setText("Please enter username and password");
             }
             // If entered login details match an entry in the database, log user in
-            else if (loginModel.isLogin(tf_username.getText(), pf_password.getText())){
+            else if (loginModel.isValidLogin(tf_username.getText(), pf_password.getText())){
                 isConnectedUsername.setText("");
                 sqLiteLink.changeScene(event, "Home.fxml", "Home");
             }
