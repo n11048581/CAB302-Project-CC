@@ -76,7 +76,7 @@ public class LoginModel {
     public void canCreateAccount(String username, String password) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users(username,password) VALUES(?,?)";
+            String sql = "INSERT INTO users(username,password) VALUES(?, ? )";
 
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -89,8 +89,14 @@ public class LoginModel {
             e.printStackTrace();
         }
         finally {
+            try {
+                prepStatement.close();
+            }
+            catch (NullPointerException e) {
+                ;
+            }
             // Close prepared statement
-            prepStatement.close();
+
         }
 
     }
