@@ -5,7 +5,7 @@ import java.sql.*;
 public class LoginModel {
     // Initialise SQLite database connection
     Connection connection;
-    public  LoginModel () {
+    public LoginModel () {
         connection = SQLiteLink.Connector();
         if (connection == null) {
             System.out.println("Database Connection Unsuccessful");
@@ -23,7 +23,7 @@ public class LoginModel {
         }
     }
 
-    public  boolean isExistingAccount(String username) throws SQLException {
+    public boolean isExistingAccount(String username) throws SQLException {
         // Take username and initialise prepared statements
         PreparedStatement prepStatement = null;
         ResultSet resultSet = null;
@@ -46,8 +46,6 @@ public class LoginModel {
             resultSet.close();
         }
     }
-
-
 
     public boolean isValidLogin(String username, String password) throws SQLException {
         // Take username and password and initialise prepared statements

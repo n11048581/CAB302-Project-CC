@@ -39,8 +39,6 @@ public class SignUpController implements Initializable {
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
 
-
-
     public void CreateAccount(ActionEvent event) {
         try {
             // Regex to match against entered password
