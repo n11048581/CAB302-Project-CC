@@ -13,8 +13,10 @@ public class MockLocationDAO implements ILocationDAO {
 
     public MockLocationDAO() {
         // Add some initial contacts to the mock database
-        addLocation(new Location("SHELL COLES EXPRESS ANNERLEY", -27.503978, 153.034745));
+        addLocation(new Location("SHELL COLES EXPRESS ANNERLEY", -27.50389657004053, 153.03481992714404));
+        addLocation(new Location("QUT GARDENS POINT",-27.47711253360433, 153.02698892395478));
     }
+    // https://api.distancematrix.ai/maps/api/distancematrix/json?origins=-27.47711253360433,153.02698892395478&destinations=-27.50389657004053,153.03481992714404&key=pmhrz1WllpjiUIg7RZnjhTGZ2C1MMDm2tMKVu3gHWm2x2XFNEwBD1f9CyGGyniwN
 
     @Override
     public void addLocation(Location location) {

@@ -4,41 +4,39 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="533ff35e-94fa-4cdc-ad2c-0ae54a400d35" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/GasStation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/GasStationFinder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/GasStationFinderController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/GasStationFinderView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/cab302_project/GasStationFinder.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/cab302_project/map.png" afterDir="false" />
+    <list default="true" id="e8501b9a-fc3f-4bb7-b654-0ec401c86e2c" name="Changes" comment="initial commit to distance calculator, attempt 2">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/distanceTest/DistanceCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/distanceTest/DistanceCalculatorAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/distanceTest/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/distanceTest/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/distanceTest/MockLocationDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/cab302_project/distanceTest/MockLocationDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;n11048581&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/n11048581/CAB302-Project-CC.git&quot;,
+    &quot;accountId&quot;: &quot;e04c4291-b039-467c-8e1f-d59fa62af903&quot;
+  }
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -47,44 +45,65 @@
     </option>
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 4
+  &quot;associatedIndex&quot;: 3
 }</component>
-  <component name="ProjectId" id="2l0TBK1Mgd0keXXbnMHKvXfGKfn" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2m0ACgWGzFjUo6A4uJDPEdois49" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.GasStationFinder.executor": "Run",
+    "Application.DistanceCalculatorAPI.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "distance-calculator",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/tpgur/IdeaProjects/CAB302-Project-CC"
+    "last_opened_file_path": "C:/Users/laual/IdeaProjects/CAB302-Project/src/main/java/com/example/cab302_project"
   }
 }]]></component>
   <component name="RecentsManager">
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="com.example.cab302_project" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\laual\IdeaProjects\CAB302-Project\src\main\java\com\example\cab302_project" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="CAB302-Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="CAB302-Project" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="533ff35e-94fa-4cdc-ad2c-0ae54a400d35" name="Changes" comment="" />
-      <created>1724315857527</created>
+      <changelist id="e8501b9a-fc3f-4bb7-b654-0ec401c86e2c" name="Changes" comment="" />
+      <created>1726202993929</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1724315857527</updated>
+      <updated>1726202993929</updated>
     </task>
+    <task id="LOCAL-00001" summary="initial commit to distance calculator, attempt 2">
+      <option name="closed" value="true" />
+      <created>1726203151646</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1726203151646</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="initial commit to distance calculator, attempt 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit to distance calculator, attempt 2" />
   </component>
 </project>

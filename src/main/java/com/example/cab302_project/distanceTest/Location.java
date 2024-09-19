@@ -6,7 +6,7 @@ public class Location {
     private double longitude;
     private double latitude;
 
-    public Location(String name, double longitude, double latitude) {
+    public Location(String name, double latitude, double longitude) {
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -26,6 +26,14 @@ public class Location {
 
     public void setName(String name) { this.name = name;}
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
     public double getLongitude() {
         return longitude;
     }
@@ -34,12 +42,8 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public String getCoordinates() {
+        return String.valueOf(latitude) + "," + String.valueOf(longitude);
     }
 
 }
