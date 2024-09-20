@@ -4,23 +4,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
 
 <VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="test.fuelapp.LandingPageController">
 
     <Label style="-fx-font-size: 24;" text="Gas Station Price Tracker" />
 
-    <!-- Login, Register, Search Buttons -->
-    <HBox alignment="CENTER" spacing="10">
-        <Button onAction="#handleSearch" text="Search" />
-    </HBox>
+    <!-- Google Maps API Map -->
+    <WebView fx:id="mapWebView" prefHeight="600.0" prefWidth="800.0" />
 
-    <!-- Menu for Price Compare, Calculator, Map, and Settings -->
-    <VBox alignment="CENTER" spacing="10">
+    <!-- Buttons -->
+    <HBox alignment="BOTTOM_LEFT" spacing="10">
         <Button onAction="#handlePriceCompare" text="Price Compare" />
         <Button onAction="#handleCalculator" text="Fuel Efficient Calculator" />
-        <Button onAction="#handleMap" text="Map" />
         <Button onAction="#handleSettings" text="Settings" />
-        <Button fx:id="button_logout" layoutX="560.0" layoutY="365.0" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
-    </VBox>
+        <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
+    </HBox>
 
 </VBox>

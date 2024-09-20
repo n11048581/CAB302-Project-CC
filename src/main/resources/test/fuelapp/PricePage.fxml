@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
+
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
+<VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="test.fuelapp.ComparePageController">
+
+    <Label style="-fx-font-size: 24;" text="Price Compare" />
+
+    <HBox alignment="TOP_CENTER" spacing="10">
+        <TextField fx:id="searchBar" prefWidth="200.0" />
+        <Button onAction="#handleSearch" text="Search" />
+    </HBox>
+
+
+    <!-- Compare Price -->
+    <VBox prefHeight="600.0" prefWidth="800.0" spacing="15" alignment="CENTER" fillWidth="true">
+        <ScrollPane fx:id="comparePriceScrollPane" prefHeight="550.0" prefWidth="780.0" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
+            <VBox fx:id="comparePriceBox" spacing="15">
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+
+    <!-- Buttons -->
+    <HBox alignment="BOTTOM_LEFT" spacing="10">
+        <Button onAction="#map" text="map" />
+        <Button onAction="#handleCalculator" text="Fuel Efficient Calculator" />
+        <Button onAction="#handleSettings" text="Settings" />
+        <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
+    </HBox>
+
+</VBox>

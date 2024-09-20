@@ -3,6 +3,7 @@ package test.fuelapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.web.WebView;
 
 public class LandingPageController {
     SQLiteLink sqLiteLink = new SQLiteLink();
@@ -17,14 +18,24 @@ public class LandingPageController {
         showAlert("Register button clicked", "This would take you to the registration page.");
     }
 
+
     @FXML
-    public void handleSearch(ActionEvent event) {
-        showAlert("Search button clicked", "This would take you to the search page.");
+    private WebView mapWebView;
+
+    @FXML
+    private void initialize() {
+        Map map = new Map();
+        mapWebView.getEngine().loadContent(map.getMapHTML());
     }
+
+    //@FXML
+    //public void handleSearch(ActionEvent event) {
+    //    showAlert("Search button clicked", "This would take you to the search page.");
+    //}
 
     @FXML
     public void handlePriceCompare(ActionEvent event) {
-        showAlert("Price Compare button clicked", "This would take you to the price comparison page.");
+        sqLiteLink.changeScene(event, "PricePage.fxml", "Price Compare");
     }
 
     @FXML
