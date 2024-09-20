@@ -89,13 +89,11 @@ public class LoginModel {
             e.printStackTrace();
         }
         finally {
-            try {
+            // Close prepared statement
+            if (prepStatement != null) {
                 prepStatement.close();
             }
-            catch (NullPointerException e) {
-                ;
-            }
-            // Close prepared statement
+
 
         }
 

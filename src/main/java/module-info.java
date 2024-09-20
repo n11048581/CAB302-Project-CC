@@ -7,6 +7,7 @@ module test.fuelapp {
     requires jdk.jdi;
 
 
+
     opens test.fuelapp to javafx.fxml;
     exports test.fuelapp;
 }
