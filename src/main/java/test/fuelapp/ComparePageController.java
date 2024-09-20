@@ -8,6 +8,7 @@ import test.fuelapp.sample.StationDetails;
 import test.fuelapp.sample.SampleData;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ComparePageController {
@@ -50,12 +51,23 @@ public class ComparePageController {
         // Get the search query from the search bar
         String searchQuery = searchBar.getText();
 
-        // For now, just display an alert with the search query
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Search Query");
-        alert.setHeaderText(null);
-        alert.setContentText("You searched for: " + searchQuery);
-        alert.showAndWait();
+        // Filter the stations list based on the search query
+        List<StationDetails> filteredStations = SampleData.getSampleData().stream()
+                .filter(station -> station.getName().contains(searchQuery) || station.getAddress().contains(searchQuery))
+                .collect(Collectors.toList());
+
+        // Clear the comparePriceBox
+        comparePriceBox.getChildren().clear();
+
+        // Iterate over the filtered stations and add a label for each one
+        for (StationDetails station : filteredStations) {
+            Label label = new Label("                       "
+                    +"Station: " + station.getName() +
+                    " - Price: " + station.getPrice() +
+                    " - Address: " + station.getAddress());
+            comparePriceBox.getChildren().add(label);
+            comparePriceBox.getChildren().add(new Separator());
+        }
     }
 
     @FXML
