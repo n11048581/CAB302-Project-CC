@@ -40,23 +40,7 @@ public class ComparePageController {
     @FXML
     private ScrollPane comparePriceScrollPane;
 
-    @FXML
-    public void initialize() {
-        handlePriceCompare();
-    }
 
-    @FXML
-    public void handlePriceCompare() {
-        // Get the list of StationDetails objects
-        List<StationDetails> stations = SampleData.getSampleData();
-
-        // Iterate over the StationDetails objects and add a label for each one
-        for (StationDetails station : stations) {
-            Label label = new Label("        "+"Station: " + station.getName() + " - Price: " + station.getPrice() + " - Address: " + station.getAddress());
-            comparePriceBox.getChildren().add(label);
-            comparePriceBox.getChildren().add(new Separator());
-        }
-    }
 
     private SQLiteLink sqLiteLink = new SQLiteLink();
 
@@ -72,6 +56,35 @@ public class ComparePageController {
         alert.setHeaderText(null);
         alert.setContentText("You searched for: " + searchQuery);
         alert.showAndWait();
+    }
+
+    @FXML
+    private RadioButton priceRadioButton;
+    @FXML
+    private RadioButton distanceRadioButton;
+
+    @FXML
+    private void initialize() {
+        ToggleGroup toggleGroup = new ToggleGroup();
+        priceRadioButton.setToggleGroup(toggleGroup);
+        distanceRadioButton.setToggleGroup(toggleGroup);
+        handlePriceCompare();
+    }
+
+    @FXML
+    public void handlePriceCompare() {
+        // Get the list of StationDetails objects
+        List<StationDetails> stations = SampleData.getSampleData();
+
+        // Iterate over the StationDetails objects and add a label for each one
+        for (StationDetails station : stations) {
+            Label label = new Label("                       "
+                    +"Station: " + station.getName() +
+                    " - Price: " + station.getPrice() +
+                    " - Address: " + station.getAddress());
+            comparePriceBox.getChildren().add(label);
+            comparePriceBox.getChildren().add(new Separator());
+        }
     }
 
     @FXML

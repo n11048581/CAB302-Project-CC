@@ -5,10 +5,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.web.WebView?>
 
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.RadioButton?>
 <VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="test.fuelapp.ComparePageController">
 
     <Label style="-fx-font-size: 24;" text="Price Compare" />
@@ -18,14 +20,19 @@
         <Button onAction="#handleSearch" text="Search" />
     </HBox>
 
-
-    <!-- Compare Price -->
+    <!-- Compare Price & Sort buttons -->
     <VBox prefHeight="600.0" prefWidth="800.0" spacing="15" alignment="CENTER" fillWidth="true">
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <Label text="Sort by:" />
+            <RadioButton fx:id="priceRadioButton" text="Price" />
+            <RadioButton fx:id="distanceRadioButton" text="Distance" />
+        </HBox>
         <ScrollPane fx:id="comparePriceScrollPane" prefHeight="550.0" prefWidth="780.0" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
             <VBox fx:id="comparePriceBox" spacing="15">
             </VBox>
         </ScrollPane>
     </VBox>
+
 
 
     <!-- Buttons -->
