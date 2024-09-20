@@ -1,15 +1,15 @@
 package test.fuelapp;
 
+import test.fuelapp.SQLiteLink;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import test.fuelapp.sample.StationDetails;
-import test.fuelapp.sample.SampleData;
+import test.fuelapp.sample.FuelPriceAPI;
+import test.fuelapp.sample.FuelPriceAPI.StationDetails;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 public class ComparePageController {
 
@@ -20,31 +20,23 @@ public class ComparePageController {
     private Button searchButton;
 
     @FXML
-    private Button mapButton;
-
-    @FXML
-    private Button priceCompareButton;
-
-    @FXML
-    private Button calculatorButton;
-
-    @FXML
-    private Button settingsButton;
-
-    @FXML
-    private Button logoutButton;
-
-
-    @FXML
     private VBox comparePriceBox;
-
-    @FXML
-    private ScrollPane comparePriceScrollPane;
-
-
 
     private SQLiteLink sqLiteLink = new SQLiteLink();
 
+    @FXML
+    private RadioButton priceRadioButton;
+    @FXML
+    private RadioButton distanceRadioButton;
+
+    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI(); // Create an instance of FuelPriceAPI
+
+    @FXML
+    private void initialize() {
+        // Initialize the station data from FuelPriceAPI
+        fuelPriceAPI.getStationsData();  // Populate the data
+        handlePriceCompare();
+    }
 
     @FXML
     public void handleSearch() {
@@ -52,7 +44,7 @@ public class ComparePageController {
         String searchQuery = searchBar.getText();
 
         // Filter the stations list based on the search query
-        List<StationDetails> filteredStations = SampleData.getSampleData().stream()
+        List<StationDetails> filteredStations = fuelPriceAPI.getStationsMap().values().stream()
                 .filter(station -> station.getName().contains(searchQuery) || station.getAddress().contains(searchQuery))
                 .collect(Collectors.toList());
 
@@ -71,22 +63,12 @@ public class ComparePageController {
     }
 
     @FXML
-    private RadioButton priceRadioButton;
-    @FXML
-    private RadioButton distanceRadioButton;
-
-    @FXML
-    private void initialize() {
-        ToggleGroup toggleGroup = new ToggleGroup();
-        priceRadioButton.setToggleGroup(toggleGroup);
-        distanceRadioButton.setToggleGroup(toggleGroup);
-        handlePriceCompare();
-    }
-
-    @FXML
     public void handlePriceCompare() {
         // Get the list of StationDetails objects
-        List<StationDetails> stations = SampleData.getSampleData();
+        List<StationDetails> stations = fuelPriceAPI.getStationsMap().values().stream().collect(Collectors.toList());
+
+        // Clear the comparePriceBox
+        comparePriceBox.getChildren().clear();
 
         // Iterate over the StationDetails objects and add a label for each one
         for (StationDetails station : stations) {
