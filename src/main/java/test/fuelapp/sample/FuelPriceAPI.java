@@ -48,7 +48,7 @@ public class FuelPriceAPI {
                         // Get distance between user and station (Google Distance Matrix)
                         String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
 
-                        // Convert distance string to kilometers
+
                         double distanceRawValue = Double.parseDouble(distance.replace(" km", ""));
 
                         // Calculate fuel required for the trip in liters
@@ -57,6 +57,8 @@ public class FuelPriceAPI {
                         // Calculate the cost of the trip
                         double pricePerLiter = Double.parseDouble(station.price) / 1000.0; // Convert price to dollars
                         double travelCost = fuelRequired * pricePerLiter;
+                        double roundedTravelCost = Double.parseDouble(String.format("%.2f", travelCost));
+                        station.setTravelCost(roundedTravelCost);
 
                         station.setDistance(distance);
 
@@ -65,7 +67,7 @@ public class FuelPriceAPI {
                                 ", Fuel Type: " + station.fuelType + ", Price: " + station.price +
                                 ", Latitude: " + station.latitude + ", Longitude: " + station.longitude +
                                 ", Distance: " + station.getDistance() +
-                                ", Estimated Travel Cost: $" + String.format("%.2f", travelCost));
+                                ", Estimated Travel Cost: $" + roundedTravelCost);
 
 
                         // READ IF YOU THINK THE API ISN'T WORKING RIGHT

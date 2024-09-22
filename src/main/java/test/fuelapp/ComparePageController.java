@@ -75,7 +75,10 @@ public class ComparePageController {
             Label label = new Label("                       "
                     +"Station: " + station.getName() +
                     " - Price: " + station.getPrice() +
-                    " - Address: " + station.getAddress());
+                    " - Address: " + station.getAddress() +
+                    " - Fuel type: " + station.getFuelType()
+                    +" - Distance: " + station.getDistance()
+                    +" - Travel cost: " + station.getTravelCost());
             comparePriceBox.getChildren().add(label);
             comparePriceBox.getChildren().add(new Separator());
         }
