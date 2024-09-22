@@ -3,6 +3,8 @@ package test.fuelapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.web.WebView;
+import javafx.scene.web.WebEngine;
 
 public class LandingPageController {
     SQLiteLink sqLiteLink = new SQLiteLink();
@@ -17,14 +19,39 @@ public class LandingPageController {
         showAlert("Register button clicked", "This would take you to the registration page.");
     }
 
+
     @FXML
-    public void handleSearch(ActionEvent event) {
-        showAlert("Search button clicked", "This would take you to the search page.");
+    private WebView mapWebView;
+
+    @FXML
+    public void initialize() {
+        // Google Maps iframe HTML
+        String html = "<html>"
+                + "<body>"
+                + "<iframe "
+                + "width='800' "
+                + "height='600' "
+                + "style='border:0' "
+                + "loading='lazy' "
+                + "allowfullscreen "
+                + "referrerpolicy='no-referrer-when-downgrade' "
+                + "src='https://www.google.com/maps/embed/v1/place?key=AIzaSyA4Eeiogc9Sqx4-w3tOPkQeEN16JAYl9Vk&q=Space+Needle,Seattle+WA'>"
+                + "</iframe>"
+                + "</body>"
+                + "</html>";
+
+        WebEngine webEngine = mapWebView.getEngine();
+        webEngine.loadContent(html);
     }
+
+    //@FXML
+    //public void handleSearch(ActionEvent event) {
+    //    showAlert("Search button clicked", "This would take you to the search page.");
+    //}
 
     @FXML
     public void handlePriceCompare(ActionEvent event) {
-        showAlert("Price Compare button clicked", "This would take you to the price comparison page.");
+        sqLiteLink.changeScene(event, "PricePage.fxml", "Price Compare");
     }
 
     @FXML
