@@ -5,6 +5,7 @@ module test.fuelapp {
     requires org.xerial.sqlitejdbc;
     requires java.desktop;
     requires jdk.jdi;
+    requires org.slf4j;
 
 
 
