@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="test.fuelapp.LandingPageController">
+<VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.LandingPageController">
 
-    <Label style="-fx-font-size: 24;" text="Gas Station Price Tracker" />
+          <Label style="-fx-font-size: 24;" text="Gas Station Price Tracker" />
 
-    <!-- Google Maps API Map -->
+          <!-- Google Maps API Map -->
     <WebView fx:id="mapWebView" prefHeight="600.0" prefWidth="800.0" />
 
     <!-- Buttons -->
-    <HBox alignment="BOTTOM_LEFT" spacing="10">
+    <HBox alignment="BOTTOM_LEFT" prefWidth="1200.0" spacing="10">
         <Button onAction="#handlePriceCompare" text="Price Compare" />
         <Button onAction="#handleCalculator" text="Fuel Efficient Calculator" />
         <Button onAction="#handleSettings" text="Settings" />
         <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
+      <padding>
+         <Insets left="400.0" />
+      </padding>
     </HBox>
 
 </VBox>
