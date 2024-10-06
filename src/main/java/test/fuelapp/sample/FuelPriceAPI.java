@@ -11,6 +11,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import test.fuelapp.DatabaseOperations;
 
 
 public class FuelPriceAPI {
@@ -22,6 +23,7 @@ public class FuelPriceAPI {
     // New public method to be called from other files
     public void getStationsData() {
         stationsMap = new HashMap<>();
+        DatabaseOperations databaseOperations = new DatabaseOperations();
         try {
             // Fuel type map
             Map<String, String> fuelTypesMap = getFuelTypes();
@@ -38,7 +40,7 @@ public class FuelPriceAPI {
             DistanceMatrix distanceMatrix = new DistanceMatrix();
 
             // Variable for purpose of testing, delete later
-            int demoAPILimit = 0;
+            int demoAPILimit = 1;
 
             // Print combined data
             for (StationDetails station : stationsMap.values()) {
@@ -62,6 +64,8 @@ public class FuelPriceAPI {
 
                         station.setDistance(distance);
 
+                        databaseOperations.updateStationData(demoAPILimit, station.name, station.address, station.fuelType, Double.valueOf(station.price), Double.valueOf(station.latitude), Double.valueOf(station.longitude));
+
                         // Print station details
                         System.out.println("Station Name: " + station.name + ", Address: " + station.address +
                                 ", Fuel Type: " + station.fuelType + ", Price: " + station.price +
@@ -73,12 +77,13 @@ public class FuelPriceAPI {
                         // READ IF YOU THINK THE API ISN'T WORKING RIGHT
                         // Demo for purpose of testing, delete later
                         demoAPILimit = demoAPILimit + 1;
-                        if (demoAPILimit >= 20) {
+                        if (demoAPILimit >= 100) {
                             break;
                         }
 
 
                     } catch (Exception e) {
+                        //e.printStackTrace();
                         System.err.println("Error calculating distance for station: " + station.name);
                     }
                 }

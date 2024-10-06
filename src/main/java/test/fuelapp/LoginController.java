@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-    public LoginModel loginModel = new LoginModel();
+    public DatabaseOperations databaseOperations = new DatabaseOperations();
     public SQLiteLink sqLiteLink = new SQLiteLink();
 
     // Declare JavaFX elements
@@ -39,7 +39,7 @@ public class LoginController implements Initializable {
                 isConnectedUsername.setText("Please enter username and password");
             }
             // If entered login details match an entry in the database, log user in
-            else if (loginModel.isValidLogin(tf_username.getText(), pf_password.getText())){
+            else if (databaseOperations.isValidLogin(tf_username.getText(), pf_password.getText())){
                 isConnectedUsername.setText("");
                 sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
             }

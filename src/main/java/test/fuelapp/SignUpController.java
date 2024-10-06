@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
     public SQLiteLink sqLiteLink = new SQLiteLink();
-    public LoginModel loginModel = new LoginModel();
+    public DatabaseOperations databaseOperations = new DatabaseOperations();
 
     @FXML
     private TextField tf_username;
@@ -43,7 +43,7 @@ public class SignUpController implements Initializable {
         try {
             // Regex to match against entered password
             String passwordRegex = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
-            if (loginModel.isExistingAccount(tf_username.getText())) {
+            if (databaseOperations.isExistingAccount(tf_username.getText())) {
                 // If entered username matches one in database, alert the user the username is taken
                 passwordNotMatch.setText("");
                 passwordNotSecure.setText("");
@@ -72,7 +72,7 @@ public class SignUpController implements Initializable {
             }
             else {
                 // Create new record in database for user account
-                loginModel.canCreateAccount(tf_username.getText(), pf_password.getText());
+                databaseOperations.canCreateAccount(tf_username.getText(), pf_password.getText());
 
                 // Change scene to home screen
                 sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
