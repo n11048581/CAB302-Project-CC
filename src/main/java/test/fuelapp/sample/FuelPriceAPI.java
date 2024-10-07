@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -20,7 +21,7 @@ public class FuelPriceAPI {
     private Map<String, StationDetails> stationsMap;
 
     // New public method to be called from other files
-    public void getStationsData() {
+    public void getStationsData(Consumer<StationDetails> stationCallback) {
         stationsMap = new HashMap<>();
         try {
             // Fuel type map
@@ -46,7 +47,6 @@ public class FuelPriceAPI {
                         // Get distance between user and station (Google Distance Matrix)
                         String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
 
-
                         double distanceRawValue = Double.parseDouble(distance.replace(" km", ""));
 
                         // Calculate fuel required for the trip in liters
@@ -56,19 +56,11 @@ public class FuelPriceAPI {
                         double pricePerLiter = Double.parseDouble(station.price) / 1000.0; // Convert price to dollars
                         double travelCost = fuelRequired * pricePerLiter;
                         double roundedTravelCost = Double.parseDouble(String.format("%.2f", travelCost));
-                        station.setTravelCost(roundedTravelCost);
 
+                        station.setTravelCost(roundedTravelCost);
                         station.setDistance(distance);
 
-                        // Print station details
-                        System.out.println("Station Name: " + station.name + ", Address: " + station.address +
-                                ", Fuel Type: " + station.fuelType + ", Price: " + station.price +
-                                ", Latitude: " + station.latitude + ", Longitude: " + station.longitude +
-                                ", Distance: " + station.getDistance() +
-                                ", Estimated Travel Cost: $" + roundedTravelCost);
-
-
-
+                        stationCallback.accept(station);
 
                     } catch (Exception e) {
                         System.err.println("Error calculating distance for station: " + station.name);
@@ -85,9 +77,19 @@ public class FuelPriceAPI {
         return stationsMap;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { // This main method is for testing purposes only
         FuelPriceAPI api = new FuelPriceAPI();
-        api.getStationsData();
+
+        // Use a simple Consumer to print each station's details to the console
+        api.getStationsData(station -> {
+            System.out.println("Station Name: " + station.getName());
+            System.out.println("Address: " + station.getAddress());
+            System.out.println("Fuel Type: " + station.getFuelType());
+            System.out.println("Price: " + station.getPrice());
+            System.out.println("Distance: " + station.getDistance());
+            System.out.println("Estimated Travel Cost: $" + station.getTravelCost());
+            System.out.println("-------------------------------------");
+        });
     }
 
 

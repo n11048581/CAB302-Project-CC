@@ -1,5 +1,7 @@
 package test.fuelapp;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import test.fuelapp.SQLiteLink;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,9 +35,39 @@ public class ComparePageController {
 
     @FXML
     private void initialize() {
-        // Initialize the station data from FuelPriceAPI
-        fuelPriceAPI.getStationsData();  // Populate the data
-        handlePriceCompare();
+        // Use a background thread to fetch the API data progressively
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                fuelPriceAPI.getStationsData(station -> {
+                    // Use Platform.runLater to ensure UI updates on the JavaFX thread
+                    Platform.runLater(() -> updateUIWithStation(station));
+                });
+                return null;
+            }
+        };
+
+        // Handle task failure, log or alert the error
+        task.setOnFailed(e -> {
+            System.err.println("Failed to fetch station data: " + task.getException().getMessage());
+        });
+
+        // Run the task in a separate thread
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    // Method to update the UI with each station's details
+    private void updateUIWithStation(StationDetails station) {
+        Label label = new Label("Station: " + station.getName() +
+                " - Price: " + station.getPrice() +
+                " - Address: " + station.getAddress() +
+                " - Distance: " + station.getDistance() +
+                " - Travel Cost: $" + station.getTravelCost() +
+                " - Fuel Type: " + station.getFuelType());
+        comparePriceBox.getChildren().add(label);
+        comparePriceBox.getChildren().add(new Separator());
     }
 
     @FXML
