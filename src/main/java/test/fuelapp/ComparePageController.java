@@ -35,30 +35,27 @@ public class ComparePageController {
 
     @FXML
     private void initialize() {
-        // Use a background thread to fetch the API data progressively
-        Task<Void> task = new Task<Void>() {
+        Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
             @Override
             protected Void call() throws Exception {
                 fuelPriceAPI.getStationsData(station -> {
-                    // Use Platform.runLater to ensure UI updates on the JavaFX thread
-                    Platform.runLater(() -> updateUIWithStation(station));
+                    Platform.runLater(() -> updateUIWithStation(station)); // UI updates on JavaFX thread
                 });
                 return null;
             }
         };
 
-        // Handle task failure, log or alert the error
         task.setOnFailed(e -> {
             System.err.println("Failed to fetch station data: " + task.getException().getMessage());
         });
 
-        // Run the task in a separate thread
+        // Run task in separate thread
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
     }
 
-    // Method to update the UI with each station's details
+    // Update UI with each station's details, called in getStationsData()
     private void updateUIWithStation(StationDetails station) {
         Label label = new Label("Station: " + station.getName() +
                 " - Price: " + station.getPrice() +

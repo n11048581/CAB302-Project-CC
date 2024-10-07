@@ -60,7 +60,7 @@ public class FuelPriceAPI {
                         station.setTravelCost(roundedTravelCost);
                         station.setDistance(distance);
 
-                        stationCallback.accept(station);
+                        stationCallback.accept(station); // Calls UI updating function
 
                     } catch (Exception e) {
                         System.err.println("Error calculating distance for station: " + station.name);
