@@ -37,8 +37,6 @@ public class FuelPriceAPI {
 
             DistanceMatrix distanceMatrix = new DistanceMatrix();
 
-            // Variable for purpose of testing, delete later
-            int demoAPILimit = 0;
 
             // Print combined data
             for (StationDetails station : stationsMap.values()) {
@@ -70,12 +68,6 @@ public class FuelPriceAPI {
                                 ", Estimated Travel Cost: $" + roundedTravelCost);
 
 
-                        // READ IF YOU THINK THE API ISN'T WORKING RIGHT
-                        // Demo for purpose of testing, delete later
-                        demoAPILimit = demoAPILimit + 1;
-                        if (demoAPILimit >= 20) {
-                            break;
-                        }
 
 
                     } catch (Exception e) {
