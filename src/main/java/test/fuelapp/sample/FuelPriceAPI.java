@@ -20,7 +20,7 @@ public class FuelPriceAPI {
     private Map<String, StationDetails> stationsMap;
 
     // New public method to be called from other files
-    public void getStationsData(Consumer<StationDetails> stationCallback) {
+    public void getStationsData(String fixedLat, String fixedLong, Consumer<StationDetails> stationCallback) {
         stationsMap = new HashMap<>();
         try {
             // Fuel type map
@@ -31,9 +31,6 @@ public class FuelPriceAPI {
 
             // Update stationsMap with site prices
             getSitesPrices(stationsMap, fuelTypesMap);
-
-            String fixedLat = "-27.823611";
-            String fixedLong = "153.182556";
 
             DistanceMatrix distanceMatrix = new DistanceMatrix();
 
@@ -63,22 +60,6 @@ public class FuelPriceAPI {
     public Map<String, StationDetails> getStationsMap() {
         return stationsMap;
     }
-
-    public static void main(String[] args) { // This main method is for testing purposes only
-        FuelPriceAPI api = new FuelPriceAPI();
-
-        // Use a simple Consumer to print each station's details to the console
-        api.getStationsData(station -> {
-            System.out.println("Station Name: " + station.getName());
-            System.out.println("Address: " + station.getAddress());
-            System.out.println("Fuel Type: " + station.getFuelType());
-            System.out.println("Price: " + station.getPrice());
-            System.out.println("Distance: " + station.getDistance());
-            System.out.println("Estimated Travel Cost: $" + station.getTravelCost());
-            System.out.println("-------------------------------------");
-        });
-    }
-
 
     public static Map<String, String> getFuelTypes(HttpURLConnection connection) throws Exception {
         Map<String, String> fuelTypesMap = new HashMap<>();

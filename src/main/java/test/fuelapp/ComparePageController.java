@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 public class ComparePageController {
 
     private static final double userFuelEfficiency = 15.0;
+    private static final String fixedLat = "-27.823611";
+    private static final String fixedLong = "153.182556";
+
     @FXML
     private TextField searchBar;
 
@@ -39,7 +42,7 @@ public class ComparePageController {
         Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
             @Override
             protected Void call() throws Exception {
-                fuelPriceAPI.getStationsData(station -> {
+                fuelPriceAPI.getStationsData(fixedLat, fixedLong,station -> {
                     Platform.runLater(() -> updateUIWithStation(station)); // UI updates on JavaFX thread
                 });
                 return null;
