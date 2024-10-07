@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class ComparePageController {
 
+    private static final double userFuelEfficiency = 15.0;
     @FXML
     private TextField searchBar;
 
@@ -57,11 +58,15 @@ public class ComparePageController {
 
     // Update UI with each station's details, called in getStationsData()
     private void updateUIWithStation(StationDetails station) {
+
+        double distance = StationCalculations.calculateDistance(station.getDistance());
+        double travelCost = StationCalculations.calculateTravelCost(station, userFuelEfficiency, distance);
+
         Label label = new Label("Station: " + station.getName() +
                 " - Price: " + station.getPrice() +
                 " - Address: " + station.getAddress() +
-                " - Distance: " + station.getDistance() +
-                " - Travel Cost: $" + station.getTravelCost() +
+                " - Distance: " + distance +
+                " - Travel Cost: $" + travelCost +
                 " - Fuel Type: " + station.getFuelType());
         comparePriceBox.getChildren().add(label);
         comparePriceBox.getChildren().add(new Separator());

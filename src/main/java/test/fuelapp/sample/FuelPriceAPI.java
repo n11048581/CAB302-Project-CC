@@ -17,7 +17,6 @@ import com.google.gson.JsonParser;
 public class FuelPriceAPI {
     private static final String BASE_API_URL = "https://fppdirectapi-prod.fuelpricesqld.com.au";
     private static final String TOKEN = "5552f2b5-d71d-454f-909d-c0aefa2057c4";
-    private static final double userFuelEfficiency = 15.0;
     private Map<String, StationDetails> stationsMap;
 
     // New public method to be called from other files
@@ -44,20 +43,8 @@ public class FuelPriceAPI {
                 // Only print stations that have a real fuel type and price
                 if (!station.fuelType.equals("N/A") && !station.price.equals("N/A")) {
                     try {
-                        // Get distance between user and station (Google Distance Matrix)
+                        // Get and set distance between user and station (Google Distance Matrix)
                         String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
-
-                        double distanceRawValue = Double.parseDouble(distance.replace(" km", ""));
-
-                        // Calculate fuel required for the trip in liters
-                        double fuelRequired = (distanceRawValue / 100) * userFuelEfficiency;
-
-                        // Calculate the cost of the trip
-                        double pricePerLiter = Double.parseDouble(station.price) / 1000.0; // Convert price to dollars
-                        double travelCost = fuelRequired * pricePerLiter;
-                        double roundedTravelCost = Double.parseDouble(String.format("%.2f", travelCost));
-
-                        station.setTravelCost(roundedTravelCost);
                         station.setDistance(distance);
 
                         stationCallback.accept(station); // Calls UI updating function
