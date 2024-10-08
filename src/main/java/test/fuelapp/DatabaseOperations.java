@@ -114,6 +114,25 @@ public class DatabaseOperations {
             }
         }
     }
+
+    public void updatePriceData (Double price, int id) throws SQLException {
+        PreparedStatement prepStatement = null;
+        try {
+            String sql = "UPDATE gas_stations SET price = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setDouble(1, price);
+            preparedStatement.setInt(2, id);
+
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+        }
+    }
 }
 
 

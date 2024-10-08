@@ -39,8 +39,8 @@ public class FuelPriceAPI {
 
             DistanceMatrix distanceMatrix = new DistanceMatrix();
 
-            // Variable for purpose of testing, delete later
-            int demoAPILimit = 1;
+            // Variable to track primary keys in database and match with api call
+            int DatabaseIdCounter = 1;
 
             // Print combined data
             for (StationDetails station : stationsMap.values()) {
@@ -64,7 +64,10 @@ public class FuelPriceAPI {
 
                         station.setDistance(distance);
 
-                        databaseOperations.updateStationData(demoAPILimit, station.name, station.address, station.fuelType, Double.valueOf(station.price), Double.valueOf(station.latitude), Double.valueOf(station.longitude));
+                        // Update all data in the database with all data from API
+                        databaseOperations.updateStationData(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), Double.valueOf(station.latitude), Double.valueOf(station.longitude));
+                        // Update only the price data in the database with data from API
+                        databaseOperations.updatePriceData(Double.valueOf(station.price), DatabaseIdCounter);
 
                         // Print station details
                         System.out.println("Station Name: " + station.name + ", Address: " + station.address +
@@ -76,8 +79,8 @@ public class FuelPriceAPI {
 
                         // READ IF YOU THINK THE API ISN'T WORKING RIGHT
                         // Demo for purpose of testing, delete later
-                        demoAPILimit = demoAPILimit + 1;
-                        if (demoAPILimit >= 100) {
+                        DatabaseIdCounter = DatabaseIdCounter + 1;
+                        if (DatabaseIdCounter >= 100) {
                             break;
                         }
 
