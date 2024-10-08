@@ -1,8 +1,12 @@
 package test.fuelapp;
 
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
 
@@ -21,27 +25,24 @@ public class LandingPageController {
 
 
     @FXML
-    private WebView mapWebView;
+    private VBox gluonMap;
+
+
+    private MapView createMapView() {
+        MapView mapView = new MapView();
+        mapView.setPrefSize(1600,1200);
+        mapView.setZoom(15);
+        mapView.setCenter(-27.470125, 153.021072);
+        return mapView;
+    }
 
     @FXML
     public void initialize() {
-        // Google Maps iframe HTML
-        String html = "<html>"
-                + "<body>"
-                + "<iframe "
-                + "width='800' "
-                + "height='600' "
-                + "style='border:0' "
-                + "loading='lazy' "
-                + "allowfullscreen "
-                + "referrerpolicy='no-referrer-when-downgrade' "
-                + "src='https://www.google.com/maps/embed/v1/place?key=AIzaSyA4Eeiogc9Sqx4-w3tOPkQeEN16JAYl9Vk&q=Space+Needle,Seattle+WA'>"
-                + "</iframe>"
-                + "</body>"
-                + "</html>";
 
-        WebEngine webEngine = mapWebView.getEngine();
-        webEngine.loadContent(html);
+        MapView mapView = createMapView();
+        gluonMap.getChildren().add(mapView);
+        VBox.setVgrow(mapView, Priority.ALWAYS);
+
     }
 
     //@FXML

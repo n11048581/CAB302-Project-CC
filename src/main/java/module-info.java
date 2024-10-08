@@ -6,6 +6,8 @@ module test.fuelapp {
     requires java.desktop;
     requires jdk.jdi;
     requires javafx.web;
+    requires com.gluonhq.attach.util;
+    requires com.gluonhq.maps;
 
 
     opens test.fuelapp to javafx.fxml;
@@ -13,3 +15,4 @@ module test.fuelapp {
     exports test.fuelapp.sample;
     opens test.fuelapp.sample to javafx.fxml;
 }
+
