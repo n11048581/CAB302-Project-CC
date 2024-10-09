@@ -12,6 +12,18 @@ import java.sql.DriverManager;
 
 public class SQLiteLink {
 
+    /*
+
+    public void saveUserDetails(IUser user) {
+
+    }
+
+    public IUser getUserDetails (String username) {
+
+    }
+    */
+
+
     public static Connection Connector() {
         // Method to set database connection
         try {
