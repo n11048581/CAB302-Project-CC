@@ -11,8 +11,9 @@
 
           <Label style="-fx-font-size: 24;" text="Gas Station Price Tracker" />
 
-          <!-- Google Maps API Map -->
-    <WebView fx:id="mapWebView" prefHeight="600.0" prefWidth="800.0" />
+    <!-- Google Maps API Map -->
+
+    <VBox fx:id="gluonMap"/>
 
     <!-- Buttons -->
     <HBox alignment="BOTTOM_LEFT" prefWidth="1200.0" spacing="10">

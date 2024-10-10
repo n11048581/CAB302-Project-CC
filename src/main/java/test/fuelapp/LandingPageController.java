@@ -1,8 +1,25 @@
 package test.fuelapp;
 
+import com.gluonhq.maps.MapLayer;
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
+import javafx.scene.web.WebEngine;
+import test.fuelapp.sample.StationDetails;
+import java.util.ArrayList;
+import java.util.List;
+
+
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
 
@@ -19,29 +36,18 @@ public class LandingPageController {
         showAlert("Register button clicked", "This would take you to the registration page.");
     }
 
-
     @FXML
-    private WebView mapWebView;
+    private VBox gluonMap;
+
+
+
 
     @FXML
     public void initialize() {
-        // Google Maps iframe HTML
-        String html = "<html>"
-                + "<body>"
-                + "<iframe "
-                + "width='800' "
-                + "height='600' "
-                + "style='border:0' "
-                + "loading='lazy' "
-                + "allowfullscreen "
-                + "referrerpolicy='no-referrer-when-downgrade' "
-                + "src='https://www.google.com/maps/embed/v1/place?key=AIzaSyA4Eeiogc9Sqx4-w3tOPkQeEN16JAYl9Vk&q=Space+Needle,Seattle+WA'>"
-                + "</iframe>"
-                + "</body>"
-                + "</html>";
+        MapView mapView = Map.createMapView();
+        gluonMap.getChildren().add(mapView);
+        VBox.setVgrow(mapView, Priority.ALWAYS);
 
-        WebEngine webEngine = mapWebView.getEngine();
-        webEngine.loadContent(html);
     }
 
     //@FXML
