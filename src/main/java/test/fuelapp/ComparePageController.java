@@ -1,27 +1,23 @@
 package test.fuelapp;
 
-import test.fuelapp.SQLiteLink;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import test.fuelapp.sample.FuelPriceAPI;
-import test.fuelapp.sample.FuelPriceAPI.StationDetails;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ComparePageController {
     Connection connection;
     DistanceMatrix distanceMatrix = new DistanceMatrix();
     DatabaseOperations databaseOperations = new DatabaseOperations();
 
-    String fixedLat = "-27.823611";
-    String fixedLong = "153.182556";
+    String fixedLat = "-27.722947504112632";
+    String fixedLong = "153.21388361118096";
 
     public ComparePageController() {
         connection = SQLiteLink.Connector();
@@ -99,7 +95,7 @@ public class ComparePageController {
     }
 
     @FXML
-    public void handleSearch() throws SQLException {
+    public void handleDistanceSearch() throws SQLException {
         // Get the search query from the search bar
         String searchQuery = searchBar.getText();
         int i = 0;
