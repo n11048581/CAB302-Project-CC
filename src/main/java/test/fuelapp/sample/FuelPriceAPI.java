@@ -19,7 +19,7 @@ public class FuelPriceAPI {
     private static final String TOKEN = "5552f2b5-d71d-454f-909d-c0aefa2057c4";
     private Map<String, StationDetails> stationsMap;
 
-    // New public method to be called from other files
+
     public void getStationsData(String fixedLat, String fixedLong, Consumer<StationDetails> stationCallback) {
         stationsMap = new HashMap<>();
         try {

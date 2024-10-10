@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.SettingsController">
+    <Label text="Fuel Efficiency" layoutX="20" layoutY="20"/>
+    <TextField fx:id="tf_fuelEfficiency" layoutX="150" layoutY="20"/>
+
+    <Label text="Fuel Type" layoutX="20" layoutY="60"/>
+    <TextField fx:id="tf_fuelType" layoutX="150" layoutY="60"/>
+
+    <Label text="Latitude" layoutX="20" layoutY="100"/>
+    <TextField fx:id="tf_latitude" layoutX="150" layoutY="100"/>
+
+    <Label text="Longitude" layoutX="20" layoutY="140"/>
+    <TextField fx:id="tf_longitude" layoutX="150" layoutY="140"/>
+
+    <Label text="Maximum Travel Distance" layoutX="20" layoutY="180"/>
+    <TextField fx:id="tf_maxTravelDistance" layoutX="150" layoutY="180"/>
+
+    <Button text="Save" layoutX="150" layoutY="180" onAction="#handleSave"/>
+</AnchorPane>
