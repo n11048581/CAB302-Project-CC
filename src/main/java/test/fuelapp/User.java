@@ -3,13 +3,13 @@ package test.fuelapp;
 public class User implements IUser {
     private String name;
     private double fuelEfficiency;
-    private String[] fuelType;
+    private String fuelType;
     private double latitude;
     private double longitude;
     private double maxTravelDistance;
 
     // Constructor
-    public User(String name, double fuelEfficiency, String[] fuelType, double latitude, double longitude, double maxTravelDistance) {
+    public User(String name, double fuelEfficiency, String fuelType, double latitude, double longitude, double maxTravelDistance) {
         this.name = name;
         this.fuelEfficiency = fuelEfficiency;
         this.fuelType = fuelType;
@@ -50,12 +50,12 @@ public class User implements IUser {
     }
 
     @Override
-    public String[] getFuelType() {
+    public String getFuelType() {
         return fuelType;
     }
 
     @Override
-    public void setFuelType(String[] fuelType) {
+    public void setFuelType(String fuelType) {
         this.fuelType = fuelType;
     }
 

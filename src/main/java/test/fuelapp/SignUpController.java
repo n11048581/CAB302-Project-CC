@@ -30,8 +30,7 @@ public class SignUpController implements Initializable {
     private Label passwordNotMatch;
 
     // New fields
-    @FXML
-    private TextField tf_name;
+
     @FXML
     private TextField tf_fuelEfficiency;
     @FXML
@@ -42,6 +41,8 @@ public class SignUpController implements Initializable {
     private TextField tf_longitude;
     @FXML
     private TextField tf_maxTravelDistance;
+    @FXML
+    private TextField tf_name;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -82,7 +83,7 @@ public class SignUpController implements Initializable {
 
                 String name = tf_name.getText();
                 double fuelEfficiency = Double.parseDouble(tf_fuelEfficiency.getText());
-                String[] fuelType = tf_fuelType.getText().split(","); // Splits on commas to handle list format
+                String fuelType = tf_fuelType.getText(); // Splits on commas to handle list format
                 double latitude = Double.parseDouble(tf_latitude.getText());
                 double longitude = Double.parseDouble(tf_longitude.getText());
                 double maxTravelDistance = Double.parseDouble(tf_maxTravelDistance.getText());
@@ -93,7 +94,7 @@ public class SignUpController implements Initializable {
                 databaseOperations.canCreateAccount(tf_username.getText(), pf_password.getText());
 
 
-                /* sqLiteLink.saveUserToDatabase(newUser); */ //saveUserToDatabase METHOD NEEDS IMPLEMENTING IN SQLiteLink CLASS//
+                databaseOperations.saveUserDetails(newUser); //saveUserToDatabase METHOD NEEDS IMPLEMENTING IN SQLiteLink CLASS//
 
                 // Change scene to home screen
                 sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");

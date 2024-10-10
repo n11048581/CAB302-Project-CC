@@ -96,19 +96,19 @@ public class DatabaseOperations {
         }
     }
 
-    public void saveUserDetails(IUser user) {
+    public void saveUserDetails(IUser user) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users(name, fuel_efficiency, fuel_type, latitude, longitude) VALUES(?, ?, ?, ?, ?) WHERE username = ?";
+            String sql = "INSERT INTO users(fuel_efficiency, fuel_type, latitude, longitude, maxTravelDistance) VALUES(?, ?, ?, ?, ?, ?) WHERE username = ?";
 
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, /* name */);
-            preparedStatement.setString(2, /* fuel_efficiency */);
-            preparedStatement.setString(3, /* fuel_type */);
-            preparedStatement.setDouble(4, /* latitude */);
-            preparedStatement.setDouble(5, /* longitude */);
+            preparedStatement.setDouble(1, user.getFuelEfficiency());
+            preparedStatement.setString(2, user.getFuelType());
+            preparedStatement.setDouble(3, user.getLatitude());
+            preparedStatement.setDouble(4, user.getLongitude());
+            preparedStatement.setDouble(5, user.getMaxTravelDistance());
             preparedStatement.setString(6, LoginController.current_user);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
