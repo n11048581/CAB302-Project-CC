@@ -40,6 +40,8 @@ public class SignUpController implements Initializable {
     private TextField tf_latitude;
     @FXML
     private TextField tf_longitude;
+    @FXML
+    private TextField tf_maxTravelDistance;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,9 +85,9 @@ public class SignUpController implements Initializable {
                 String[] fuelType = tf_fuelType.getText().split(","); // Splits on commas to handle list format
                 double latitude = Double.parseDouble(tf_latitude.getText());
                 double longitude = Double.parseDouble(tf_longitude.getText());
+                double maxTravelDistance = Double.parseDouble(tf_maxTravelDistance.getText());
 
-
-                IUser newUser = new User(name, fuelEfficiency, fuelType, latitude, longitude);
+                IUser newUser = new User(name, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
 
                 // Save user data
                 databaseOperations.canCreateAccount(tf_username.getText(), pf_password.getText());

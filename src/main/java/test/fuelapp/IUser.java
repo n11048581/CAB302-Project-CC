@@ -2,6 +2,10 @@ package test.fuelapp;
 
 public interface IUser {
     String getName();
+
+    double getMaxTravelDistance();
+    void setMaxTravelDistance(double maxTravelDistance);
+
     void setName(String name);
 
     double getFuelEfficiency();
