@@ -2,10 +2,10 @@ package test.fuelapp;
 
 import java.sql.*;
 
-public class LoginModel {
+public class DatabaseOperations {
     // Initialise SQLite database connection
     Connection connection;
-    public LoginModel () {
+    public DatabaseOperations() {
         connection = SQLiteLink.Connector();
         if (connection == null) {
             System.out.println("Database Connection Unsuccessful");
@@ -76,7 +76,7 @@ public class LoginModel {
     public void canCreateAccount(String username, String password) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users(username,password) VALUES(?, ? )";
+            String sql = "INSERT INTO users(username,password) VALUES(?, ?)";
 
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -93,11 +93,56 @@ public class LoginModel {
             if (prepStatement != null) {
                 prepStatement.close();
             }
-
-
         }
-
     }
+    //Saves settings values to DB (Users table)
+    public void saveUserDetails(IUser user) throws SQLException {
+        PreparedStatement prepStatement = null;
+        try {
+            String sql = "UPDATE users SET fuel_efficiency = ?, fuel_type = ?, latitude = ?, longitude = ?, max_travel_distance = ? WHERE username = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, user.getFuelEfficiency());
+            preparedStatement.setString(2, user.getFuelType());
+            preparedStatement.setDouble(3, user.getLatitude());
+            preparedStatement.setDouble(4, user.getLongitude());
+            preparedStatement.setDouble(5, user.getMaxTravelDistance());
+            preparedStatement.setString(6, LoginController.current_user);
+
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+        }
+    }
+
+    // Gets Settings values from DB (Users table)
+    public IUser getUserDetails(String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String name = rs.getString("username");
+                double fuelEfficiency = rs.getDouble("fuel_efficiency");
+                String fuelType = rs.getString("fuel_type");
+                double latitude = rs.getDouble("latitude");
+                double longitude = rs.getDouble("longitude");
+                double maxTravelDistance = rs.getDouble("max_travel_distance");
+
+                return new User(name, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }
 
 
