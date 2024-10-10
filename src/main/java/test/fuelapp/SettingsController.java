@@ -59,4 +59,10 @@ public class SettingsController {
             e.printStackTrace();
         }
     }
+
+    public void BackToLanding(ActionEvent event) {
+        // Redirect to log in page
+        SQLiteLink sqLiteLink = new SQLiteLink();
+        sqLiteLink.changeScene(event, "LandingPage.fxml", "Landing Page");
+    }
 }
