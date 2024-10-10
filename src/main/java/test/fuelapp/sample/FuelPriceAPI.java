@@ -12,6 +12,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import test.fuelapp.DatabaseOperations;
+import test.fuelapp.DistanceMatrix;
 
 
 public class FuelPriceAPI {
@@ -22,6 +24,7 @@ public class FuelPriceAPI {
 
     public void getStationsData(String fixedLat, String fixedLong, Consumer<StationDetails> stationCallback) {
         stationsMap = new HashMap<>();
+        DatabaseOperations databaseOperations = new DatabaseOperations();
         try {
             // Fuel type map
             Map<String, String> fuelTypesMap = getFuelTypes();
@@ -34,6 +37,8 @@ public class FuelPriceAPI {
 
             DistanceMatrix distanceMatrix = new DistanceMatrix();
 
+            // Variable to track primary keys in database and match with api call
+            int DatabaseIdCounter = 1;
 
             // Print combined data
             for (StationDetails station : stationsMap.values()) {
@@ -43,6 +48,21 @@ public class FuelPriceAPI {
                         // Get and set distance between user and station (Google Distance Matrix)
                         String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
                         station.setDistance(distance);
+
+                        // Update all data in the database with all data from API
+                        //databaseOperations.updateStationData(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
+                        // Update only the price data in the database with data from API
+                        //databaseOperations.updatePriceData(Double.valueOf(station.price), DatabaseIdCounter);
+
+                        //DatabaseIdCounter = DatabaseIdCounter + 1;
+
+                        // READ IF YOU THINK THE API ISN'T WORKING RIGHT
+                        // Demo for purpose of testing, delete later
+                        /*
+                        if (DatabaseIdCounter >= 100) {
+                            break;
+                        }
+                        */
 
                         stationCallback.accept(station); // Calls UI updating function
 

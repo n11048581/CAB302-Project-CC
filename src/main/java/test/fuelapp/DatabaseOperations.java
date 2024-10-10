@@ -1,10 +1,15 @@
 package test.fuelapp;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseOperations {
     // Initialise SQLite database connection
     Connection connection;
+    public static List<Double> crowFliesList = new ArrayList<>();
+
+
     public DatabaseOperations() {
         connection = SQLiteLink.Connector();
         if (connection == null) {
@@ -35,12 +40,10 @@ public class DatabaseOperations {
             prepStatement.setString(1, username);
             resultSet = prepStatement.executeQuery();
             return resultSet.next();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-        finally {
+        } finally {
             // Close prepared statement
             prepStatement.close();
             resultSet.close();
@@ -61,12 +64,10 @@ public class DatabaseOperations {
 
             resultSet = prepStatement.executeQuery();
             return resultSet.next();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-        finally {
+        } finally {
             // Close prepared statement
             prepStatement.close();
             resultSet.close();
@@ -76,7 +77,7 @@ public class DatabaseOperations {
     public void canCreateAccount(String username, String password) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users(username,password) VALUES(?, ?)";
+            String sql = "INSERT INTO users (username,password) VALUES(?, ? )";
 
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -84,18 +85,99 @@ public class DatabaseOperations {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.executeUpdate();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             // Close prepared statement
             if (prepStatement != null) {
                 prepStatement.close();
             }
         }
     }
-    //Saves settings values to DB (Users table)
+
+    public void updateStationData(int id, String station_name, String station_address, String fuel_type, Double price, String station_latitude, String station_longitude) throws SQLException {
+        PreparedStatement prepStatement = null;
+        try {
+            String sql = "REPLACE INTO gas_stations (id, station_name, station_address, fuel_type, price, station_latitude, station_longitude) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, station_name);
+            preparedStatement.setString(3, station_address);
+            preparedStatement.setString(4, fuel_type);
+            preparedStatement.setDouble(5, price);
+            preparedStatement.setString(6, station_latitude);
+            preparedStatement.setString(7, station_longitude);
+
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+        }
+    }
+
+    public void updatePriceData (Double price, int id) throws SQLException {
+        PreparedStatement prepStatement = null;
+        try {
+            String sql = "UPDATE gas_stations SET price = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setDouble(1, price);
+            preparedStatement.setInt(2, id);
+
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+        }
+    }
+
+    public Double getCrowFlies(double lat1, double lon1, double lat2, double lon2){
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515 * 1.609344;
+
+        return dist;
+    }
+
+    public void updateCrowFlies() throws SQLException {
+        PreparedStatement prepStatement = null;
+        for (int q = 0; q < crowFliesList.size(); q++)
+            try {
+                String sql = "UPDATE gas_stations SET crow_flies_to_user = ? WHERE id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+                preparedStatement.setDouble(1, crowFliesList.get(q));
+                preparedStatement.setInt(2, q + 1);
+
+                preparedStatement.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+            }
+    }
+
+        /*::  This function converts decimal degrees to radians             :*/
+    private double deg2rad(double deg) {
+            return (deg * Math.PI / 180.0);
+    }
+
+        /*::  This function converts radians to decimal degrees             :*/
+    private double rad2deg(double rad) {
+            return (rad * 180.0 / Math.PI);
+    }
+
     public void saveUserDetails(IUser user) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
@@ -142,7 +224,10 @@ public class DatabaseOperations {
         return null;
     }
 
-
 }
+
+
+
+
 
 

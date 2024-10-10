@@ -99,7 +99,7 @@ public class LandingPageController {
 
     @FXML
     public void handleSettings(ActionEvent event) {
-        sqLiteLink.changeScene(event, "Settings.fxml", "Settings");
+        sqLiteLink.changeScene(event, "Settings.fxml", "Settetesttings");
     }
 
     public void LogOut (ActionEvent event) {
