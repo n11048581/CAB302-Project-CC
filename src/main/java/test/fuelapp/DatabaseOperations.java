@@ -99,7 +99,7 @@ public class DatabaseOperations {
     public void saveUserDetails(IUser user) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users(fuel_efficiency, fuel_type, latitude, longitude, maxTravelDistance) VALUES(?, ?, ?, ?, ?, ?) WHERE username = ?";
+            String sql = "INSERT INTO users(fuel_efficiency, fuel_type, latitude, longitude, maxTravelDistance) VALUES(?, ?, ?, ?, ?) WHERE username = ?";
 
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
