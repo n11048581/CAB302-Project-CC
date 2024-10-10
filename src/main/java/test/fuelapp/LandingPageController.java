@@ -1,27 +1,11 @@
 package test.fuelapp;
 
-import com.gluonhq.maps.MapLayer;
-import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.web.WebView;
-import javafx.scene.web.WebEngine;
-import test.fuelapp.sample.StationDetails;
-import java.util.ArrayList;
-import java.util.List;
-
-
-import javafx.scene.web.WebView;
-import javafx.scene.web.WebEngine;
 
 public class LandingPageController {
     SQLiteLink sqLiteLink = new SQLiteLink();
@@ -38,6 +22,8 @@ public class LandingPageController {
 
     @FXML
     private VBox gluonMap;
+
+
 
 
 

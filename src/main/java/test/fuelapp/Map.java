@@ -11,6 +11,7 @@ import test.fuelapp.sample.StationDetails;
 
 import java.util.List;
 
+import test.fuelapp.sample.FuelPriceAPI;
 import static test.fuelapp.sample.SampleData.getSampleData;
 
 public class Map {
@@ -19,6 +20,9 @@ public class Map {
      * Creates a map view
      * @return a map of the world
      */
+
+    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
+
     public static MapView createMapView() {
         MapView mapView = new MapView();
         //these values should be adjustable later - such as for screen size and user preferences
