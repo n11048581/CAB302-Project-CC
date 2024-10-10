@@ -91,7 +91,7 @@ public class DatabaseOperations {
         }
     }
 
-    public void updateStationData(int id, String station_name, String station_address, String fuel_type, Double price, Double station_latitude, Double station_longitude) throws SQLException {
+    public void updateStationData(int id, String station_name, String station_address, String fuel_type, Double price, String station_latitude, String station_longitude) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
             String sql = "REPLACE INTO gas_stations (id, station_name, station_address, fuel_type, price, station_latitude, station_longitude) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -102,8 +102,8 @@ public class DatabaseOperations {
             preparedStatement.setString(3, station_address);
             preparedStatement.setString(4, fuel_type);
             preparedStatement.setDouble(5, price);
-            preparedStatement.setDouble(6, station_latitude);
-            preparedStatement.setDouble(7, station_longitude);
+            preparedStatement.setString(6, station_latitude);
+            preparedStatement.setString(7, station_longitude);
 
             preparedStatement.executeUpdate();
         } catch (Exception e) {

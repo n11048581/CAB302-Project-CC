@@ -1,4 +1,4 @@
-package test.fuelapp.sample;
+package test.fuelapp;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -13,7 +13,7 @@ public class DistanceMatrix {
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json";
 
     // Method to get the driving distance between two points (Google Distance Matrix API call)
-    public String getDistance(String originLat, String originLon, String destLat, String destLon) {
+    public static String getDistance(String originLat, String originLon, String destLat, String destLon) {
         String urlString = BASE_URL +
                 "?origins=" + originLat + "," + originLon +
                 "&destinations=" + destLat + "," + destLon +

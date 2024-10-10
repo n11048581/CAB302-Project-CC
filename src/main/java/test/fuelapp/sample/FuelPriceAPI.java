@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import test.fuelapp.DatabaseOperations;
+import test.fuelapp.DistanceMatrix;
 
 
 public class FuelPriceAPI {
@@ -65,7 +66,7 @@ public class FuelPriceAPI {
                         station.setDistance(distance);
 
                         // Update all data in the database with all data from API
-                        databaseOperations.updateStationData(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), Double.valueOf(station.latitude), Double.valueOf(station.longitude));
+                        databaseOperations.updateStationData(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
                         // Update only the price data in the database with data from API
                         databaseOperations.updatePriceData(Double.valueOf(station.price), DatabaseIdCounter);
 
@@ -76,13 +77,15 @@ public class FuelPriceAPI {
                                 ", Distance: " + station.getDistance() +
                                 ", Estimated Travel Cost: $" + roundedTravelCost);
 
+                        DatabaseIdCounter = DatabaseIdCounter + 1;
 
                         // READ IF YOU THINK THE API ISN'T WORKING RIGHT
                         // Demo for purpose of testing, delete later
-                        DatabaseIdCounter = DatabaseIdCounter + 1;
+                        /*
                         if (DatabaseIdCounter >= 100) {
                             break;
                         }
+                        */
 
 
                     } catch (Exception e) {

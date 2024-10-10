@@ -17,6 +17,12 @@ import java.util.stream.Collectors;
 
 public class ComparePageController {
     Connection connection;
+    DistanceMatrix distanceMatrix;
+
+    String fixedLat = "-27.823611";
+    String fixedLong = "153.182556";
+    int i = 0;
+
 
     public ComparePageController() {
         connection = SQLiteLink.Connector();
@@ -47,61 +53,33 @@ public class ComparePageController {
     @FXML
     private void initialize() throws SQLException {
         // Initialize the station data from FuelPriceAPI
-        //fuelPriceAPI.getStationsData();  // Populate the data
+        // fuelPriceAPI.getStationsData();  // Populate the data
         handlePriceCompare();
     }
 
-    @FXML
-    public void handleSearch() {
-        // Get the search query from the search bar
-        String searchQuery = searchBar.getText();
-
-        // Filter the stations list based on the search query
-        List<StationDetails> filteredStations = fuelPriceAPI.getStationsMap().values().stream()
-                .filter(station -> station.getName().contains(searchQuery) || station.getAddress().contains(searchQuery))
-                .collect(Collectors.toList());
-
-        System.out.println(filteredStations);
-
-
-        // Clear the comparePriceBox
-        comparePriceBox.getChildren().clear();
-
-        // Iterate over the filtered stations and add a label for each one
-        for (StationDetails station : filteredStations) {
-            Label label = new Label("                       "
-                    +"Station: " + station.getName() +
-                    " - Price: " + station.getPrice() +
-                    " - Address: " + station.getAddress());
-            comparePriceBox.getChildren().add(label);
-            comparePriceBox.getChildren().add(new Separator());
-        }
-    }
 
     @FXML
     public void handlePriceCompare() throws SQLException {
         // Get the list of StationDetails objects
         //List<StationDetails> stations = fuelPriceAPI.getStationsMap().values().stream().collect(Collectors.toList());
         comparePriceBox.getChildren().clear();
+        comparePriceBox.getChildren().add(new Separator());
 
-        PreparedStatement prepStatement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         // Set SQL command to match user input against database
         String query = "SELECT * FROM gas_stations";
         try {
             // Execute query on entered username and password
-            prepStatement = connection.prepareStatement(query);
-            resultSet = prepStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                System.out.println(resultSet.getString("station_name"));
-
                 Label label = new Label("                       "
-                +"Station: " + resultSet.getString("station_name") +
-                " - Price: " + resultSet.getDouble("price") +
-                " - Address: " + resultSet.getString("station_address") +
-                " - Fuel type: " + resultSet.getString("fuel_type"));
-                //+" - Distance: " + station.getDistance()
+                        +"Station: " + resultSet.getString("station_name") +
+                        " - Price: " + resultSet.getDouble("price") +
+                        " - Address: " + resultSet.getString("station_address") +
+                        " - Fuel type: " + resultSet.getString("fuel_type"));
                 //  +" - Travel cost: " + station.getTravelCost());
                 comparePriceBox.getChildren().add(label);
                 comparePriceBox.getChildren().add(new Separator());
@@ -114,22 +92,61 @@ public class ComparePageController {
             //prepStatement.close();
             //resultSet.close();
         }
-        
+    }
 
-        // Clear the comparePriceBox
+    @FXML
+    public void handleSearch() throws SQLException {
+        // Get the search query from the search bar
+        String searchQuery = searchBar.getText();
 
-        // Iterate over the StationDetails objects and add a label for each one
-      //  for (StationDetails station : stations) {
-       //     Label label = new Label("                       "
-       //             +"Station: " + station.getName() +
-       //             " - Price: " + station.getPrice() +
-      //              " - Address: " + station.getAddress() +
-       //             " - Fuel type: " + station.getFuelType()
-      //              +" - Distance: " + station.getDistance()
-      //              +" - Travel cost: " + station.getTravelCost());
-     //       comparePriceBox.getChildren().add(label);
-       //     comparePriceBox.getChildren().add(new Separator());
-        //}
+        // Filter the stations list based on the search query
+        comparePriceBox.getChildren().clear();
+        comparePriceBox.getChildren().add(new Separator());
+
+        // Initialise prepared statement and variable to store query results
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        // Set SQL command to match user input against database
+        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ?";
+        try {
+            // Execute query on entered username and password
+            preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, "%" + searchQuery.toLowerCase() + "%");
+            resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()) {
+                if (i < 10) {
+                    Label label = new Label("                       " +
+                            "Station: " + resultSet.getString("station_name") +
+                            " - Price: " + resultSet.getDouble("price") +
+                            " - Address: " + resultSet.getString("station_address") +
+                            " - Fuel type: " + resultSet.getString("fuel_type") +
+                            " - Distance: " + DistanceMatrix.getDistance(fixedLat, fixedLong, resultSet.getString("station_latitude"), resultSet.getString("station_longitude")));
+                    //  +" - Travel cost: " + station.getTravelCost());
+                    comparePriceBox.getChildren().add(label);
+                    comparePriceBox.getChildren().add(new Separator());;
+                    i = i + 1;
+                }
+            else {
+                    Label label = new Label("                       " +
+                            "Station: " + resultSet.getString("station_name") +
+                            " - Price: " + resultSet.getDouble("price") +
+                            " - Address: " + resultSet.getString("station_address") +
+                            " - Fuel type: " + resultSet.getString("fuel_type"));
+                    comparePriceBox.getChildren().add(label);
+                    comparePriceBox.getChildren().add(new Separator());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close prepared statement
+            // prepStatement.close();
+            // resultSet.close();
+        }
     }
 
 
@@ -164,4 +181,5 @@ public class ComparePageController {
         // Logout and go back to the login page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
+
 }
