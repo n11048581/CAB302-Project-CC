@@ -25,6 +25,7 @@ public class Map {
         mapView.setPrefSize(1600,1200);
         mapView.setZoom(15);
         mapView.setCenter(-27.470125, 153.021072);
+        //probably put this in a conditional of some sorts? retrieve from database probably
         mapView.addLayer(createMarkerLayer(getSampleData()));
         return mapView;
     }
@@ -38,7 +39,7 @@ public class Map {
     public static MapLayer createMarkerLayer(List<StationDetails> stationDetailsList) {
         MapMarker markers = new MapMarker();
         for (StationDetails stationDetails : stationDetailsList) {
-            //would be nice if maybe it could have text too? might suck if you're zoomed out, though...
+            //issue is, the api returns a map. going to need a conversion process
             markers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
         }
         return markers;
