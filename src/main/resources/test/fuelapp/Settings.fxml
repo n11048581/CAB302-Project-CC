@@ -17,8 +17,8 @@
     <Label text="Longitude" layoutX="20" layoutY="140"/>
     <TextField fx:id="tf_longitude" layoutX="150" layoutY="140"/>
 
-    <Label text="Maximum Travel Distance" layoutX="20" layoutY="140"/>
-    <TextField fx:id="tf_maxTravelDistance" layoutX="150" layoutY="140"/>
+    <Label text="Maximum Travel Distance" layoutX="20" layoutY="180"/>
+    <TextField fx:id="tf_maxTravelDistance" layoutX="150" layoutY="180"/>
 
     <Button text="Save" layoutX="150" layoutY="180" onAction="#handleSave"/>
 </AnchorPane>
