@@ -41,6 +41,8 @@ public class LandingPageController {
             // Get lat and long from the user object
             userLat = user.getLatitude();
             userLong = user.getLongitude();
+            System.out.println("Received Coordinates: " + userLat + ", " + userLong); // Debugging statement
+            //??? why is it 39 153 now why did it change
         } else {
             // Handle the case where user details are not available
             System.err.println("User details not found.");
@@ -54,12 +56,18 @@ public class LandingPageController {
         gluonMap.getChildren().add(mapView);
         VBox.setVgrow(mapView, Priority.ALWAYS);
 
+        Thread thread = getThread(mapView);
+        thread.start();
+
+    }
+
+    private Thread getThread(MapView mapView) {
         Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
             @Override
             protected Void call() throws Exception {
                 // userLat and userLong pulled from Users db table, assigned in Settings
                 fuelPriceAPI.getStationsData(String.valueOf(userLat), String.valueOf(userLong), station -> {
-                    Platform.runLater(() -> Map.updateStationLayer(mapView, station));
+                    Platform.runLater(() -> Map.updateStationLayer(station));
                 });
                 return null;
             }
@@ -72,8 +80,7 @@ public class LandingPageController {
         // Run task in separate thread
         Thread thread = new Thread(task);
         thread.setDaemon(true);
-        thread.start();
-
+        return thread;
     }
 
 

@@ -37,11 +37,14 @@ public class Map {
         return mapView;
     }
 
-
-    public static void updateStationLayer(MapView mapView, FuelPriceAPI.StationDetails stationDetails) {
-        mapView.removeLayer(stationMarkers);
+    /**
+     * Updates the station MapLayer with the provided station
+     * @param stationDetails
+     */
+    public static void updateStationLayer(FuelPriceAPI.StationDetails stationDetails) {
+        //mapView.removeLayer(stationMarkers);
         stationMarkers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
-        mapView.addLayer(stationMarkers);
+        //mapView.addLayer(stationMarkers);
     }
 
 
@@ -62,7 +65,7 @@ public class Map {
 
     public static MapLayer createCenterLayer(double latitude, double longitude) {
         MapMarker marker = new MapMarker();
-        marker.addPoint(new MapPoint(latitude, longitude), new Circle(5, Color.BLUE));
+        marker.addPoint(new MapPoint(latitude, longitude), new Circle(4, Color.BLUE));
         return marker;
     }
 
@@ -87,7 +90,7 @@ public class Map {
         name.setStroke(Color.BLACK);
         name.setStrokeWidth(0.5);
         icon.getChildren().add(name);
-        icon.getChildren().add(new Circle(7,Color.RED));
+        icon.getChildren().add(new Circle(4,Color.RED));
         return icon;
     }
 
