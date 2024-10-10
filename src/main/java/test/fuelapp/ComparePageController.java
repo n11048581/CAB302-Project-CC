@@ -60,6 +60,7 @@ public class ComparePageController {
         comparePriceBox.getChildren().clear();
         comparePriceBox.getChildren().add(new Separator());
 
+        // Clear list that tracks crow-flies distances
         DatabaseOperations.crowFliesList.clear();
 
         PreparedStatement preparedStatement = null;
@@ -71,6 +72,7 @@ public class ComparePageController {
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
+            // While there is an entry to show, create a label that displays station data
             while (resultSet.next()) {
                 Label label = new Label("                       "
                         +"Station: " + resultSet.getString("station_name") +
@@ -86,10 +88,6 @@ public class ComparePageController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            // Close prepared statement
-            //prepStatement.close();
-            //resultSet.close();
         }
         databaseOperations.updateCrowFlies();
     }
@@ -120,20 +118,26 @@ public class ComparePageController {
             while (resultSet.next()) {
                 // If statement used to cap amount of results showing distance, useful when calling API
                 if (i < 2000) {
+                    // Create a label, pulling database data and display ordered by distance
                     Label label = new Label("                       " +
                             "Station: " + resultSet.getString("station_name") +
                             " - Price: " + resultSet.getDouble("price") +
                             " - Address: " + resultSet.getString("station_address") +
                             " - Fuel type: " + resultSet.getString("fuel_type") +
                             " - Distance: " + String.format("%.2f", Double.parseDouble(resultSet.getString("crow_flies_to_user")))  + "kms");
-
-                            //" - Distance: " + distanceMatrix.getDistance(fixedLat, fixedLong, resultSet.getString("station_latitude"), resultSet.getString("station_longitude")));
-                            //  +" - Travel cost: " + station.getTravelCost());
+                            /* Functions that deal with API, will come back later
+                                                        ^
+                                                        |
+                                                        |
+                             " - Distance: " + distanceMatrix.getDistance(fixedLat, fixedLong, resultSet.getString("station_latitude"), resultSet.getString("station_longitude")));
+                              +" - Travel cost: " + station.getTravelCost());
+                            */
                     comparePriceBox.getChildren().add(label);
                     comparePriceBox.getChildren().add(new Separator());;
                     i = i + 1;
                 }
             else {
+                // Create label without distance field
                     Label label = new Label("                       " +
                             "Station: " + resultSet.getString("station_name") +
                             " - Price: " + resultSet.getDouble("price") +
@@ -145,10 +149,6 @@ public class ComparePageController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            // Close prepared statement
-            // prepStatement.close();
-            // resultSet.close();
         }
     }
 
