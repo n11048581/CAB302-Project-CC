@@ -1,11 +1,15 @@
 package test.fuelapp;
 
 import com.gluonhq.maps.MapView;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import test.fuelapp.sample.FuelPriceAPI;
+import test.fuelapp.sample.StationDetails;
 
 public class LandingPageController {
     SQLiteLink sqLiteLink = new SQLiteLink();
@@ -23,18 +27,55 @@ public class LandingPageController {
     @FXML
     private VBox gluonMap;
 
+    private double userLat;
+    private double userLong;
 
-
-
-
+    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
+    private DatabaseOperations dbOperations = new DatabaseOperations();
 
     @FXML
     public void initialize() {
-        MapView mapView = Map.createMapView();
+        IUser user = dbOperations.getUserDetails(LoginController.current_user);
+
+        if (user != null) {
+            // Get lat and long from the user object
+            userLat = user.getLatitude();
+            userLong = user.getLongitude();
+        } else {
+            // Handle the case where user details are not available
+            System.err.println("User details not found.");
+
+            // Fallback values
+            userLat = -27.823611;
+            userLong = 153.182556;
+        }
+
+        MapView mapView = Map.createMapView(userLat, userLong);
         gluonMap.getChildren().add(mapView);
         VBox.setVgrow(mapView, Priority.ALWAYS);
 
+        Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
+            @Override
+            protected Void call() throws Exception {
+                // userLat and userLong pulled from Users db table, assigned in Settings
+                fuelPriceAPI.getStationsData(String.valueOf(userLat), String.valueOf(userLong), station -> {
+                    Platform.runLater(() -> Map.updateStationLayer(mapView, station));
+                });
+                return null;
+            }
+        };
+
+        task.setOnFailed(e -> {
+            System.err.println("Failed to fetch station data: " + task.getException().getMessage());
+        });
+
+        // Run task in separate thread
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+
     }
+
 
     //@FXML
     //public void handleSearch(ActionEvent event) {
