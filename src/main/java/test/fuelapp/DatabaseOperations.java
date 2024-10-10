@@ -95,7 +95,7 @@ public class DatabaseOperations {
             }
         }
     }
-
+    //Saves settings values to DB (Users table)
     public void saveUserDetails(IUser user) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
@@ -119,7 +119,7 @@ public class DatabaseOperations {
         }
     }
 
-
+    // Gets Settings values from DB (Users table)
     public IUser getUserDetails(String username) {
         String query = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {

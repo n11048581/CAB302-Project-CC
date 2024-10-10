@@ -28,7 +28,7 @@ public class SettingsController {
         loadUserDetails();
     }
 
-
+    // Method for displaying existing Settings user account values
     public void loadUserDetails() {
         IUser user = dbOperations.getUserDetails(currentUsername);
         if (user != null) {
@@ -40,7 +40,7 @@ public class SettingsController {
         }
     }
 
-
+    // Method for setting the Settings page values, calls saveUserDetails to store in DB
     public void handleSave(ActionEvent event) {
         try {
             double fuelEfficiency = Double.parseDouble(tf_fuelEfficiency.getText());
