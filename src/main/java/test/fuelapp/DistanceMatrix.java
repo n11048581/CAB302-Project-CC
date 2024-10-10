@@ -13,7 +13,7 @@ public class DistanceMatrix {
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json";
 
     // Method to get the driving distance between two points (Google Distance Matrix API call)
-    public static String getDistance(String originLat, String originLon, String destLat, String destLon) {
+    public String getDistance(String originLat, String originLon, String destLat, String destLon) {
         String urlString = BASE_URL +
                 "?origins=" + originLat + "," + originLon +
                 "&destinations=" + destLat + "," + destLon +

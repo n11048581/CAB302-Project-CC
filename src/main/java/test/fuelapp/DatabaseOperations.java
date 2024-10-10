@@ -1,10 +1,14 @@
 package test.fuelapp;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseOperations {
     // Initialise SQLite database connection
     Connection connection;
+    public static List<Double> crowFliesList = new ArrayList<>();
+
 
     public DatabaseOperations() {
         connection = SQLiteLink.Connector();
@@ -133,7 +137,48 @@ public class DatabaseOperations {
             }
         }
     }
+
+    public Double getCrowFlies(double lat1, double lon1, double lat2, double lon2){
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515 * 1.609344;
+
+        return dist;
+    }
+
+    public void updateCrowFlies() throws SQLException {
+        PreparedStatement prepStatement = null;
+        for (int q = 0; q < crowFliesList.size(); q++)
+            try {
+                String sql = "UPDATE gas_stations SET crow_flies_to_user = ? WHERE id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+                preparedStatement.setDouble(1, crowFliesList.get(q));
+                preparedStatement.setInt(2, q + 1);
+
+                preparedStatement.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+            }
+    }
+
+        /*::  This function converts decimal degrees to radians             :*/
+    private double deg2rad(double deg) {
+            return (deg * Math.PI / 180.0);
+    }
+
+        /*::  This function converts radians to decimal degrees             :*/
+    private double rad2deg(double rad) {
+            return (rad * 180.0 / Math.PI);
+    }
 }
+
 
 
 

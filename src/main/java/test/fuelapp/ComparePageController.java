@@ -17,12 +17,11 @@ import java.util.stream.Collectors;
 
 public class ComparePageController {
     Connection connection;
-    DistanceMatrix distanceMatrix;
+    DistanceMatrix distanceMatrix = new DistanceMatrix();
+    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     String fixedLat = "-27.823611";
     String fixedLong = "153.182556";
-    int i = 0;
-
 
     public ComparePageController() {
         connection = SQLiteLink.Connector();
@@ -55,15 +54,17 @@ public class ComparePageController {
         // Initialize the station data from FuelPriceAPI
         // fuelPriceAPI.getStationsData();  // Populate the data
         handlePriceCompare();
+
     }
 
 
     @FXML
     public void handlePriceCompare() throws SQLException {
         // Get the list of StationDetails objects
-        //List<StationDetails> stations = fuelPriceAPI.getStationsMap().values().stream().collect(Collectors.toList());
         comparePriceBox.getChildren().clear();
         comparePriceBox.getChildren().add(new Separator());
+
+        DatabaseOperations.crowFliesList.clear();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -84,6 +85,8 @@ public class ComparePageController {
                 comparePriceBox.getChildren().add(label);
                 comparePriceBox.getChildren().add(new Separator());
 
+                DatabaseOperations.crowFliesList.add(databaseOperations.getCrowFlies(Double.parseDouble(fixedLat), Double.parseDouble(fixedLong), Double.parseDouble(resultSet.getString("station_latitude")), Double.parseDouble(resultSet.getString("station_longitude"))));
+                System.out.println(DatabaseOperations.crowFliesList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,13 +95,14 @@ public class ComparePageController {
             //prepStatement.close();
             //resultSet.close();
         }
+        databaseOperations.updateCrowFlies();
     }
 
     @FXML
     public void handleSearch() throws SQLException {
         // Get the search query from the search bar
         String searchQuery = searchBar.getText();
-
+        int i = 0;
         // Filter the stations list based on the search query
         comparePriceBox.getChildren().clear();
         comparePriceBox.getChildren().add(new Separator());
@@ -108,7 +112,7 @@ public class ComparePageController {
         ResultSet resultSet = null;
 
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ?";
+        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? ORDER BY crow_flies_to_user";
         try {
             // Execute query on entered username and password
             preparedStatement = connection.prepareStatement(query);
@@ -124,7 +128,7 @@ public class ComparePageController {
                             " - Price: " + resultSet.getDouble("price") +
                             " - Address: " + resultSet.getString("station_address") +
                             " - Fuel type: " + resultSet.getString("fuel_type") +
-                            " - Distance: " + DistanceMatrix.getDistance(fixedLat, fixedLong, resultSet.getString("station_latitude"), resultSet.getString("station_longitude")));
+                            " - Distance: " + distanceMatrix.getDistance(fixedLat, fixedLong, resultSet.getString("station_latitude"), resultSet.getString("station_longitude")));
                     //  +" - Travel cost: " + station.getTravelCost());
                     comparePriceBox.getChildren().add(label);
                     comparePriceBox.getChildren().add(new Separator());;
