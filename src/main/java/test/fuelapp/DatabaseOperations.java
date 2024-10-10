@@ -76,7 +76,7 @@ public class DatabaseOperations {
     public void canCreateAccount(String username, String password) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users(username,password) VALUES(?, ? )";
+            String sql = "INSERT INTO users(username,password) VALUES(?, ?)";
 
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -99,7 +99,7 @@ public class DatabaseOperations {
     public void saveUserDetails(IUser user) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "UPDATE users SET fuel_efficiency = ?, fuel_type = ?, latitude = ?, longitude = ?, maxTravelDistance = ? WHERE username = ?";
+            String sql = "UPDATE users SET fuel_efficiency = ?, fuel_type = ?, latitude = ?, longitude = ?, max_travel_distance = ? WHERE username = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, user.getFuelEfficiency());
@@ -132,7 +132,7 @@ public class DatabaseOperations {
                 String fuelType = rs.getString("fuel_type");
                 double latitude = rs.getDouble("latitude");
                 double longitude = rs.getDouble("longitude");
-                double maxTravelDistance = rs.getDouble("maxTravelDistance");
+                double maxTravelDistance = rs.getDouble("max_travel_distance");
 
                 return new User(name, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
             }
