@@ -1,24 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.SettingsController">
-    <Label text="Fuel Efficiency" layoutX="20" layoutY="20"/>
-    <TextField fx:id="tf_fuelEfficiency" layoutX="150" layoutY="20"/>
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.SettingsController">
+    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+          prefWidth="1200.0">
+        <!-- Header -->
+        <AnchorPane prefHeight="50.0" prefWidth="1200.0" style="-fx-background-color: grey;">
+            <Label layoutX="540.0" layoutY="15.0" text="Settings"/>
+        </AnchorPane>
 
-    <Label text="Fuel Type" layoutX="20" layoutY="60"/>
-    <TextField fx:id="tf_fuelType" layoutX="150" layoutY="60"/>
+        <AnchorPane prefHeight="755.0" prefWidth="1200.0" style="-fx-background-color: #ede7e5;">
+            <Label text="Fuel Efficiency" layoutX="400.0" layoutY="100.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="tf_fuelEfficiency" layoutX="550.0" layoutY="100.0" prefWidth="200.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </TextField>
 
-    <Label text="Latitude" layoutX="20" layoutY="100"/>
-    <TextField fx:id="tf_latitude" layoutX="150" layoutY="100"/>
+            <Label text="Fuel Type" layoutX="400.0" layoutY="160.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="tf_fuelType" layoutX="550.0" layoutY="160.0" prefWidth="200.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </TextField>
 
-    <Label text="Longitude" layoutX="20" layoutY="140"/>
-    <TextField fx:id="tf_longitude" layoutX="150" layoutY="140"/>
+            <Label text="Latitude" layoutX="400.0" layoutY="220.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="tf_latitude" layoutX="550.0" layoutY="220.0" prefWidth="200.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </TextField>
 
-    <Label text="Maximum Travel Distance" layoutX="20" layoutY="180"/>
-    <TextField fx:id="tf_maxTravelDistance" layoutX="150" layoutY="180"/>
+            <Label text="Longitude" layoutX="400.0" layoutY="280.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="tf_longitude" layoutX="550.0" layoutY="280.0" prefWidth="200.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </TextField>
 
-    <Button text="Save" layoutX="150" layoutY="180" onAction="#handleSave"/>
+            <Label text="Maximum Travel Distance" layoutX="400.0" layoutY="340.0" prefWidth="120.0" wrapText="true">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="tf_maxTravelDistance" layoutX="550.0" layoutY="340.0" prefWidth="200.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </TextField>
+
+            <Button text="Save" layoutX="550.0" layoutY="400.0" prefWidth="100.0" onAction="#handleSave">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </Button>
+        </AnchorPane>
+    </VBox>
 </AnchorPane>
