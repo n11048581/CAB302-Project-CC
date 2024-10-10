@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class SQLiteLink {
-
     public static Connection Connector() {
         // Method to set database connection
         try {

@@ -1,10 +1,13 @@
 package test.fuelapp;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import test.fuelapp.sample.FuelPriceAPI;
+import test.fuelapp.sample.FuelPriceAPI.StationDetails;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +30,11 @@ public class ComparePageController {
         }
     }
 
+    private double userFuelEfficiency;
+
+    private String userLat;
+    private String userLong;
+
     @FXML
     private TextField searchBar;
 
@@ -43,14 +51,66 @@ public class ComparePageController {
     @FXML
     private RadioButton distanceRadioButton;
 
-    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI(); // Create an instance of FuelPriceAPI
+    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
+
 
     @FXML
     private void initialize() throws SQLException {
-        // Initialize the station data from FuelPriceAPI
-        // fuelPriceAPI.getStationsData();  // Populate the data
         handlePriceCompare();
+        IUser user = databaseOperations.getUserDetails(LoginController.current_user);
 
+        if (user != null) {
+            // Get lat and long from the user object
+            userLat = String.valueOf(user.getLatitude());
+            userLong = String.valueOf(user.getLongitude());
+            userFuelEfficiency = Double.parseDouble(String.valueOf(user.getFuelEfficiency()));
+        } else {
+            // Handle the case where user details are not available
+            System.err.println("User details not found.");
+
+            // Fallback values
+            userLat = "-27.823611";
+            userLong = "153.182556";
+            userFuelEfficiency = 15.0;
+        }
+        /*
+
+        Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
+            @Override
+            protected Void call() throws Exception {
+                // userLat and userLong pulled from Users db table, assigned in Settings
+                fuelPriceAPI.getStationsData(userLat, userLong, station -> {
+                    Platform.runLater(() -> updateUIWithStation(station));
+                });
+                return null;
+            }
+        };
+
+        task.setOnFailed(e -> {
+            System.err.println("Failed to fetch station data: " + task.getException().getMessage());
+        });
+
+        // Run task in separate thread
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+        */
+    }
+
+    // Update UI with each station's details, called in getStationsData()
+    private void updateUIWithStation(StationDetails station) {
+
+        double distance = StationCalculations.calculateDistance(station.getDistance());
+        double travelCost = StationCalculations.calculateTravelCost(station, userFuelEfficiency, distance);
+
+        Label label = new Label("Station: " + station.getName() +
+                " - Price: " + station.getPrice() +
+                " - Address: " + station.getAddress() +
+                " - Distance: " + distance +
+                " - Travel Cost: $" + travelCost +
+                " - Fuel Type: " + station.getFuelType());
+        comparePriceBox.getChildren().add(label);
+        comparePriceBox.getChildren().add(new Separator());
     }
 
 
@@ -66,7 +126,7 @@ public class ComparePageController {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations";
+        String query = "SELECT * FROM gas_stations ORDER BY crow_flies_to_user";
         try {
             // Execute query on entered username and password
             preparedStatement = connection.prepareStatement(query);
@@ -78,13 +138,13 @@ public class ComparePageController {
                         +"Station: " + resultSet.getString("station_name") +
                         " - Price: " + resultSet.getDouble("price") +
                         " - Address: " + resultSet.getString("station_address") +
-                        " - Fuel type: " + resultSet.getString("fuel_type"));
+                        " - Fuel type: " + resultSet.getString("fuel_type") +
+                        " - Distance: " + String.format("%.2f", Double.parseDouble(resultSet.getString("crow_flies_to_user")))  + "kms");
                 //  +" - Travel cost: " + station.getTravelCost());
                 comparePriceBox.getChildren().add(label);
                 comparePriceBox.getChildren().add(new Separator());
 
                 DatabaseOperations.crowFliesList.add(databaseOperations.getCrowFlies(Double.parseDouble(fixedLat), Double.parseDouble(fixedLong), Double.parseDouble(resultSet.getString("station_latitude")), Double.parseDouble(resultSet.getString("station_longitude"))));
-                System.out.println(DatabaseOperations.crowFliesList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,7 +212,7 @@ public class ComparePageController {
         }
     }
 
-
+    @FXML
     public void map(ActionEvent event) {
         // Go back to the landing page
         sqLiteLink.changeScene(event, "LandingPage.fxml", "Landing Page");
@@ -170,13 +230,10 @@ public class ComparePageController {
     }
 
     @FXML
-    public void handleSettings() {
+    public void handleSettings(ActionEvent event) {
         // For now, just display an alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Settings");
-        alert.setHeaderText(null);
-        alert.setContentText("Settings button clicked");
-        alert.showAndWait();
+        sqLiteLink.changeScene(event, "Settings.fxml", "Settetesttings");
+
     }
 
     @FXML
@@ -184,5 +241,4 @@ public class ComparePageController {
         // Logout and go back to the login page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
-
 }

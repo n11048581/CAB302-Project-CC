@@ -177,6 +177,53 @@ public class DatabaseOperations {
     private double rad2deg(double rad) {
             return (rad * 180.0 / Math.PI);
     }
+
+    public void saveUserDetails(IUser user) throws SQLException {
+        PreparedStatement prepStatement = null;
+        try {
+            String sql = "UPDATE users SET fuel_efficiency = ?, fuel_type = ?, latitude = ?, longitude = ?, max_travel_distance = ? WHERE username = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, user.getFuelEfficiency());
+            preparedStatement.setString(2, user.getFuelType());
+            preparedStatement.setDouble(3, user.getLatitude());
+            preparedStatement.setDouble(4, user.getLongitude());
+            preparedStatement.setDouble(5, user.getMaxTravelDistance());
+            preparedStatement.setString(6, LoginController.current_user);
+
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+        }
+    }
+
+    // Gets Settings values from DB (Users table)
+    public IUser getUserDetails(String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String name = rs.getString("username");
+                double fuelEfficiency = rs.getDouble("fuel_efficiency");
+                String fuelType = rs.getString("fuel_type");
+                double latitude = rs.getDouble("latitude");
+                double longitude = rs.getDouble("longitude");
+                double maxTravelDistance = rs.getDouble("max_travel_distance");
+
+                return new User(name, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
 
 

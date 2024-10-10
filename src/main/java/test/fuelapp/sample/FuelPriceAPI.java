@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -18,11 +19,10 @@ import test.fuelapp.DistanceMatrix;
 public class FuelPriceAPI {
     private static final String BASE_API_URL = "https://fppdirectapi-prod.fuelpricesqld.com.au";
     private static final String TOKEN = "5552f2b5-d71d-454f-909d-c0aefa2057c4";
-    private static final double userFuelEfficiency = 15.0;
     private Map<String, StationDetails> stationsMap;
 
-    // New public method to be called from other files
-    public void getStationsData() {
+
+    public void getStationsData(String fixedLat, String fixedLong, Consumer<StationDetails> stationCallback) {
         stationsMap = new HashMap<>();
         DatabaseOperations databaseOperations = new DatabaseOperations();
         try {
@@ -35,9 +35,6 @@ public class FuelPriceAPI {
             // Update stationsMap with site prices
             getSitesPrices(stationsMap, fuelTypesMap);
 
-            String fixedLat = "-27.823611";
-            String fixedLong = "153.182556";
-
             DistanceMatrix distanceMatrix = new DistanceMatrix();
 
             // Variable to track primary keys in database and match with api call
@@ -48,36 +45,16 @@ public class FuelPriceAPI {
                 // Only print stations that have a real fuel type and price
                 if (!station.fuelType.equals("N/A") && !station.price.equals("N/A")) {
                     try {
-                        // Get distance between user and station (Google Distance Matrix)
+                        // Get and set distance between user and station (Google Distance Matrix)
                         String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
-
-
-                        double distanceRawValue = Double.parseDouble(distance.replace(" km", ""));
-
-                        // Calculate fuel required for the trip in liters
-                        double fuelRequired = (distanceRawValue / 100) * userFuelEfficiency;
-
-                        // Calculate the cost of the trip
-                        double pricePerLiter = Double.parseDouble(station.price) / 1000.0; // Convert price to dollars
-                        double travelCost = fuelRequired * pricePerLiter;
-                        double roundedTravelCost = Double.parseDouble(String.format("%.2f", travelCost));
-                        station.setTravelCost(roundedTravelCost);
-
                         station.setDistance(distance);
 
                         // Update all data in the database with all data from API
-                        databaseOperations.updateStationData(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
+                        //databaseOperations.updateStationData(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
                         // Update only the price data in the database with data from API
-                        databaseOperations.updatePriceData(Double.valueOf(station.price), DatabaseIdCounter);
+                        //databaseOperations.updatePriceData(Double.valueOf(station.price), DatabaseIdCounter);
 
-                        // Print station details
-                        System.out.println("Station Name: " + station.name + ", Address: " + station.address +
-                                ", Fuel Type: " + station.fuelType + ", Price: " + station.price +
-                                ", Latitude: " + station.latitude + ", Longitude: " + station.longitude +
-                                ", Distance: " + station.getDistance() +
-                                ", Estimated Travel Cost: $" + roundedTravelCost);
-
-                        DatabaseIdCounter = DatabaseIdCounter + 1;
+                        //DatabaseIdCounter = DatabaseIdCounter + 1;
 
                         // READ IF YOU THINK THE API ISN'T WORKING RIGHT
                         // Demo for purpose of testing, delete later
@@ -87,9 +64,9 @@ public class FuelPriceAPI {
                         }
                         */
 
+                        stationCallback.accept(station); // Calls UI updating function
 
                     } catch (Exception e) {
-                        //e.printStackTrace();
                         System.err.println("Error calculating distance for station: " + station.name);
                     }
                 }
@@ -103,12 +80,6 @@ public class FuelPriceAPI {
     public Map<String, StationDetails> getStationsMap() {
         return stationsMap;
     }
-
-    public static void main(String[] args) {
-        FuelPriceAPI api = new FuelPriceAPI();
-        api.getStationsData();
-    }
-
 
     public static Map<String, String> getFuelTypes(HttpURLConnection connection) throws Exception {
         Map<String, String> fuelTypesMap = new HashMap<>();

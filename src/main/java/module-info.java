@@ -5,8 +5,10 @@ module test.fuelapp {
     requires org.xerial.sqlitejdbc;
     requires java.desktop;
     requires jdk.jdi;
-    requires org.slf4j;
     requires javafx.web;
+    requires com.gluonhq.attach.util;
+    requires com.gluonhq.maps;
+    requires org.slf4j;
     requires com.google.gson;
 
 
@@ -15,3 +17,4 @@ module test.fuelapp {
     exports test.fuelapp.sample;
     opens test.fuelapp.sample to javafx.fxml;
 }
+

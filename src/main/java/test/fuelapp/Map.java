@@ -1,34 +1,71 @@
 package test.fuelapp;
 
+import com.gluonhq.maps.MapLayer;
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import test.fuelapp.sample.StationDetails;
+
+import java.util.List;
+
+import static test.fuelapp.sample.SampleData.getSampleData;
+
 public class Map {
-    public String getMapHTML() {
-        return "<!DOCTYPE html>" +
-                "<html>" +
-                "  <head>" +
-                "    <meta charset=\"UTF-8\">" +
-                "    <title>Google Maps API Map</title>" +
-                "    <style>" +
-                "      #map {" +
-                "        width: 100%;" +
-                "        height: 100%;" +
-                "        border: 1px solid black;" +
-                "      }" +
-                "    </style>" +
-                "  </head>" +
-                "  <body>" +
-                "    <div id=\"map\"></div>" +
-                "    <script>" +
-                "      var options = {" +
-                "           zoom: 12, " +
-                "           center: { lat: -27.470125, lng: 153.021072}" +
-                "      }" +
-                "      function initMap() {" +
-                "        var map = new google.maps.Map(document.getElementById('map'), options);" +
-                "      }" +
-                "    </script>" +
-                "    <script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyA4Eeiogc9Sqx4-w3tOPkQeEN16JAYl9Vk&callback=initMap\"></script>" +
-                "  </body>" +
-                "</html>";
+    //honestly it would probably be best if i movied all these map systems to its own class, like Map
+    /**
+     * Creates a map view
+     * @return a map of the world
+     */
+    public static MapView createMapView() {
+        MapView mapView = new MapView();
+        //these values should be adjustable later - such as for screen size and user preferences
+        mapView.setPrefSize(1600,1200);
+        mapView.setZoom(15);
+        mapView.setCenter(-27.470125, 153.021072);
+        //probably put this in a conditional of some sorts? retrieve from database probably
+        mapView.addLayer(createMarkerLayer(getSampleData()));
+        return mapView;
+    }
+
+
+    /**
+     * Takes in a list of station details and returns a map layer containing markers placed at the locations of those stations
+     * @param stationDetailsList a list containing station details
+     * @return MapLayer
+     */
+    public static MapLayer createMarkerLayer(List<StationDetails> stationDetailsList) {
+        MapMarker markers = new MapMarker();
+        for (StationDetails stationDetails : stationDetailsList) {
+            //issue is, the api returns a map. going to need a conversion process
+            markers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
+        }
+        return markers;
+    }
+
+    /**
+     * Retrieves Station Details array string coordinates into MapPoint values.
+     * @param stationDetails station details
+     * @return MapPoint
+     */
+    public static MapPoint loadCoordinates(StationDetails stationDetails) {
+        double latitude = Double.parseDouble(stationDetails.getLatitude());
+        double longitude = Double.parseDouble(stationDetails.getLongitude());
+        return new MapPoint(latitude, longitude);
+    }
+
+    public static Group createMapIcon(StationDetails stationDetails) {
+        String stationName = stationDetails.getName();
+        Group icon = new Group();
+        Text name = new Text(10,10,stationName);
+        name.setFill(Color.WHITE);
+        name.setStroke(Color.BLACK);
+        name.setStrokeWidth(0.5);
+        icon.getChildren().add(name);
+        icon.getChildren().add(new Circle(7,Color.RED));
+        return icon;
     }
 
 }

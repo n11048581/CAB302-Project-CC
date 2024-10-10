@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+    static String current_user;
     public DatabaseOperations databaseOperations = new DatabaseOperations();
     public SQLiteLink sqLiteLink = new SQLiteLink();
 
@@ -41,6 +42,7 @@ public class LoginController implements Initializable {
             // If entered login details match an entry in the database, log user in
             else if (databaseOperations.isValidLogin(tf_username.getText(), pf_password.getText())){
                 isConnectedUsername.setText("");
+                current_user = tf_username.getText();
                 sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
             }
             // Else display error message
