@@ -118,14 +118,17 @@ public class ComparePageController {
 
 
             while (resultSet.next()) {
-                if (i < 10) {
+                // If statement used to cap amount of results showing distance, useful when calling API
+                if (i < 2000) {
                     Label label = new Label("                       " +
                             "Station: " + resultSet.getString("station_name") +
                             " - Price: " + resultSet.getDouble("price") +
                             " - Address: " + resultSet.getString("station_address") +
                             " - Fuel type: " + resultSet.getString("fuel_type") +
-                            " - Distance: " + distanceMatrix.getDistance(fixedLat, fixedLong, resultSet.getString("station_latitude"), resultSet.getString("station_longitude")));
-                    //  +" - Travel cost: " + station.getTravelCost());
+                            " - Distance: " + String.format("%.2f", Double.parseDouble(resultSet.getString("crow_flies_to_user")))  + "kms");
+
+                            //" - Distance: " + distanceMatrix.getDistance(fixedLat, fixedLong, resultSet.getString("station_latitude"), resultSet.getString("station_longitude")));
+                            //  +" - Travel cost: " + station.getTravelCost());
                     comparePriceBox.getChildren().add(label);
                     comparePriceBox.getChildren().add(new Separator());;
                     i = i + 1;
