@@ -11,7 +11,6 @@ import test.fuelapp.sample.StationDetails;
 
 import java.util.List;
 
-import test.fuelapp.sample.FuelPriceAPI;
 import static test.fuelapp.sample.SampleData.getSampleData;
 
 public class Map {
