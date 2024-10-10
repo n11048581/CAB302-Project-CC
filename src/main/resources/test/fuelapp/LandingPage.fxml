@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.web.WebView?>
 
 <VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.LandingPageController">
 
@@ -13,7 +12,7 @@
 
     <!-- Google Maps API Map -->
 
-    <VBox fx:id="gluonMap"/>
+    <VBox fx:id="gluonMap" spacing="10" />
 
     <!-- Buttons -->
     <HBox alignment="BOTTOM_LEFT" prefWidth="1200.0" spacing="10">
@@ -22,7 +21,7 @@
         <Button onAction="#handleSettings" text="Settings" />
         <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
       <padding>
-         <Insets left="400.0" />
+         <Insets left="400.0" bottom="25.0" top="25.0"/>
       </padding>
     </HBox>
 
