@@ -20,9 +20,6 @@ public class Map {
      * Creates a map view
      * @return a map of the world
      */
-
-    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
-
     public static MapView createMapView() {
         MapView mapView = new MapView();
         //these values should be adjustable later - such as for screen size and user preferences
@@ -36,7 +33,7 @@ public class Map {
 
     /**
      * Takes in a list of station details and returns a map layer containing markers placed at the locations of those stations
-     * @param stationDetailsList
+     * @param stationDetailsList a list containing station details
      * @return MapLayer
      */
     public static MapLayer createMarkerLayer(List<StationDetails> stationDetailsList) {
@@ -50,7 +47,7 @@ public class Map {
 
     /**
      * Retrieves Station Details array string coordinates into MapPoint values.
-     * @param stationDetails
+     * @param stationDetails station details
      * @return MapPoint
      */
     public static MapPoint loadCoordinates(StationDetails stationDetails) {
