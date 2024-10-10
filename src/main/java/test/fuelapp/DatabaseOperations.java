@@ -2,10 +2,10 @@ package test.fuelapp;
 
 import java.sql.*;
 
-public class LoginModel {
+public class DatabaseOperations {
     // Initialise SQLite database connection
     Connection connection;
-    public LoginModel () {
+    public DatabaseOperations() {
         connection = SQLiteLink.Connector();
         if (connection == null) {
             System.out.println("Database Connection Unsuccessful");
@@ -93,9 +93,38 @@ public class LoginModel {
             if (prepStatement != null) {
                 prepStatement.close();
             }
-
-
         }
+    }
+
+    public void saveUserDetails(IUser user) {
+        PreparedStatement prepStatement = null;
+        try {
+            String sql = "INSERT INTO users(name, fuel_efficiency, fuel_type, latitude, longitude) VALUES(?, ?, ?, ?, ?) WHERE username = ?";
+
+            // Initialise prepared statement and replace question marks in SQL string with data entered by user
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, /* name */);
+            preparedStatement.setString(2, /* fuel_efficiency */);
+            preparedStatement.setString(3, /* fuel_type */);
+            preparedStatement.setDouble(4, /* latitude */);
+            preparedStatement.setDouble(5, /* longitude */);
+            preparedStatement.setString(6, LoginController.current_user);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close prepared statement
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+        }
+
+    /*
+    public IUser getUserDetails (String username) {
+
+    }
+    */
 
     }
 }

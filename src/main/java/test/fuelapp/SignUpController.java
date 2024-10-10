@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
     public SQLiteLink sqLiteLink = new SQLiteLink();
-    public LoginModel loginModel = new LoginModel();
+    public DatabaseOperations databaseOperations = new DatabaseOperations();
 
     @FXML
     private TextField tf_username;
@@ -53,7 +53,7 @@ public class SignUpController implements Initializable {
         try {
             String passwordRegex = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
 
-            if (loginModel.isExistingAccount(tf_username.getText())) {
+            if (databaseOperations.isExistingAccount(tf_username.getText())) {
                 usernameTaken.setText("Username taken");
                 passwordNotMatch.setText("");
                 passwordNotSecure.setText("");
@@ -88,7 +88,7 @@ public class SignUpController implements Initializable {
                 IUser newUser = new User(name, fuelEfficiency, fuelType, latitude, longitude);
 
                 // Save user data
-                loginModel.canCreateAccount(tf_username.getText(), pf_password.getText());
+                databaseOperations.canCreateAccount(tf_username.getText(), pf_password.getText());
 
 
                 /* sqLiteLink.saveUserToDatabase(newUser); */ //saveUserToDatabase METHOD NEEDS IMPLEMENTING IN SQLiteLink CLASS//
