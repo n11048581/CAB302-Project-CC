@@ -15,9 +15,10 @@ import java.util.stream.Collectors;
 
 public class ComparePageController {
 
-    private static final double userFuelEfficiency = 15.0;
-    private static final String fixedLat = "-27.823611";
-    private static final String fixedLong = "153.182556";
+    private double userFuelEfficiency;
+
+    private String userLat;
+    private String userLong;
 
     @FXML
     private TextField searchBar;
@@ -35,15 +36,35 @@ public class ComparePageController {
     @FXML
     private RadioButton distanceRadioButton;
 
-    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI(); // Create an instance of FuelPriceAPI
+    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
+    private DatabaseOperations dbOperations = new DatabaseOperations();
+
 
     @FXML
     private void initialize() {
+        IUser user = dbOperations.getUserDetails(LoginController.current_user);
+
+        if (user != null) {
+            // Get lat and long from the user object
+            userLat = String.valueOf(user.getLatitude());
+            userLong = String.valueOf(user.getLongitude());
+            userFuelEfficiency = Double.parseDouble(String.valueOf(user.getFuelEfficiency()));
+        } else {
+            // Handle the case where user details are not available
+            System.err.println("User details not found.");
+
+            // Fallback values
+            userLat = "-27.823611";
+            userLong = "153.182556";
+            userFuelEfficiency = 15.0;
+        }
+
         Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
             @Override
             protected Void call() throws Exception {
-                fuelPriceAPI.getStationsData(fixedLat, fixedLong,station -> {
-                    Platform.runLater(() -> updateUIWithStation(station)); // UI updates on JavaFX thread
+                // userLat and userLong pulled from Users db table, assigned in Settings
+                fuelPriceAPI.getStationsData(userLat, userLong, station -> {
+                    Platform.runLater(() -> updateUIWithStation(station));
                 });
                 return null;
             }
