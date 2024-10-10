@@ -66,7 +66,7 @@ public class LandingPageController {
 
     @FXML
     public void handleSettings(ActionEvent event) {
-        showAlert("Settings button clicked", "This would take you to the settings page.");
+        sqLiteLink.changeScene(event, "Settings.fxml", "Settings");
     }
 
     public void LogOut (ActionEvent event) {

@@ -99,34 +99,50 @@ public class DatabaseOperations {
     public void saveUserDetails(IUser user) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users(fuel_efficiency, fuel_type, latitude, longitude, maxTravelDistance) VALUES(?, ?, ?, ?, ?) WHERE username = ?";
+            String sql = "UPDATE users SET fuel_efficiency = ?, fuel_type = ?, latitude = ?, longitude = ?, maxTravelDistance = ? WHERE username = ?";
 
-            // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
             preparedStatement.setDouble(1, user.getFuelEfficiency());
             preparedStatement.setString(2, user.getFuelType());
             preparedStatement.setDouble(3, user.getLatitude());
             preparedStatement.setDouble(4, user.getLongitude());
             preparedStatement.setDouble(5, user.getMaxTravelDistance());
             preparedStatement.setString(6, LoginController.current_user);
+
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // Close prepared statement
             if (prepStatement != null) {
                 prepStatement.close();
             }
         }
-
-    /*
-    public IUser getUserDetails (String username) {
-
     }
-    */
 
+
+    public IUser getUserDetails(String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String name = rs.getString("username");
+                double fuelEfficiency = rs.getDouble("fuel_efficiency");
+                String fuelType = rs.getString("fuel_type");
+                double latitude = rs.getDouble("latitude");
+                double longitude = rs.getDouble("longitude");
+                double maxTravelDistance = rs.getDouble("maxTravelDistance");
+
+                return new User(name, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
+
 }
 
 

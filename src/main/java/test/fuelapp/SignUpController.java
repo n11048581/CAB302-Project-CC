@@ -83,7 +83,7 @@ public class SignUpController implements Initializable {
 
                 String name = tf_name.getText();
                 double fuelEfficiency = Double.parseDouble(tf_fuelEfficiency.getText());
-                String fuelType = tf_fuelType.getText(); // Splits on commas to handle list format
+                String fuelType = tf_fuelType.getText();
                 double latitude = Double.parseDouble(tf_latitude.getText());
                 double longitude = Double.parseDouble(tf_longitude.getText());
                 double maxTravelDistance = Double.parseDouble(tf_maxTravelDistance.getText());

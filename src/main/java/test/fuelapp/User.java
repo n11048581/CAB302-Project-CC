@@ -8,7 +8,6 @@ public class User implements IUser {
     private double longitude;
     private double maxTravelDistance;
 
-    // Constructor
     public User(String name, double fuelEfficiency, String fuelType, double latitude, double longitude, double maxTravelDistance) {
         this.name = name;
         this.fuelEfficiency = fuelEfficiency;
@@ -18,10 +17,14 @@ public class User implements IUser {
         this.maxTravelDistance = maxTravelDistance;
     }
 
-    // Implementing IUser methods
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -34,10 +37,6 @@ public class User implements IUser {
         this.maxTravelDistance =  maxTravelDistance;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public double getFuelEfficiency() {
