@@ -64,6 +64,7 @@ public class ComparePageController {
             userLat = String.valueOf(user.getLatitude());
             userLong = String.valueOf(user.getLongitude());
             userFuelEfficiency = Double.parseDouble(String.valueOf(user.getFuelEfficiency()));
+            System.out.println("Received Coordinates: " + userLat + ", " + userLong); // Debugging statement
         } else {
             // Handle the case where user details are not available
             System.err.println("User details not found.");
@@ -240,5 +241,10 @@ public class ComparePageController {
     public void LogOut(ActionEvent event) {
         // Logout and go back to the login page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
+    }
+
+    @FXML
+    public void onEnter(ActionEvent event) throws SQLException {
+        handleDistanceSearch();
     }
 }

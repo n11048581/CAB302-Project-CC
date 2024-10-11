@@ -23,6 +23,11 @@ public class LoginController implements Initializable {
     @FXML
     private PasswordField pf_password;
 
+    @FXML
+    public void onEnter(ActionEvent event){
+        Login(event);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { // Check to test if database connection is working, not needed for final submission
     //  if (loginModel.isDbConnected()) {

@@ -14,7 +14,7 @@
     <Label style="-fx-font-size: 24;" text="Price Compare" />
 
     <HBox alignment="TOP_CENTER" spacing="10">
-        <TextField fx:id="searchBar" prefWidth="200.0" />
+        <TextField fx:id="searchBar" prefWidth="200.0" onAction="#onEnter"/>
         <Button onAction="#handleDistanceSearch" text="Search" />
     </HBox>
 
