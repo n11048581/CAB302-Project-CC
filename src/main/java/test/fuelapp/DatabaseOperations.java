@@ -74,7 +74,7 @@ public class DatabaseOperations {
         }
     }
 
-    public void canCreateAccount(String username, String password) throws SQLException {
+    public void canCreateAccount(ILogin login) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
             String sql = "INSERT INTO users (username,password) VALUES(?, ? )";
@@ -82,8 +82,8 @@ public class DatabaseOperations {
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, login.getUsername());
+            preparedStatement.setString(2, login.getPassword());
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
