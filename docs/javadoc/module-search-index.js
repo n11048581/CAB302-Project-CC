@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"test.fuelapp"}];updateSearchResults();
