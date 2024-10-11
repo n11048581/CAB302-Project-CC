@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx/fxml/1" fx:controller="test.fuelapp.EfficiencyCalculatorController">
+
+    <Label style="-fx-font-size: 24;" text="Fuel Efficiency Calculator" />
+
+    <!-- Compare Price & Sort buttons -->
+    <VBox alignment="CENTER" fillWidth="true" prefHeight="600.0" prefWidth="800.0" spacing="15">
+        <ScrollPane fx:id="efficiencyCalculatorScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="550.0" prefWidth="780.0" VBox.vgrow="ALWAYS">
+            <VBox fx:id="efficiencyCalculatorBox" spacing="15">
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <!-- Buttons -->
+    <HBox alignment="CENTER" spacing="10">
+        <Button onAction="#map" text="Map" />
+        <Button onAction="#handlePriceCompare" text="Price Compare" />
+        <Button onAction="#handleSettings" text="Settings" />
+        <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
+    </HBox>
+
+</VBox>

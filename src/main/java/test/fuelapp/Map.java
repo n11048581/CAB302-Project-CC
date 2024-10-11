@@ -21,7 +21,13 @@ import static test.fuelapp.sample.SampleData.getSampleData;
 
 public class Map {
 
+
     private static final String API_KEY = "AIzaSyA4Eeiogc9Sqx4-w3tOPkQeEN16JAYl9Vk";
+
+    // Class variables to store user's latitude and longitude
+    private static double userLatitude;
+    private static double userLongitude;
+
     //honestly it would probably be best if i movied all these map systems to its own class, like Map
     /**
      * Creates a map view
@@ -83,6 +89,10 @@ public class Map {
                 double latitude = data.getAsJsonObject("location").get("lat").getAsDouble();
                 double longitude = data.getAsJsonObject("location").get("lng").getAsDouble();
 
+                // Save user's location in the class variables
+                userLatitude = latitude;
+                userLongitude = longitude;
+
                 // Update the map's center to the user's location
                 MapPoint userLocation = new MapPoint(latitude, longitude);
                 mapView.setCenter(latitude, longitude); // Move map center to user's location
@@ -115,6 +125,13 @@ public class Map {
         mapView.addLayer(marker);
     }
 
+    public static double getUserLatitude() {
+        return userLatitude;
+    }
+
+    public static double getUserLongitude() {
+        return userLongitude;
+    }
     /**
      *
      * Takes in a list of station details and returns a map layer containing markers placed at the locations of those stations

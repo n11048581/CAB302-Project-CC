@@ -13,4 +13,10 @@ public class StationCalculations {
     public static double calculateDistance(String distanceString) {
         return Double.parseDouble(distanceString.replace(" km", ""));
     }
+
+    public static double calculateTotalCost(StationDetails station, double fuelEfficiency, double distance) {
+        double travelCost = calculateTravelCost(station, fuelEfficiency, distance);
+        double refuelingCost = fuelEfficiency * (Double.parseDouble(station.getPrice()) / 1000.0);
+        return Double.parseDouble(String.format("%.2f", travelCost + refuelingCost));
+    }
 }
