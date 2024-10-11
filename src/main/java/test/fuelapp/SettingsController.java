@@ -53,6 +53,8 @@ public class SettingsController {
 
             // Save detials to database
             dbOperations.saveUserDetails(updatedUser);
+            // return to landing page
+            BackToLanding(event);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input: " + e.getMessage());
         } catch (SQLException e) {

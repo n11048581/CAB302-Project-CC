@@ -84,4 +84,9 @@ public class SignUpController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void onEnter(ActionEvent event) {
+        CreateAccount(event);
+    }
 }
