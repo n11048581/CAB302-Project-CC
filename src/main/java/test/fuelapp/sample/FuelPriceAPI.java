@@ -12,8 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import test.fuelapp.DatabaseOperations;
-import test.fuelapp.DistanceMatrix;
+import test.fuelapp.*;
 
 
 public class FuelPriceAPI {
@@ -49,8 +48,11 @@ public class FuelPriceAPI {
                         String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
                         station.setDistance(distance);
 
-                        // Update all data in the database with all data from API
-                        //databaseOperations.updateStationData(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
+                        /* Update all data in the database with all data from API
+                        IApiUpdate newApiUpdate = new ApiUpdateImplementation(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
+                        databaseOperations.updateStationData(newApiUpdate);
+                        */
+
                         // Update only the price data in the database with data from API
                         //databaseOperations.updatePriceData(Double.valueOf(station.price), DatabaseIdCounter);
 
