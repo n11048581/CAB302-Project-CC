@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+
 public class LandingPageController {
     SQLiteLink sqLiteLink = new SQLiteLink();
 

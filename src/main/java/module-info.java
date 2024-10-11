@@ -7,6 +7,7 @@ module test.fuelapp {
     requires jdk.jdi;
     requires javafx.web;
     requires com.gluonhq.attach.util;
+    requires com.gluonhq.attach.position;
     requires com.gluonhq.maps;
     requires org.slf4j;
     requires com.google.gson;

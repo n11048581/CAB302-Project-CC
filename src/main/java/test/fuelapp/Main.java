@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         try {
             // Set initial scene as the login page
-            FXMLLoader opening = new FXMLLoader(Main.class.getResource("LogInPage.fxml"));
+            FXMLLoader opening = new FXMLLoader(Main.class.getResource("LoginPage.fxml"));
             Scene scene = new Scene(opening.load());
             stage.setTitle("Log In");
             stage.setScene(scene);
