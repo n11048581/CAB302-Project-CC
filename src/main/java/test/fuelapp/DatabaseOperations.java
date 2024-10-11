@@ -74,7 +74,7 @@ public class DatabaseOperations {
         }
     }
 
-    public void canCreateAccount(String username, String password) throws SQLException {
+    public void canCreateAccount(ILogin login) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
             String sql = "INSERT INTO users (username,password) VALUES(?, ? )";
@@ -82,8 +82,8 @@ public class DatabaseOperations {
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, login.getUsername());
+            preparedStatement.setString(2, login.getPassword());
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,19 +95,19 @@ public class DatabaseOperations {
         }
     }
 
-    public void updateStationData(int id, String station_name, String station_address, String fuel_type, Double price, String station_latitude, String station_longitude) throws SQLException {
+    public void updateStationData(IApiUpdate apiUpdate) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
             String sql = "REPLACE INTO gas_stations (id, station_name, station_address, fuel_type, price, station_latitude, station_longitude) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, station_name);
-            preparedStatement.setString(3, station_address);
-            preparedStatement.setString(4, fuel_type);
-            preparedStatement.setDouble(5, price);
-            preparedStatement.setString(6, station_latitude);
-            preparedStatement.setString(7, station_longitude);
+            preparedStatement.setInt(1, apiUpdate.getId());
+            preparedStatement.setString(2, apiUpdate.getStationName());
+            preparedStatement.setString(3, apiUpdate.getStationAddress());
+            preparedStatement.setString(4, apiUpdate.getFuelType());
+            preparedStatement.setDouble(5, apiUpdate.getPrice());
+            preparedStatement.setString(6, apiUpdate.getStationLatitude());
+            preparedStatement.setString(7, apiUpdate.getStationLongitude());
 
             preparedStatement.executeUpdate();
         } catch (Exception e) {

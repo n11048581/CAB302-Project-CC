@@ -73,8 +73,9 @@ public class SignUpController implements Initializable {
                 passwordNotMatch.setText("Passwords do not match");
             }
             else {
+                ILogin newUser = new LoginImplementation(tf_username.getText(), pf_password.getText());
                 // Create new record in database for user account
-                databaseOperations.canCreateAccount(tf_username.getText(), pf_password.getText());
+                databaseOperations.canCreateAccount(newUser);
 
                 // Change scene to home screen
                 sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
