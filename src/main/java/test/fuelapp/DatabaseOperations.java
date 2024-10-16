@@ -224,6 +224,21 @@ public class DatabaseOperations {
         return null;
     }
 
+    public void generateCrowFliesList(String userLatitude, String userLongitude) {
+        String query = "SELECT * FROM gas_stations";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                DatabaseOperations.crowFliesList.add(getCrowFlies(Double.parseDouble(userLatitude), Double.parseDouble(userLongitude), Double.parseDouble(resultSet.getString("station_latitude")), Double.parseDouble(resultSet.getString("station_longitude"))));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 

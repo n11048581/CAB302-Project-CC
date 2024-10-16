@@ -5,8 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
+import javafx.concurrent.Task;
 
-public class SettingsController {
+public class SettingsController  extends Thread {
+    DatabaseOperations databaseOperations = new DatabaseOperations();
 
     @FXML
     private TextField tf_fuelEfficiency;
@@ -51,10 +53,31 @@ public class SettingsController {
 
             IUser updatedUser = new User(currentUsername, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
 
-            // Save detials to database
+            // Save details to database
             dbOperations.saveUserDetails(updatedUser);
+
+            Task<Void> updateCrowDatabase = new Task<Void>() {     // Background thread to fetch API data progressively
+                @Override
+                public Void call() throws Exception {
+                    // userLat and userLong pulled from Users db table, assigned in Settings
+                    DatabaseOperations.crowFliesList.clear();
+                    databaseOperations.generateCrowFliesList(tf_latitude.getText(), tf_longitude.getText());
+                    databaseOperations.updateCrowFlies();
+                    return null;
+                }
+            };
+
+            updateCrowDatabase.setOnFailed(e -> {
+                System.err.println("Couldn't update database" + updateCrowDatabase.getException().getMessage());
+            });
+
+            // Run task in separate thread
+            Thread thread = new Thread(updateCrowDatabase);
+            thread.setDaemon(true);
+            thread.start();
+
             // return to landing page
-            BackToLanding(event);
+            backToLanding(event);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input: " + e.getMessage());
         } catch (SQLException e) {
@@ -62,7 +85,7 @@ public class SettingsController {
         }
     }
 
-    public void BackToLanding(ActionEvent event) {
+    public void backToLanding(ActionEvent event) {
         // Redirect to log in page
         SQLiteLink sqLiteLink = new SQLiteLink();
         sqLiteLink.changeScene(event, "LandingPage.fxml", "Landing Page");

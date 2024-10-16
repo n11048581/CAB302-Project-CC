@@ -19,9 +19,6 @@ public class ComparePageController {
     DistanceMatrix distanceMatrix = new DistanceMatrix();
     DatabaseOperations databaseOperations = new DatabaseOperations();
 
-    String fixedLat = "-27.722947504112632";
-    String fixedLong = "153.21388361118096";
-
     public ComparePageController() {
         connection = SQLiteLink.Connector();
         if (connection == null) {
@@ -74,8 +71,8 @@ public class ComparePageController {
             userLong = "153.182556";
             userFuelEfficiency = 15.0;
         }
-        /*
 
+        /*
         Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
             @Override
             protected Void call() throws Exception {
@@ -95,7 +92,7 @@ public class ComparePageController {
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
-        */
+*/
     }
 
     // Update UI with each station's details, called in getStationsData()
@@ -122,7 +119,6 @@ public class ComparePageController {
         comparePriceBox.getChildren().add(new Separator());
 
         // Clear list that tracks crow-flies distances
-        DatabaseOperations.crowFliesList.clear();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -145,12 +141,11 @@ public class ComparePageController {
                 comparePriceBox.getChildren().add(label);
                 comparePriceBox.getChildren().add(new Separator());
 
-                DatabaseOperations.crowFliesList.add(databaseOperations.getCrowFlies(Double.parseDouble(fixedLat), Double.parseDouble(fixedLong), Double.parseDouble(resultSet.getString("station_latitude")), Double.parseDouble(resultSet.getString("station_longitude"))));
+                //DatabaseOperations.crowFliesList.add(databaseOperations.getCrowFlies(Double.parseDouble(userLat), Double.parseDouble(userLong), Double.parseDouble(resultSet.getString("station_latitude")), Double.parseDouble(resultSet.getString("station_longitude"))));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        databaseOperations.updateCrowFlies();
     }
 
     @FXML
