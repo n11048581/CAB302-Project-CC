@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -18,19 +20,19 @@
                     <Label layoutX="581.0" layoutY="15.0" text="Header" />
                 </children>
             </AnchorPane>
-            <AnchorPane prefHeight="755.0" prefWidth="1200.0" style="-fx-background-color: #ede7e5;">
+            <AnchorPane id="loginPartOne" prefHeight="755.0" prefWidth="1200.0" style="-fx-background-color: #ede7e5;">
                 <children>
                     <TextField fx:id="tf_username" layoutX="505.0" layoutY="253.0" prefHeight="32.0" prefWidth="191.0" promptText="Username">
                   <font>
                      <Font size="14.0" />
                   </font>
                </TextField>
-               <PasswordField fx:id="pf_password" layoutX="505.0" layoutY="299.0" prefHeight="32.0" prefWidth="191.0" promptText="Password" onAction="#onEnter">
+               <PasswordField fx:id="pf_password" layoutX="505.0" layoutY="299.0" onAction="#onEnter" prefHeight="32.0" prefWidth="191.0" promptText="Password">
                   <font>
                      <Font size="14.0" />
                   </font>
                </PasswordField>
-                    <Label layoutX="477.0" layoutY="102.0" text="Welcome!">
+                    <Label fx:id="label_welcome" layoutX="477.0" layoutY="102.0" text="Welcome!">
                         <font>
                             <Font name="Arial Rounded MT Bold" size="51.0" />
                         </font>
@@ -40,7 +42,7 @@
                             <Font size="19.0" />
                         </font>
                     </Button>
-                    <Label layoutX="505.0" layoutY="351.0" text="Not a user?">
+                    <Label fx:id="label_not_user" layoutX="505.0" layoutY="351.0" text="Not a user?">
                         <font>
                             <Font name="Arial Rounded MT Bold" size="12.0" />
                         </font>
@@ -51,6 +53,17 @@
                         </font>
                     </Button>
                     <Label fx:id="isConnectedUsername" layoutX="716.0" layoutY="253.0" prefHeight="32.0" prefWidth="392.0" textFill="RED" />
+               <ImageView fitHeight="105.0" fitWidth="140.0" layoutX="337.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" />
+               <Label fx:id="label_loading" layoutX="394.0" layoutY="242.0" text="Fetching User Data..." visible="false">
+                  <font>
+                     <Font name="Arial Rounded MT Bold" size="40.0" />
+                  </font>
+               </Label>
+               <ImageView fx:id="loading_gif" fitHeight="105.0" fitWidth="109.0" layoutX="547.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <image>
+                     <Image url="@loading.gif" />
+                  </image>
+               </ImageView>
                 </children>
             </AnchorPane>
       </children>

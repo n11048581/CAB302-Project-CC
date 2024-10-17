@@ -1,7 +1,5 @@
 package test.fuelapp;
 
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -16,8 +14,9 @@ import java.sql.SQLException;
 
 public class ComparePageController {
     Connection connection;
-    DistanceMatrix distanceMatrix = new DistanceMatrix();
     DatabaseOperations databaseOperations = new DatabaseOperations();
+    private SQLiteLink sqLiteLink = new SQLiteLink();
+
 
     public ComparePageController() {
         connection = SQLiteLink.Connector();
@@ -29,9 +28,6 @@ public class ComparePageController {
 
     private double userFuelEfficiency;
 
-    private String userLat;
-    private String userLong;
-
     @FXML
     private TextField searchBar;
 
@@ -41,7 +37,6 @@ public class ComparePageController {
     @FXML
     private VBox comparePriceBox;
 
-    private SQLiteLink sqLiteLink = new SQLiteLink();
 
     @FXML
     private RadioButton priceRadioButton;
@@ -56,6 +51,8 @@ public class ComparePageController {
         handlePriceCompare();
         IUser user = databaseOperations.getUserDetails(LoginController.current_user);
 
+        String userLong;
+        String userLat;
         if (user != null) {
             // Get lat and long from the user object
             userLat = String.valueOf(user.getLatitude());

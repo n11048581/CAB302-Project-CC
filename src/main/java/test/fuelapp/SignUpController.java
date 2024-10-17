@@ -29,8 +29,6 @@ public class SignUpController implements Initializable {
     @FXML
     private Label passwordNotMatch;
 
-    private DatabaseOperations dbOperations = new DatabaseOperations();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

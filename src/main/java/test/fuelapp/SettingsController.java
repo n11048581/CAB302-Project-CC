@@ -87,6 +87,6 @@ public class SettingsController  extends Thread {
     public void backToLanding(ActionEvent event) {
         // Redirect to log in page
         SQLiteLink sqLiteLink = new SQLiteLink();
-        sqLiteLink.changeScene(event, "LandingPage.fxml", "Landing Page");
+        sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
     }
 }
