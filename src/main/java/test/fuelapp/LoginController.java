@@ -1,5 +1,6 @@
 package test.fuelapp;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,7 +25,7 @@ public class LoginController implements Initializable {
     private PasswordField pf_password;
 
     @FXML
-    public void onEnter(ActionEvent event){
+    public void onEnter(ActionEvent event) throws SQLException{
         Login(event);
     }
 
@@ -38,7 +39,7 @@ public class LoginController implements Initializable {
     //  }
     }
 
-    public void Login (ActionEvent event) {
+    public void Login (ActionEvent event) throws SQLException{
         try {
             // Ensure text fields aren't empty
             if (tf_username.getText().isEmpty() || pf_password.getText().isEmpty()) {
@@ -48,6 +49,29 @@ public class LoginController implements Initializable {
             else if (databaseOperations.isValidLogin(tf_username.getText(), pf_password.getText())){
                 isConnectedUsername.setText("");
                 current_user = tf_username.getText();
+                IUser user = databaseOperations.getUserDetails(current_user);
+
+                Task<Void> getUsersDetails = new Task<Void>() {     // Background thread to fetch API data progressively
+                    @Override
+                    public Void call() throws Exception {
+                        // userLat and userLong pulled from Users db table, assigned in Settings
+                        System.out.println("Thread Running");
+                        DatabaseOperations.crowFliesList.clear();
+                        databaseOperations.generateCrowFliesList(Double.toString(user.getLatitude()),Double.toString(user.getLongitude()));
+                        databaseOperations.updateCrowFlies();
+                        return null;
+                    }
+                };
+
+                getUsersDetails.setOnFailed(e -> {
+                    System.err.println("Couldn't update database" + getUsersDetails.getException().getMessage());
+                });
+
+                // Run task in separate thread
+                Thread thread = new Thread(getUsersDetails);
+                thread.setDaemon(true);
+                thread.start();
+
                 sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
             }
             // Else display error message

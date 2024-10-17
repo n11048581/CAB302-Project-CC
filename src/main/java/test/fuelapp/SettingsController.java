@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import javafx.concurrent.Task;
 
 public class SettingsController  extends Thread {
-    DatabaseOperations databaseOperations = new DatabaseOperations();
+    private DatabaseOperations databaseOperations = new DatabaseOperations();
 
     @FXML
     private TextField tf_fuelEfficiency;
@@ -21,8 +21,6 @@ public class SettingsController  extends Thread {
     @FXML
     private TextField tf_maxTravelDistance;
 
-    private DatabaseOperations dbOperations = new DatabaseOperations();
-
     private String currentUsername = LoginController.current_user;
 
     @FXML
@@ -32,7 +30,7 @@ public class SettingsController  extends Thread {
 
     // Method for displaying existing Settings user account values
     public void loadUserDetails() {
-        IUser user = dbOperations.getUserDetails(currentUsername);
+        IUser user = databaseOperations.getUserDetails(currentUsername);
         if (user != null) {
             tf_fuelEfficiency.setText(String.valueOf(user.getFuelEfficiency()));
             tf_fuelType.setText(String.valueOf(user.getFuelType()));
@@ -54,12 +52,13 @@ public class SettingsController  extends Thread {
             IUser updatedUser = new User(currentUsername, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
 
             // Save details to database
-            dbOperations.saveUserDetails(updatedUser);
+            databaseOperations.saveUserDetails(updatedUser);
 
             Task<Void> updateCrowDatabase = new Task<Void>() {     // Background thread to fetch API data progressively
                 @Override
                 public Void call() throws Exception {
                     // userLat and userLong pulled from Users db table, assigned in Settings
+                    System.out.println("Thread Running");
                     DatabaseOperations.crowFliesList.clear();
                     databaseOperations.generateCrowFliesList(tf_latitude.getText(), tf_longitude.getText());
                     databaseOperations.updateCrowFlies();

@@ -232,13 +232,10 @@ public class DatabaseOperations {
             while (resultSet.next()) {
                 DatabaseOperations.crowFliesList.add(getCrowFlies(Double.parseDouble(userLatitude), Double.parseDouble(userLongitude), Double.parseDouble(resultSet.getString("station_latitude")), Double.parseDouble(resultSet.getString("station_longitude"))));
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 }
 
 
