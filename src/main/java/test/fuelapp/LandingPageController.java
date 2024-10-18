@@ -96,7 +96,7 @@ public class LandingPageController {
 
     @FXML
     public void handleCalculator(ActionEvent event) {
-        showAlert("Calculator button clicked", "This would take you to the fuel efficiency calculator.");
+        sqLiteLink.changeScene(event,  "EfficiencyCalculator.fxml", "Fuel Efficiency Calculator");
     }
 
     @FXML

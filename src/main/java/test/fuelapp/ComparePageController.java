@@ -213,20 +213,15 @@ public class ComparePageController {
 
 
     @FXML
-    public void handleCalculator() {
-        // For now, just display an alert
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Calculator");
-        alert.setHeaderText(null);
-        alert.setContentText("Calculator button clicked");
-        alert.showAndWait();
-    }
-
-    @FXML
     public void handleSettings(ActionEvent event) {
         // For now, just display an alert
         sqLiteLink.changeScene(event, "Settings.fxml", "Settetesttings");
 
+    }
+
+    @FXML
+    public void handleCalculator(ActionEvent event) {
+        sqLiteLink.changeScene(event,  "EfficiencyCalculator.fxml", "Fuel Efficiency Calculator");
     }
 
     @FXML
