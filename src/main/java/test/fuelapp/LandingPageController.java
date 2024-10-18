@@ -39,27 +39,24 @@ public class LandingPageController {
 
         if (user != null) {
             // Get lat and long from the user object
-            userLat = user.getLatitude();
-            userLong = user.getLongitude();
-            System.out.println("Received Coordinates: " + userLat + ", " + userLong); // Debugging statement
-            //??? why is it 39 153 now why did it change
+            System.out.println("Received Coordinates: " + user.getLatitude() + ", " + user.getLongitude()); // Debugging statement
         } else {
             // Handle the case where user details are not available
             System.err.println("User details not found.");
 
             // Fallback values
-            userLat = -27.823611;
-            userLong = 153.182556;
+            user = new User(LoginController.current_user, 15.0, "Unleaded", -27.823611, 153.182556, 50.0);  // 기본 좌표 설정
         }
 
-        MapView mapView = Map.createMapView(userLat, userLong);
+        // Cast IUser to User (assuming that dbOperations.getUserDetails() returns a User object)
+        MapView mapView = Map.createMapView((User) user);  // Cast IUser to User
         gluonMap.getChildren().add(mapView);
         VBox.setVgrow(mapView, Priority.ALWAYS);
 
         Thread thread = getThread(mapView);
         thread.start();
-
     }
+
 
     private Thread getThread(MapView mapView) {
         Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively

@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import java.sql.SQLException;
 import javafx.concurrent.Task;
 
-public class SettingsController  extends Thread {
+public class SettingsController {
     private DatabaseOperations databaseOperations = new DatabaseOperations();
 
     @FXML
@@ -22,6 +22,7 @@ public class SettingsController  extends Thread {
     private TextField tf_maxTravelDistance;
 
     private String currentUsername = LoginController.current_user;
+    private User currentUser;  // The current User object
 
     @FXML
     public void initialize() {
@@ -32,15 +33,24 @@ public class SettingsController  extends Thread {
     public void loadUserDetails() {
         IUser user = databaseOperations.getUserDetails(currentUsername);
         if (user != null) {
+            currentUser = (User) user;
             tf_fuelEfficiency.setText(String.valueOf(user.getFuelEfficiency()));
             tf_fuelType.setText(String.valueOf(user.getFuelType()));
             tf_latitude.setText(String.valueOf(user.getLatitude()));
             tf_longitude.setText(String.valueOf(user.getLongitude()));
             tf_maxTravelDistance.setText(String.valueOf(user.getMaxTravelDistance()));
+        } else {
+            // User not found, let's use Google API to get the current location
+            currentUser = new User(currentUsername, 15.0, "Unleaded", 0.0, 0.0, 50.0); // Default values
+            Map.updateUserLocation(currentUser);  // Get current location from Google API
+
+            // Set the fields with the new location
+            tf_latitude.setText(String.valueOf(currentUser.getLatitude()));
+            tf_longitude.setText(String.valueOf(currentUser.getLongitude()));
         }
     }
 
-    // Method for setting the Settings page values, calls saveUserDetails to store in DB
+    // Method for saving user details, calls saveUserDetails to store in DB
     public void handleSave(ActionEvent event) {
         try {
             double fuelEfficiency = Double.parseDouble(tf_fuelEfficiency.getText());
@@ -49,17 +59,20 @@ public class SettingsController  extends Thread {
             double longitude = Double.parseDouble(tf_longitude.getText());
             double maxTravelDistance = Double.parseDouble(tf_maxTravelDistance.getText());
 
-            IUser updatedUser = new User(currentUsername, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
+            // Update the User object
+            currentUser.setFuelEfficiency(fuelEfficiency);
+            currentUser.setFuelType(fuelType);
+            currentUser.setLatitude(latitude);
+            currentUser.setLongitude(longitude);
+            currentUser.setMaxTravelDistance(maxTravelDistance);
 
             // Save details to database
-            databaseOperations.saveUserDetails(updatedUser);
+            databaseOperations.saveUserDetails(currentUser);
 
-            Task<Void> updateCrowDatabase = new Task<Void>() {     // Background thread to fetch API data progressively
+            // Update crow flies data (optional)
+            Task<Void> updateCrowDatabase = new Task<Void>() {
                 @Override
                 public Void call() throws Exception {
-                    // userLat and userLong pulled from Users db table, assigned in Settings
-                    System.out.println("Thread Running");
-                    DatabaseOperations.crowFliesList.clear();
                     databaseOperations.generateCrowFliesList(tf_latitude.getText(), tf_longitude.getText());
                     databaseOperations.updateCrowFlies();
                     return null;
@@ -67,7 +80,7 @@ public class SettingsController  extends Thread {
             };
 
             updateCrowDatabase.setOnFailed(e -> {
-                System.err.println("Couldn't update database" + updateCrowDatabase.getException().getMessage());
+                System.err.println("Couldn't update database: " + updateCrowDatabase.getException().getMessage());
             });
 
             // Run task in separate thread
@@ -85,7 +98,7 @@ public class SettingsController  extends Thread {
     }
 
     public void backToLanding(ActionEvent event) {
-        // Redirect to log in page
+        // Redirect to landing page
         SQLiteLink sqLiteLink = new SQLiteLink();
         sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
     }

@@ -36,28 +36,37 @@ public class Map {
      * Creates a map view
      * @return a map of the world
      */
-    public static MapView createMapView(double latitude, double longitude) {
+    public static MapView createMapView(User user) {
         MapView mapView = new MapView();
-        //these values should be adjustable later - such as for screen size and user preferences
-        mapView.setPrefSize(1600,1200);
+        // These values should be adjustable later, such as for screen size and user preferences
+        mapView.setPrefSize(1600, 1200);
         mapView.setZoom(10);
+
+        // Use default latitude and longitude in case user location is not available
         double defaultLatitude = -27.470125;
         double defaultLongitude = 153.021072;
-        mapView.setCenter(defaultLatitude, defaultLongitude);
 
-        getUserLocationAndSetMap(mapView);
+        // Update user location from Google API and store it in the User object
+        updateUserLocation(user);
 
-        mapView.addLayer(stationMarkers);
-        mapView.addLayer(createCenterLayer(latitude,longitude));
+        // Check if user location was successfully updated, otherwise use default values
+        double userLatitude = user.getLatitude() != 0.0 ? user.getLatitude() : defaultLatitude;
+        double userLongitude = user.getLongitude() != 0.0 ? user.getLongitude() : defaultLongitude;
+
+        // Set the map center to the user's location
+        mapView.setCenter(userLatitude, userLongitude); // Move map center to user's location
+        mapView.addLayer(stationMarkers);  // Add station markers layer
+        mapView.addLayer(createCenterLayer(userLatitude, userLongitude));  // Add a marker for the user's location
+
         return mapView;
     }
 
 
     /**
-     * Retrieves the user's location using Google Geolocation API and updates the map
-     * @param mapView the MapView object
+     * Retrieves the user's location using Google Geolocation API and stores it in User object
+     * @param user The User object to update with the new location
      */
-    private static void getUserLocationAndSetMap(MapView mapView) {
+    public static void updateUserLocation(User user) {
         try {
             // Google Geolocation API URL
             String apiUrl = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + API_KEY;
@@ -90,17 +99,14 @@ public class Map {
                 double latitude = data.getAsJsonObject("location").get("lat").getAsDouble();
                 double longitude = data.getAsJsonObject("location").get("lng").getAsDouble();
 
-                // Save user's location in the class variables
+                // Save user's location in the class variables and User object
                 userLatitude = latitude;
                 userLongitude = longitude;
+                user.setLatitude(latitude);
+                user.setLongitude(longitude);
 
-                // Update the map's center to the user's location
-                MapPoint userLocation = new MapPoint(latitude, longitude);
-                mapView.setCenter(latitude, longitude); // Move map center to user's location
-                mapView.flyTo(0., userLocation, 2.0);   // Smooth fly to user's location
+                System.out.println("User location updated: Latitude: " + latitude + ", Longitude: " + longitude);
 
-                // Add a marker at the user's location
-                addMarkerToMap(mapView, userLocation);
             } else {
                 System.out.println("API request failed: " + responseCode);
             }
@@ -108,6 +114,7 @@ public class Map {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Adds a marker at the specified location
