@@ -26,26 +26,26 @@ public class LoginController implements Initializable {
 
     // Declare JavaFX login page elements
     @FXML
-    public Label isConnectedUsername;
+    private Label isConnectedUsername;
     @FXML
-    public Label label_welcome;
+    private Label label_welcome;
     @FXML
-    public Label label_not_user;
+    private Label label_not_user;
     @FXML
-    public Button button_signup;
+    private Button button_signup;
     @FXML
-    public Button button_login;
+    private Button button_login;
     @FXML
-    public TextField tf_username;
+    private TextField tf_username;
     @FXML
-    public PasswordField pf_password;
+    private PasswordField pf_password;
 
 
     // Declare JavaFX loading page elements
     @FXML
-    public ImageView loading_gif;
+    private ImageView loading_gif;
     @FXML
-    public Label label_loading;
+    private Label label_loading;
 
     // Log user in when enter key is pressed
     @FXML

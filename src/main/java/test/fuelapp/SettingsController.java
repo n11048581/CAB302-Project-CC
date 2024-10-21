@@ -1,11 +1,20 @@
 package test.fuelapp;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.sql.SQLException;
-import javafx.concurrent.Task;
+
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class SettingsController  extends Thread {
     private DatabaseOperations databaseOperations = new DatabaseOperations();
@@ -20,6 +29,26 @@ public class SettingsController  extends Thread {
     private TextField tf_longitude;
     @FXML
     private TextField tf_maxTravelDistance;
+    @FXML
+    private Label label_fe;
+    @FXML
+    private Label label_ft;
+    @FXML
+    private Label label_lat;
+    @FXML
+    private Label label_long;
+    @FXML
+    private Label label_max_distance;
+    @FXML
+    private Button button_save;
+    @FXML
+    private Button button_back;
+
+
+    @FXML
+    private ImageView loading_gif;
+    @FXML
+    private Label label_loading;
 
     private String currentUsername = LoginController.current_user;
 
@@ -49,34 +78,36 @@ public class SettingsController  extends Thread {
             double longitude = Double.parseDouble(tf_longitude.getText());
             double maxTravelDistance = Double.parseDouble(tf_maxTravelDistance.getText());
 
+            // Create instance of user
             IUser updatedUser = new User(currentUsername, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
 
-            // Save details to database
+            // Declare elements to be hidden in arrays
+            Label[] hiddenLabels =new Label[]{label_fe, label_ft, label_lat, label_long, label_max_distance};
+            Button[] hiddenButtons =new Button[]{button_save, button_back};
+            TextField[] hiddenTextFields = new TextField[]{tf_fuelEfficiency,tf_fuelType,tf_latitude,tf_longitude,tf_maxTravelDistance};
+
+            // Loops to hide settings elements, can be expanded on if needed
+            for (Label hiddenLabel : hiddenLabels) {
+                hiddenLabel.setVisible(false);
+            }
+            for (Button hiddenButton : hiddenButtons) {
+                hiddenButton.setVisible(false);
+            }
+            for (TextField hiddenTextField : hiddenTextFields) {
+                hiddenTextField.setVisible(false);
+            }
+
+            // Show temporary loading screen elements
+            loading_gif.setVisible(true);
+            label_loading.setVisible(true);
+
+            // Save updated details to user table in database
             databaseOperations.saveUserDetails(updatedUser);
 
-            Task<Void> updateCrowDatabase = new Task<Void>() {     // Background thread to fetch API data progressively
-                @Override
-                public Void call() throws Exception {
-                    // userLat and userLong pulled from Users db table, assigned in Settings
-                    System.out.println("Thread Running");
-                    DatabaseOperations.crowFliesList.clear();
-                    databaseOperations.generateCrowFliesList(tf_latitude.getText(), tf_longitude.getText());
-                    databaseOperations.updateCrowFlies();
-                    return null;
-                }
-            };
+            // Start thread that will execute database updates and notify listener when completed.
+            // Functionally, will calculate distances for user's new location
+            executeSettingsTaskInSeparateThread(settingsListener);
 
-            updateCrowDatabase.setOnFailed(e -> {
-                System.err.println("Couldn't update database" + updateCrowDatabase.getException().getMessage());
-            });
-
-            // Run task in separate thread
-            Thread thread = new Thread(updateCrowDatabase);
-            thread.setDaemon(true);
-            thread.start();
-
-            // return to landing page
-            backToLanding(event);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input: " + e.getMessage());
         } catch (SQLException e) {
@@ -84,9 +115,56 @@ public class SettingsController  extends Thread {
         }
     }
 
-    public void backToLanding(ActionEvent event) {
+    // Small interface to assist listener thread
+    public interface MyThreadListener{
+        public void threadFinished();
+    }
+
+    public void executeSettingsTaskInSeparateThread(final SettingsController.MyThreadListener settingsListener){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Complete database updates that take a significant amount of time. Will calculate distances at the same time
+                IUser user = databaseOperations.getUserDetails(currentUsername);
+                DatabaseOperations.crowFliesList.clear();
+                databaseOperations.generateCrowFliesList(Double.toString(user.getLatitude()),Double.toString(user.getLongitude()));
+                try {
+                    databaseOperations.updateCrowFlies();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                //Notify the listener when thread is finished
+                settingsListener.threadFinished();
+            }
+        }).start();
+    }
+
+    SettingsController.MyThreadListener settingsListener = new SettingsController.MyThreadListener() {
+        @Override
+        public void threadFinished() {
+            // An additional fix to ensure the application thread is being run, as more UI updates need to happen (switching scenes). I am amazed this works
+            Platform.runLater(
+                    () -> {
+                        Stage stage;
+                        Parent root;
+                        try {
+                            // Switch scene to the landing page, without relying on an action event
+                            stage = (Stage) button_back.getScene().getWindow();
+                            root = FXMLLoader.load(getClass().getResource("Profile.fxml"));
+                            Scene scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+            );
+        }
+    };
+
+    public void backToProfile(ActionEvent event) {
         // Redirect to log in page
         SQLiteLink sqLiteLink = new SQLiteLink();
-        sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
+        sqLiteLink.changeScene(event, "Profile.fxml", "Home");
     }
 }
