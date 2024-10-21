@@ -88,8 +88,8 @@ public class DatabaseOperations {
             // Insert preset details to fill out database
             preparedStatement.setString(3, "All");
             preparedStatement.setDouble(4, 0.0);
-            preparedStatement.setDouble(5, -27.477230954888658);
-            preparedStatement.setDouble(6, 153.02703034170227);
+            preparedStatement.setDouble(5, -27.4772309);
+            preparedStatement.setDouble(6, 153.0270303);
             preparedStatement.setDouble(7, 1000);
             preparedStatement.executeUpdate();
         } catch (Exception e) {

@@ -236,9 +236,9 @@ public class ComparePageController {
     }
 
     @FXML
-    public void handleSettings(ActionEvent event) {
+    public void handleProfile(ActionEvent event) {
         // For now, just display an alert
-        sqLiteLink.changeScene(event, "Settings.fxml", "Settings");
+        sqLiteLink.changeScene(event, "Profile.fxml", "Profile");
 
     }
 
