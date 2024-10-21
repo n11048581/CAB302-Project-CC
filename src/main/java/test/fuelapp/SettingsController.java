@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -22,7 +23,7 @@ public class SettingsController  extends Thread {
     @FXML
     private TextField tf_fuelEfficiency;
     @FXML
-    private TextField tf_fuelType;
+    private ComboBox cb_fuelType;
     @FXML
     private TextField tf_latitude;
     @FXML
@@ -62,7 +63,7 @@ public class SettingsController  extends Thread {
         IUser user = databaseOperations.getUserDetails(currentUsername);
         if (user != null) {
             tf_fuelEfficiency.setText(String.valueOf(user.getFuelEfficiency()));
-            tf_fuelType.setText(String.valueOf(user.getFuelType()));
+            cb_fuelType.setValue(String.valueOf(user.getFuelType()));
             tf_latitude.setText(String.valueOf(user.getLatitude()));
             tf_longitude.setText(String.valueOf(user.getLongitude()));
             tf_maxTravelDistance.setText(String.valueOf(user.getMaxTravelDistance()));
@@ -73,7 +74,7 @@ public class SettingsController  extends Thread {
     public void handleSave(ActionEvent event) {
         try {
             double fuelEfficiency = Double.parseDouble(tf_fuelEfficiency.getText());
-            String fuelType = tf_fuelType.getText();
+            String fuelType = (String) cb_fuelType.getValue();
             double latitude = Double.parseDouble(tf_latitude.getText());
             double longitude = Double.parseDouble(tf_longitude.getText());
             double maxTravelDistance = Double.parseDouble(tf_maxTravelDistance.getText());
@@ -84,7 +85,8 @@ public class SettingsController  extends Thread {
             // Declare elements to be hidden in arrays
             Label[] hiddenLabels =new Label[]{label_fe, label_ft, label_lat, label_long, label_max_distance};
             Button[] hiddenButtons =new Button[]{button_save, button_back};
-            TextField[] hiddenTextFields = new TextField[]{tf_fuelEfficiency,tf_fuelType,tf_latitude,tf_longitude,tf_maxTravelDistance};
+            TextField[] hiddenTextFields = new TextField[]{tf_fuelEfficiency,tf_latitude,tf_longitude,tf_maxTravelDistance};
+            ComboBox[] hiddenComboBoxes =  new ComboBox[]{cb_fuelType};
 
             // Loops to hide settings elements, can be expanded on if needed
             for (Label hiddenLabel : hiddenLabels) {
@@ -96,7 +98,9 @@ public class SettingsController  extends Thread {
             for (TextField hiddenTextField : hiddenTextFields) {
                 hiddenTextField.setVisible(false);
             }
-
+            for (ComboBox hiddenComboBox : hiddenComboBoxes) {
+                hiddenComboBox.setVisible(false);
+            }
             // Show temporary loading screen elements
             loading_gif.setVisible(true);
             label_loading.setVisible(true);
@@ -168,3 +172,10 @@ public class SettingsController  extends Thread {
         sqLiteLink.changeScene(event, "Profile.fxml", "Home");
     }
 }
+
+
+
+
+
+
+
