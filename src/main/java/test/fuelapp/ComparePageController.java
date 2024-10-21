@@ -115,8 +115,6 @@ public class ComparePageController {
         comparePriceBox.getChildren().clear();
         comparePriceBox.getChildren().add(new Separator());
 
-        // Clear list that tracks crow-flies distances
-
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         // Set SQL command to match user input against database
@@ -137,8 +135,6 @@ public class ComparePageController {
                 //  +" - Travel cost: " + station.getTravelCost());
                 comparePriceBox.getChildren().add(label);
                 comparePriceBox.getChildren().add(new Separator());
-
-                //DatabaseOperations.crowFliesList.add(databaseOperations.getCrowFlies(Double.parseDouble(userLat), Double.parseDouble(userLong), Double.parseDouble(resultSet.getString("station_latitude")), Double.parseDouble(resultSet.getString("station_longitude"))));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -225,7 +221,7 @@ public class ComparePageController {
     @FXML
     public void handleSettings(ActionEvent event) {
         // For now, just display an alert
-        sqLiteLink.changeScene(event, "Settings.fxml", "Settetesttings");
+        sqLiteLink.changeScene(event, "Settings.fxml", "Settings");
 
     }
 

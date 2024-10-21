@@ -18,7 +18,7 @@
     <HBox alignment="BOTTOM_LEFT" prefWidth="1200.0" spacing="10">
         <Button onAction="#handlePriceCompare" text="Price Compare" />
         <Button onAction="#handleCalculator" text="Fuel Efficient Calculator" />
-        <Button onAction="#handleSettings" text="Settings" />
+        <Button onAction="#handleProfile" text="Profile" />
         <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
       <padding>
          <Insets left="400.0" bottom="25.0" top="25.0"/>
