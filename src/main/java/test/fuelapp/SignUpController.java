@@ -76,7 +76,7 @@ public class SignUpController implements Initializable {
                 databaseOperations.canCreateAccount(newUser);
 
                 // Change scene to home screen
-                sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
+                sqLiteLink.changeScene(event, "Settings.fxml", "Home");
             }
         } catch (SQLException e) {
             e.printStackTrace();
