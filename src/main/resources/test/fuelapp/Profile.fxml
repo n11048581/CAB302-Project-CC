@@ -2,20 +2,151 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.ProfileController">
+
+<VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.ProfileController">
    <children>
-      <VBox alignment="CENTER" prefHeight="290.0" prefWidth="1200.0">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0" spacing="20.0" style="-fx-background-color: #344E41;" VBox.vgrow="NEVER">
          <children>
-            <Button mnemonicParsing="false" onAction="#toSettings" text="Settings" />
-            <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#toLanding" text="Home" VBox.vgrow="NEVER">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </Button>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Header" textFill="WHITE" />
+            <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#toLanding" text="Home" HBox.hgrow="ALWAYS" />
          </children>
-      </VBox>
+      </HBox>
+      <HBox prefHeight="321.0" prefWidth="1200.0" spacing="10.0" style="-fx-background-color: A3B18A;" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: DAD7CD; -fx-background-radius: 30;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="NEVER">
+                           <children>
+                              <ImageView fitHeight="173.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                                 <image>
+                                    <Image url="@profile.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label fx:id="label_profile_username" alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="370.0" text="Username" textFill="#3a5a40" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="42.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Fuel Type -" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Fuel Efficiency -" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Latitude -" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Longitude -" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Max Travel Distance -" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="label_fuel_type" text="User Fuel Type " textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="label_fuel_efficiency" text="User Fuel Efficiency" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="label_latitude" text="User Latitude" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="label_longitude" text="User Longitude" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="label_max_distance" text="User Max Distance" textFill="#3a5a40">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#toSettings" style="-fx-background-color: #3A5A40; -fx-border-radius: 100;" text="Edit Profile" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="SansSerif Regular" size="20.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: DAD7CD; -fx-background-radius: 30;" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="NEVER">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="88.0" prefWidth="496.0" text="Favourite Stations" textFill="#3a5a40">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="42.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="20.0" left="5.0" right="5.0" top="20.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 
-</VBox>
+      </VBox>

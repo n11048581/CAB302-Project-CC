@@ -54,11 +54,11 @@ public class SettingsController  extends Thread {
 
     @FXML
     public void initialize() {
-        loadUserDetails();
+        loadUserDetailsSettings();
     }
 
     // Method for displaying existing Settings user account values
-    public void loadUserDetails() {
+    public void loadUserDetailsSettings() {
         IUser user = databaseOperations.getUserDetails(currentUsername);
         if (user != null) {
             tf_fuelEfficiency.setText(String.valueOf(user.getFuelEfficiency()));
