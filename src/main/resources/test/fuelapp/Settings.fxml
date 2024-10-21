@@ -9,6 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.SettingsController">
     <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0">
         <!-- Header -->
@@ -33,11 +36,19 @@
                     <Font size="14.0" />
                 </font>
             </Label>
-            <TextField fx:id="tf_fuelType" layoutX="550.0" layoutY="160.0" prefWidth="200.0">
-                <font>
-                    <Font size="14.0" />
-                </font>
-            </TextField>
+            <ComboBox fx:id="cb_fuelType" layoutX="550.0" layoutY="160.0" prefWidth="200.0">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Premium Unleaded 98" />
+                        <String fx:value="Premium Unleaded 95" />
+                        <String fx:value="Premium Diesel" />
+                        <String fx:value="Diesel" />
+                        <String fx:value="e10" />
+                        <String fx:value="e85" />
+
+                    </FXCollections>
+                </items>
+            </ComboBox>
 
             <Label fx:id="label_lat" layoutX="400.0" layoutY="220.0" text="Latitude">
                 <font>
@@ -78,16 +89,16 @@
                 </font>
             </Button>
             <Button fx:id="button_back" layoutX="20.0" layoutY="720.0" onAction="#backToProfile" prefWidth="100.0" text="Back" />
-         <Label fx:id="label_loading" layoutX="385.0" layoutY="271.0" prefHeight="48.0" prefWidth="430.0" text="Updating User Data..." visible="false">
-            <font>
-               <Font name="Arial Rounded MT Bold" size="40.0" />
-            </font>
-         </Label>
-         <ImageView fx:id="loading_gif" fitHeight="126.0" fitWidth="105.0" layoutX="548.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true" visible="false">
-            <image>
-               <Image url="@loading.gif" />
-            </image>
-         </ImageView>
+            <Label fx:id="label_loading" layoutX="385.0" layoutY="271.0" prefHeight="48.0" prefWidth="430.0" text="Updating User Data..." visible="false">
+                <font>
+                    <Font name="Arial Rounded MT Bold" size="40.0" />
+                </font>
+            </Label>
+            <ImageView fx:id="loading_gif" fitHeight="126.0" fitWidth="105.0" layoutX="548.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                <image>
+                    <Image url="@loading.gif" />
+                </image>
+            </ImageView>
 
         </AnchorPane>
     </VBox>
