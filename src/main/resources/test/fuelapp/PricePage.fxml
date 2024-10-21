@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -14,19 +15,25 @@
     <Label style="-fx-font-size: 24;" text="Price Compare" />
 
     <HBox alignment="TOP_CENTER" spacing="10">
-        <TextField fx:id="searchBar" prefWidth="200.0" onAction="#onEnter"/>
-        <Button onAction="#handleDistanceSearch" text="Search" />
+        <TextField fx:id="searchBar" onAction="#onEnter" prefWidth="200.0" />
+        <Button onAction="#handleFilter" text="Search" />
     </HBox>
 
     <!-- Compare Price & Sort buttons -->
     <VBox alignment="CENTER" fillWidth="true" prefHeight="600.0" prefWidth="800.0" spacing="15">
         <HBox alignment="CENTER_RIGHT" spacing="10">
             <Label text="Sort by:" />
-            <RadioButton fx:id="priceRadioButton" text="Price" />
-            <RadioButton fx:id="distanceRadioButton" text="Distance">
-            <padding>
-               <Insets right="40.0" />
-            </padding></RadioButton>
+            <RadioButton fx:id="distanceRadioButton" onAction="#getRadioButton" prefHeight="17.0" prefWidth="79.0" selected="true" text="Distance">
+            <toggleGroup>
+               <ToggleGroup fx:id="Compare" />
+            </toggleGroup></RadioButton>
+            <RadioButton fx:id="priceRadioButton" onAction="#getRadioButton" text="Price" toggleGroup="$Compare">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin></RadioButton>
+         <VBox.margin>
+            <Insets right="50.0" />
+         </VBox.margin>
         </HBox>
         <ScrollPane fx:id="comparePriceScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="550.0" prefWidth="780.0" VBox.vgrow="ALWAYS">
             <VBox fx:id="comparePriceBox" spacing="15">

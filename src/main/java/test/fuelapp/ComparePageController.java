@@ -1,5 +1,6 @@
 package test.fuelapp;
 
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -31,6 +32,8 @@ public class ComparePageController {
     private String userLong;
     private String userMaxTravelDistance;
 
+    private boolean distanceSelected = true;
+
     @FXML
     private TextField searchBar;
 
@@ -39,7 +42,8 @@ public class ComparePageController {
 
     @FXML
     private VBox comparePriceBox;
-
+    @FXML
+    private ToggleGroup Compare;
 
     @FXML
     private RadioButton priceRadioButton;
@@ -49,9 +53,13 @@ public class ComparePageController {
     private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
 
 
+
+
     @FXML
     private void initialize() throws SQLException {
         loadUserDetailsComparePage();
+        handlePriceCompare("crow_flies_to_user");
+
         /*
         String userLong;
         String userLat;
@@ -70,7 +78,7 @@ public class ComparePageController {
             userFuelEfficiency = 15.0;
         }
 */
-        handlePriceCompare();
+
 
 
         /*
@@ -123,21 +131,32 @@ public class ComparePageController {
         comparePriceBox.getChildren().add(new Separator());
     }
 
+    public void getRadioButton(ActionEvent event) throws SQLException{
+        if (priceRadioButton.isSelected()) {
+            System.out.println("Price Selected");
+            handlePriceCompare("price");
+        } else if (distanceRadioButton.isSelected()) {
+            System.out.println("Distance Selected");
+            handlePriceCompare("crow_flies_to_user");
+        }
+    }
 
     @FXML
-    public void handlePriceCompare() throws SQLException {
+    public void handlePriceCompare(String orderByVal) throws SQLException {
         // Get the list of StationDetails objects
         comparePriceBox.getChildren().clear();
         comparePriceBox.getChildren().add(new Separator());
 
+
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ? ORDER BY crow_flies_to_user";
+        String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ? ORDER BY " + orderByVal;
         try {
             // Execute query on entered username and password
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, userMaxTravelDistance);
+
             resultSet = preparedStatement.executeQuery();
 
             // While there is an entry to show, create a label that displays station data
@@ -158,7 +177,7 @@ public class ComparePageController {
     }
 
     @FXML
-    public void handleDistanceSearch() throws SQLException {
+    public void handleDistanceSearch(String orderByVal) throws SQLException {
         // Get the search query from the search bar
         String searchQuery = searchBar.getText();
         int i = 0;
@@ -166,12 +185,13 @@ public class ComparePageController {
         comparePriceBox.getChildren().clear();
         comparePriceBox.getChildren().add(new Separator());
 
+
         // Initialise prepared statement and variable to store query results
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? AND crow_flies_to_user < ? ORDER BY crow_flies_to_user";
+        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? AND crow_flies_to_user < ? ORDER BY " + orderByVal;
         try {
             // Execute query on entered username and password
             preparedStatement = connection.prepareStatement(query);
@@ -219,6 +239,18 @@ public class ComparePageController {
     }
 
     @FXML
+    public void handleFilter() throws SQLException{
+        if (priceRadioButton.isSelected()) {
+            System.out.println("Price Selected");
+            handleDistanceSearch("price");
+        } else if (distanceRadioButton.isSelected()) {
+            System.out.println("Distance Selected");
+            handleDistanceSearch("crow_flies_to_user");
+        }
+    }
+
+
+    @FXML
     public void map(ActionEvent event) {
         // Go back to the landing page
         sqLiteLink.changeScene(event, "LandingPage.fxml", "Landing Page");
@@ -248,8 +280,14 @@ public class ComparePageController {
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
 
-    @FXML
+   @FXML
     public void onEnter(ActionEvent event) throws SQLException {
-        handleDistanceSearch();
+       if (priceRadioButton.isSelected()) {
+           System.out.println("Price Selected");
+           handleDistanceSearch("price");
+       } else if (distanceRadioButton.isSelected()) {
+           System.out.println("Distance Selected");
+           handleDistanceSearch("crow_flies_to_user");
+       }
     }
 }
