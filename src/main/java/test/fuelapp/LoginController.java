@@ -21,8 +21,10 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
     static String current_user;
+
     public DatabaseOperations databaseOperations = new DatabaseOperations();
     public SQLiteLink sqLiteLink = new SQLiteLink();
+
 
     // Declare JavaFX login page elements
     @FXML
@@ -47,6 +49,10 @@ public class LoginController implements Initializable {
     @FXML
     private Label label_loading;
 
+
+    @FXML
+    private Label label_redirect;
+
     // Log user in when enter key is pressed
     @FXML
     public void onEnter(ActionEvent event) throws SQLException, InterruptedException{
@@ -56,14 +62,9 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /* Check to test if database connection is working, not needed for final submission
-          if (loginModel.isDbConnected()) {
-              // isConnectedUsername.setText("Connected");
-          }
-          else {
-              isConnectedUsername.setText("Not Connected");
-          }
-          */
+        if (SignUpController.isARedirect){
+            label_redirect.setVisible(true);
+        }
     }
 
 
@@ -87,6 +88,7 @@ public class LoginController implements Initializable {
                 button_login.setVisible(false);
                 tf_username.setVisible(false);
                 pf_password.setVisible(false);
+                label_redirect.setVisible(false);
 
                 // Show temporary loading screen elements
                 loading_gif.setVisible(true);

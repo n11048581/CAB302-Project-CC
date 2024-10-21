@@ -77,13 +77,20 @@ public class DatabaseOperations {
     public void canCreateAccount(ILogin login) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users (username,password) VALUES(?, ? )";
+            String sql = "INSERT INTO users (username, password, fuel_type, fuel_efficiency, latitude, longitude, max_travel_distance) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
+            // Insert details given by user
             preparedStatement.setString(1, login.getUsername());
             preparedStatement.setString(2, login.getPassword());
+            // Insert preset details to fill out database
+            preparedStatement.setString(3, "All");
+            preparedStatement.setDouble(4, 0.0);
+            preparedStatement.setDouble(5, -27.477230954888658);
+            preparedStatement.setDouble(6, 153.02703034170227);
+            preparedStatement.setDouble(7, 1000);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

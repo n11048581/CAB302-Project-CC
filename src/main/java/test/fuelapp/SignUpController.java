@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
+    static boolean isARedirect = false;
+
     public SQLiteLink sqLiteLink = new SQLiteLink();
     public DatabaseOperations databaseOperations = new DatabaseOperations();
 
@@ -75,8 +77,10 @@ public class SignUpController implements Initializable {
                 // Create new record in database for user account
                 databaseOperations.canCreateAccount(newUser);
 
+                isARedirect = true;
+
                 // Change scene to home screen
-                sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
+                sqLiteLink.changeScene(event, "LoginPage.fxml", "Login");
             }
         } catch (SQLException e) {
             e.printStackTrace();

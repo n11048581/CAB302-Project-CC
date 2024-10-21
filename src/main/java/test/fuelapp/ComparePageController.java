@@ -15,8 +15,7 @@ import java.sql.SQLException;
 public class ComparePageController {
     Connection connection;
     DatabaseOperations databaseOperations = new DatabaseOperations();
-    private SQLiteLink sqLiteLink = new SQLiteLink();
-
+    SQLiteLink sqLiteLink = new SQLiteLink();
 
     public ComparePageController() {
         connection = SQLiteLink.Connector();
@@ -27,6 +26,10 @@ public class ComparePageController {
     }
 
     private double userFuelEfficiency;
+    private String userFuelType;
+    private String userLat;
+    private String userLong;
+    private String userMaxTravelDistance;
 
     @FXML
     private TextField searchBar;
@@ -48,16 +51,14 @@ public class ComparePageController {
 
     @FXML
     private void initialize() throws SQLException {
-        handlePriceCompare();
-        IUser user = databaseOperations.getUserDetails(LoginController.current_user);
-
+        loadUserDetailsComparePage();
+        /*
         String userLong;
         String userLat;
         if (user != null) {
             // Get lat and long from the user object
             userLat = String.valueOf(user.getLatitude());
             userLong = String.valueOf(user.getLongitude());
-            userFuelEfficiency = Double.parseDouble(String.valueOf(user.getFuelEfficiency()));
             System.out.println("Received Coordinates: " + userLat + ", " + userLong); // Debugging statement
         } else {
             // Handle the case where user details are not available
@@ -68,6 +69,9 @@ public class ComparePageController {
             userLong = "153.182556";
             userFuelEfficiency = 15.0;
         }
+*/
+        handlePriceCompare();
+
 
         /*
         Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
@@ -90,6 +94,17 @@ public class ComparePageController {
         thread.setDaemon(true);
         thread.start();
 */
+    }
+
+    public void loadUserDetailsComparePage() {
+        IUser user = databaseOperations.getUserDetails(LoginController.current_user);
+        if (user != null) {
+            userFuelEfficiency = user.getFuelEfficiency();
+            userFuelType = String.valueOf(user.getFuelType());
+            userLat = String.valueOf(user.getLatitude());
+            userLong= String.valueOf(user.getLongitude());
+            userMaxTravelDistance = String.valueOf(user.getMaxTravelDistance());
+        }
     }
 
     // Update UI with each station's details, called in getStationsData()
@@ -118,10 +133,11 @@ public class ComparePageController {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations ORDER BY crow_flies_to_user";
+        String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ? ORDER BY crow_flies_to_user";
         try {
             // Execute query on entered username and password
             preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, userMaxTravelDistance);
             resultSet = preparedStatement.executeQuery();
 
             // While there is an entry to show, create a label that displays station data
@@ -155,12 +171,13 @@ public class ComparePageController {
         ResultSet resultSet = null;
 
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? ORDER BY crow_flies_to_user";
+        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? AND crow_flies_to_user < ? ORDER BY crow_flies_to_user";
         try {
             // Execute query on entered username and password
             preparedStatement = connection.prepareStatement(query);
 
             preparedStatement.setString(1, "%" + searchQuery.toLowerCase() + "%");
+            preparedStatement.setString(2, userMaxTravelDistance);
             resultSet = preparedStatement.executeQuery();
 
 
