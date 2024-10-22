@@ -30,6 +30,9 @@ public class SettingsController  extends Thread {
     private TextField tf_longitude;
     @FXML
     private TextField tf_maxTravelDistance;
+
+    private String bookmark;
+
     @FXML
     private Label label_fe;
     @FXML
@@ -80,7 +83,7 @@ public class SettingsController  extends Thread {
             double maxTravelDistance = Double.parseDouble(tf_maxTravelDistance.getText());
 
             // Create instance of user
-            IUser updatedUser = new User(currentUsername, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
+            IUser updatedUser = new User(currentUsername, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance, bookmark);
 
             // Declare elements to be hidden in arrays
             Label[] hiddenLabels =new Label[]{label_fe, label_ft, label_lat, label_long, label_max_distance};

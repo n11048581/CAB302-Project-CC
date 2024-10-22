@@ -8,14 +8,16 @@ public class User implements IUser {
     private double latitude;
     private double longitude;
     private double maxTravelDistance;
+    private String bookmark;
 
-    public User(String name, double fuelEfficiency, String fuelType, double latitude, double longitude, double maxTravelDistance) {
+    public User(String name, double fuelEfficiency, String fuelType, double latitude, double longitude, double maxTravelDistance, String bookmark) {
         this.name = name;
         this.fuelEfficiency = fuelEfficiency;
         this.fuelType = fuelType;
         this.latitude = latitude;
         this.longitude = longitude;
         this.maxTravelDistance = maxTravelDistance;
+        this.bookmark = bookmark;
     }
 
     @Override
@@ -78,4 +80,10 @@ public class User implements IUser {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public String getBookmark() {
+        return bookmark;
+    }
+
 }

@@ -45,6 +45,7 @@
                         <String fx:value="Diesel" />
                         <String fx:value="e10" />
                         <String fx:value="e85" />
+                        <String fx:value="All" />
 
                     </FXCollections>
                 </items>

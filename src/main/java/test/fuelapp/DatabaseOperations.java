@@ -222,8 +222,9 @@ public class DatabaseOperations {
                 double latitude = rs.getDouble("latitude");
                 double longitude = rs.getDouble("longitude");
                 double maxTravelDistance = rs.getDouble("max_travel_distance");
+                String bookmark = rs.getString("bookmarks");
 
-                return new User(name, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance);
+                return new User(name, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance, bookmark);
             }
         } catch (SQLException e) {
             e.printStackTrace();

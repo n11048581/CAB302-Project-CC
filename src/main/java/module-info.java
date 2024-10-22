@@ -10,6 +10,7 @@ module test.fuelapp {
     requires com.gluonhq.maps;
     requires org.slf4j;
     requires com.google.gson;
+    requires commons.lang;
 
 
     opens test.fuelapp to javafx.fxml;
