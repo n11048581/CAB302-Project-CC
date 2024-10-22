@@ -151,11 +151,11 @@ public class ComparePageController {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ? ORDER BY " + orderByVal;
-        try {
+        String query = "SELECT * FROM gas_stations WHERE fuel_type = ? AND crow_flies_to_user < ? ORDER BY " + orderByVal;        try {
             // Execute query on entered username and password
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, userMaxTravelDistance);
+            preparedStatement.setString(1, userFuelType);
+            preparedStatement.setString(2, userMaxTravelDistance);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -191,13 +191,16 @@ public class ComparePageController {
         ResultSet resultSet = null;
 
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? AND crow_flies_to_user < ? ORDER BY " + orderByVal;
+        String query = "SELECT * FROM gas_stations WHERE fuel_type = ? AND LOWER(station_name) LIKE ? AND crow_flies_to_user < ? ORDER BY " + orderByVal;
+
         try {
             // Execute query on entered username and password
             preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, "%" + searchQuery.toLowerCase() + "%");
-            preparedStatement.setString(2, userMaxTravelDistance);
+            preparedStatement.setString(1, userFuelType);
+            preparedStatement.setString(2, "%" + searchQuery.toLowerCase() + "%");
+            preparedStatement.setString(3, userMaxTravelDistance);
+
             resultSet = preparedStatement.executeQuery();
 
 
