@@ -20,4 +20,6 @@ public interface IUser {
 
     double getLongitude();
     void setLongitude(double longitude);
+
+    String getBookmark();
 }
