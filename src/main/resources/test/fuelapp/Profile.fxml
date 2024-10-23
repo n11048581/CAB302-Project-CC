@@ -12,10 +12,66 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.ProfileController">
    <children>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0" spacing="20.0" style="-fx-background-color: #344E41;" VBox.vgrow="NEVER">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0" spacing="20.0" style="-fx-background-color: #344E41;">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Header" textFill="WHITE" />
-            <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#toLanding" text="Home" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fitHeight="33.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@logo.PNG" />
+                     </image>
+                  </ImageView>
+                  <Button onAction="#goToMap" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Map" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Regular" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#goToComparePage" style="-fx-background-color: transparent;" text="Compare Page" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Regular" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button onAction="#goToCalculator" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Efficiency Calculator" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Regular" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Profile" textFill="#ffffff8f">
+                     <font>
+                        <Font name="SansSerif Regular" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Log Out" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Regular" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="NEVER">
+               <children>
+                  <Button mnemonicParsing="false" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: transparent;">
+                           <children>
+                              <Label fx:id="label_current_user" textFill="#dad7cd" />
+                              <ImageView fx:id="image_profile" fitHeight="44.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@profile.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                     </graphic>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </HBox>
          </children>
       </HBox>
       <HBox prefHeight="321.0" prefWidth="1200.0" spacing="10.0" style="-fx-background-color: A3B18A;" VBox.vgrow="ALWAYS">

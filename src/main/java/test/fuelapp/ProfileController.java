@@ -2,6 +2,7 @@ package test.fuelapp;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
@@ -86,8 +87,32 @@ public class ProfileController {
         sqLiteLink.changeScene(event, "Settings.fxml", "Settings");
     }
 
-    public void toLanding(ActionEvent event) {
-        // Redirect to log in page
-        sqLiteLink.changeScene(event, "LandingPage.fxml", "Home");
+
+    @FXML
+    public void LogOut(ActionEvent event) {
+        // Logout and go back to the login page
+        sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
+    }
+
+    @FXML
+    public void goToCalculator() {
+        // For now, just display an alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Calculator");
+        alert.setHeaderText(null);
+        alert.setContentText("Calculator button clicked");
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void goToMap(ActionEvent event) {
+        // Go back to the landing page
+        sqLiteLink.changeScene(event, "LandingPage.fxml", "Map");
+    }
+
+    @FXML
+    public void goToComparePage(ActionEvent event) {
+        // Go back to the landing page
+        sqLiteLink.changeScene(event, "PricePage.fxml", "Compare Page");
     }
 }

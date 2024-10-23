@@ -7,6 +7,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -14,17 +16,73 @@
 <VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.ComparePageController">
    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1200.0" spacing="20.0" style="-fx-background-color: #344E41;">
       <children>
-         <Label alignment="CENTER" contentDisplay="CENTER" text="Header" textFill="WHITE" />
-           <Button onAction="#map" text="Map" />
-           <Button onAction="#handleCalculator" text="Fuel Efficient Calculator" />
-           <Button onAction="#handleProfile" text="Change Settings in Profile" />
-           <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
+         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="ALWAYS">
+            <children>
+               <ImageView fitHeight="33.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@logo.PNG" />
+                  </image>
+               </ImageView>
+                 <Button onAction="#map" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Map" textFill="WHITE">
+                  <font>
+                     <Font name="SansSerif Regular" size="15.0" />
+                  </font>
+               </Button>
+               <Button mnemonicParsing="false" style="-fx-background-color: transparent;" text="Compare Page" textFill="#ffffff8e">
+                  <font>
+                     <Font name="SansSerif Regular" size="15.0" />
+                  </font>
+               </Button>
+                 <Button onAction="#handleCalculator" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Efficiency Calculator" textFill="WHITE">
+                  <font>
+                     <Font name="SansSerif Regular" size="15.0" />
+                  </font>
+               </Button>
+                 <Button onAction="#goToProfile" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Profile" textFill="WHITE">
+                  <font>
+                     <Font name="SansSerif Regular" size="15.0" />
+                  </font>
+               </Button>
+                 <Button fx:id="button_logout" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Log Out" textFill="WHITE">
+                  <font>
+                     <Font name="SansSerif Regular" size="15.0" />
+                  </font>
+               </Button>
+            </children>
+            <HBox.margin>
+               <Insets left="20.0" />
+            </HBox.margin>
+         </HBox>
+         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="NEVER">
+            <children>
+               <Button mnemonicParsing="false" onAction="#goToProfile" style="-fx-background-color: transparent;">
+                  <graphic>
+                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: transparent;">
+                        <children>
+                           <Label fx:id="label_current_user" textFill="#dad7cd" />
+                           <ImageView fx:id="image_profile" fitHeight="44.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@profile.png" />
+                              </image>
+                           </ImageView>
+                        </children>
+                     </HBox>
+                  </graphic>
+               </Button>
+            </children>
+            <HBox.margin>
+               <Insets right="20.0" />
+            </HBox.margin>
+         </HBox>
       </children>
    </HBox>
 
     <HBox alignment="TOP_CENTER" spacing="10" style="-fx-background-color: A3B18A;">
         <TextField fx:id="searchBar" onAction="#onEnter" prefWidth="200.0" />
-        <Button onAction="#handleFilter" text="Search" />
+        <Button onAction="#handleFilter" style="-fx-background-color: #344E41;" text="Search" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font></Button>
       <VBox.margin>
          <Insets />
       </VBox.margin>

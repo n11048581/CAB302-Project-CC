@@ -4,8 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import test.fuelapp.sample.FuelPriceAPI;
 
 import java.sql.*;
@@ -37,6 +41,11 @@ public class ComparePageController {
     public int currentPageNumber = 0;
 
     @FXML
+    private Label label_current_user;
+    @FXML
+    private ImageView image_profile;
+
+    @FXML
     private TextField searchBar;
 
     @FXML
@@ -62,6 +71,9 @@ public class ComparePageController {
 
     @FXML
     private void initialize() throws SQLException {
+        // Set username
+        label_current_user.setText(LoginController.current_user);
+
         // Initialise page by loading user details, sorting by distance and initialising page number button
         button_previous_page.setDisable(true);
         loadUserDetailsComparePage();
@@ -350,10 +362,9 @@ public class ComparePageController {
     }
 
 
-    @FXML
     public void map(ActionEvent event) {
         // Go back to the landing page
-        sqLiteLink.changeScene(event, "LandingPage.fxml", "Landing Page");
+        sqLiteLink.changeScene(event, "LandingPage.fxml", "Map");
     }
 
 
@@ -368,14 +379,12 @@ public class ComparePageController {
     }
 
 
-    @FXML
-    public void handleProfile(ActionEvent event) {
-        // For now, just display an alert
+    public void goToProfile(ActionEvent event) {
+        // go to profile page
         sqLiteLink.changeScene(event, "Profile.fxml", "Profile");
     }
 
 
-    @FXML
     public void LogOut(ActionEvent event) {
         // Logout and go back to the login page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");

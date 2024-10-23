@@ -150,6 +150,7 @@ public class LoginController implements Initializable {
                             stage = (Stage) button_signup.getScene().getWindow();
                             root = FXMLLoader.load(getClass().getResource("LandingPage.fxml"));
                             Scene scene = new Scene(root);
+                            stage.setTitle("Map");
                             stage.setScene(scene);
                             stage.show();
                         } catch (IOException e) {

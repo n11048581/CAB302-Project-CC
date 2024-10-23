@@ -9,20 +9,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import test.fuelapp.sample.FuelPriceAPI;
-import test.fuelapp.sample.StationDetails;
+
 
 public class LandingPageController {
     SQLiteLink sqLiteLink = new SQLiteLink();
-
-    @FXML
-    public void handleLogin(ActionEvent event) {
-        showAlert("Login button clicked", "This would take you to the login page.");
-    }
-
-    @FXML
-    public void handleRegister(ActionEvent event) {
-        showAlert("Register button clicked", "This would take you to the registration page.");
-    }
 
     @FXML
     private VBox gluonMap;
@@ -42,7 +32,6 @@ public class LandingPageController {
             userLat = user.getLatitude();
             userLong = user.getLongitude();
             System.out.println("Received Coordinates: " + userLat + ", " + userLong); // Debugging statement
-            //??? why is it 39 153 now why did it change
         } else {
             // Handle the case where user details are not available
             System.err.println("User details not found.");
@@ -84,14 +73,9 @@ public class LandingPageController {
     }
 
 
-    //@FXML
-    //public void handleSearch(ActionEvent event) {
-    //    showAlert("Search button clicked", "This would take you to the search page.");
-    //}
-
     @FXML
     public void handlePriceCompare(ActionEvent event) {
-        sqLiteLink.changeScene(event, "PricePage.fxml", "Price Compare");
+        sqLiteLink.changeScene(event, "PricePage.fxml", "Compare Page");
     }
 
     @FXML
@@ -99,12 +83,6 @@ public class LandingPageController {
         showAlert("Calculator button clicked", "This would take you to the fuel efficiency calculator.");
     }
 
-    @FXML
-    public void handleMap(ActionEvent event) {
-        showAlert("Map button clicked", "This would take you to the map view.");
-    }
-
-    @FXML
     public void handleProfile(ActionEvent event) {
         sqLiteLink.changeScene(event, "Profile.fxml", "Profile");
     }
