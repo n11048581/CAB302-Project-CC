@@ -13,16 +13,16 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: A3B18A;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.SignUpController">
    <children>
-      <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="1200.0" spacing="20.0" style="-fx-background-color: #344E41;" VBox.vgrow="NEVER">
+      <HBox alignment="TOP_CENTER" maxHeight="50.0" prefHeight="50.0" prefWidth="1200.0" spacing="20.0" style="-fx-background-color: #344E41;" VBox.vgrow="NEVER">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" maxHeight="50.0" prefHeight="50.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
                   <ImageView fitHeight="33.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@logo.PNG" />
                      </image>
                      <HBox.margin>
-                        <Insets bottom="9.0" right="11.0" top="10.0" />
+                        <Insets right="11.0" />
                      </HBox.margin>
                   </ImageView>
                </children>
@@ -32,7 +32,6 @@
             </HBox>
          </children>
       </HBox>
-      <HBox alignment="BOTTOM_CENTER" prefHeight="49.0" prefWidth="1200.0" VBox.vgrow="NEVER" />
       <VBox alignment="CENTER" prefHeight="156.0" prefWidth="1200.0">
          <children>
               <Label text="Sign Up!">
