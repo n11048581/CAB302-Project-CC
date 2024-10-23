@@ -8,11 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import test.fuelapp.sample.FuelPriceAPI;
-import test.fuelapp.sample.StationDetails;
 
-import java.util.List;
-
-import static test.fuelapp.sample.SampleData.getSampleData;
 
 public class Map {
 
@@ -20,10 +16,10 @@ public class Map {
     private static final MapMarker stationMarkers = new MapMarker();
 
     /**
-     * Creates a map view.
+     * Creates a map view. Camera position is set to the coordinates.
      * @return a map of the world
-     * @param latitude
-     * @param longitude
+     * @param latitude Latitude of the user
+     * @param longitude Longitude of the user
      */
     public static MapView createMapView(double latitude, double longitude) {
         MapView mapView = new MapView();
@@ -42,7 +38,7 @@ public class Map {
 
     /**
      * Updates the station MapLayer with the provided station
-     * @param stationDetails
+     * @param stationDetails Station details
      */
     public static void updateStationLayer(FuelPriceAPI.StationDetails stationDetails) {
         //mapView.removeLayer(stationMarkers);
@@ -55,9 +51,9 @@ public class Map {
     /**
      * Updates the station marker MapLayer with the provided station coordinates and name,
      * creating a point on the mapView at position with a label.
-     * @param stationLatitude
-     * @param stationLongitude
-     * @param stationName
+     * @param stationLatitude Latitude of the station
+     * @param stationLongitude Longitude of the station
+     * @param stationName Name of the station
      */
     public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName) {
         stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName));
@@ -80,21 +76,16 @@ public class Map {
 
 
     /**
-     *
-     * @param latitude
-     * @param longitude
-     * @return
+     * Creates a MapLayer with a marker set to the provided coordinates
+     * @param latitude Latitude of the marker
+     * @param longitude Longitude of the marker
+     * @return MapLayer
      */
     public static MapLayer createCenterLayer(double latitude, double longitude) {
         MapMarker marker = new MapMarker();
         marker.addPoint(new MapPoint(latitude, longitude), new Circle(4, Color.BLUE));
         return marker;
     }
-
-    public static void createBookmarkLayer() {
-
-    }
-
 
 
     /**
@@ -109,21 +100,21 @@ public class Map {
     }
 
     /**
-     *
-     * @param lati
-     * @param longi
-     * @return
+     * Creates a MapPoint from two string coordinates.
+     * @param latitudeString Latitude in String
+     * @param longitudeString Longitude in String
+     * @return a MapPoint
      */
-    public static MapPoint loadCoordinatesDB(String lati, String longi) {
-        double latitude = Double.parseDouble(lati);
-        double longitude = Double.parseDouble(longi);
+    public static MapPoint loadCoordinatesDB(String latitudeString, String longitudeString) {
+        double latitude = Double.parseDouble(latitudeString);
+        double longitude = Double.parseDouble(longitudeString);
         return new MapPoint(latitude,longitude);
     }
 
     /**
-     *
-     * @param stationDetails
-     * @return
+     * Creates a MapIcon Group from station details
+     * @param stationDetails station details
+     * @return a Map Icon Group
      */
     public static Group createMapIcon(FuelPriceAPI.StationDetails stationDetails) {
         String stationName = stationDetails.getName();
@@ -138,9 +129,9 @@ public class Map {
     }
 
     /**
-     *
-     * @param stationName
-     * @return
+     * Creates a MapIcon Group with label set to station name
+     * @param stationName Name of the station
+     * @return a MapIcon group
      */
     public static Group createMapIconDB(String stationName) {
         Group icon = new Group();
@@ -154,24 +145,23 @@ public class Map {
     }
 
     /**
-     *
+     * Resets the stationMarker layer.
      */
     public static void resetStationLayer() {
         stationMarkers.clearPoints();
-        System.out.println("points cleared");
     }
 
     /**
-     *
-     * @param map
+     * Removes the stationMarker layer from the map
+     * @param map The mapView
      */
     public static void unloadMap(MapView map) {
         map.removeLayer(stationMarkers);
     }
 
     /**
-     *
-     * @param map
+     * Adds teh stationMarker layer to the map
+     * @param map The mapview
      */
     public static void loadMap(MapView map) {
         map.addLayer(stationMarkers);

@@ -1,14 +1,10 @@
 package test.fuelapp;
 
 import com.gluonhq.maps.MapView;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import test.fuelapp.sample.FuelPriceAPI;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +17,6 @@ public class LandingPageController {
     Connection connection;
     DatabaseOperations databaseOperations = new DatabaseOperations();
     SQLiteLink sqLiteLink = new SQLiteLink();
-    FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
 
     ArrayList<String> currentSearchResults = new ArrayList<String>();
 
@@ -41,8 +36,6 @@ public class LandingPageController {
     private String userMaxTravelDistance;
     private String bookmark;
 
-
-    private DatabaseOperations dbOperations = new DatabaseOperations();
 
     @FXML
     public void initialize() throws SQLException {
