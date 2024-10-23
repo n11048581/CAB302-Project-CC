@@ -6,19 +6,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class SettingsController  extends Thread {
     private DatabaseOperations databaseOperations = new DatabaseOperations();
+    private SQLiteLink sqLiteLink = new SQLiteLink();
 
     @FXML
     private TextField tf_fuelEfficiency;
@@ -47,7 +46,11 @@ public class SettingsController  extends Thread {
     private Button button_save;
     @FXML
     private Button button_back;
+    @FXML
+    private Label label_settings;
 
+    @FXML
+    private HBox hbox_header;
 
     @FXML
     private ImageView loading_gif;
@@ -86,10 +89,9 @@ public class SettingsController  extends Thread {
             IUser updatedUser = new User(currentUsername, fuelEfficiency, fuelType, latitude, longitude, maxTravelDistance, bookmark);
 
             // Declare elements to be hidden in arrays
-            Label[] hiddenLabels =new Label[]{label_fe, label_ft, label_lat, label_long, label_max_distance};
+            Label[] hiddenLabels =new Label[]{label_fe, label_ft, label_lat, label_long, label_max_distance, label_settings};
             Button[] hiddenButtons =new Button[]{button_save, button_back};
             TextField[] hiddenTextFields = new TextField[]{tf_fuelEfficiency,tf_latitude,tf_longitude,tf_maxTravelDistance};
-            ComboBox[] hiddenComboBoxes =  new ComboBox[]{cb_fuelType};
 
             // Loops to hide settings elements, can be expanded on if needed
             for (Label hiddenLabel : hiddenLabels) {
@@ -101,9 +103,8 @@ public class SettingsController  extends Thread {
             for (TextField hiddenTextField : hiddenTextFields) {
                 hiddenTextField.setVisible(false);
             }
-            for (ComboBox hiddenComboBox : hiddenComboBoxes) {
-                hiddenComboBox.setVisible(false);
-            }
+            cb_fuelType.setVisible(false);
+            hbox_header.setVisible(false);
             // Show temporary loading screen elements
             loading_gif.setVisible(true);
             label_loading.setVisible(true);
@@ -173,6 +174,34 @@ public class SettingsController  extends Thread {
         // Redirect to log in page
         SQLiteLink sqLiteLink = new SQLiteLink();
         sqLiteLink.changeScene(event, "Profile.fxml", "Home");
+    }
+
+    @FXML
+    public void LogOut(ActionEvent event) {
+        // Logout and go back to the login page
+        sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
+    }
+
+    @FXML
+    public void goToCalculator() {
+        // For now, just display an alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Calculator");
+        alert.setHeaderText(null);
+        alert.setContentText("Calculator button clicked");
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void goToMap(ActionEvent event) {
+        // Go back to the landing page
+        sqLiteLink.changeScene(event, "LandingPage.fxml", "Map");
+    }
+
+    @FXML
+    public void goToComparePage(ActionEvent event) {
+        // Go back to the landing page
+        sqLiteLink.changeScene(event, "PricePage.fxml", "Compare Page");
     }
 }
 

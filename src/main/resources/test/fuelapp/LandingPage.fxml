@@ -72,7 +72,7 @@
          </HBox>
       </children>
    </HBox>
-   <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-background-color: DAD7CD;" VBox.vgrow="ALWAYS">
+   <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-background-color: A3B18A;" VBox.vgrow="ALWAYS">
       <children>
       
                 <Label text="Price Tracker">

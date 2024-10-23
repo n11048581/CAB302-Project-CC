@@ -162,7 +162,7 @@
                               </VBox>
                            </children>
                         </HBox>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#toSettings" style="-fx-background-color: #3A5A40; -fx-border-radius: 100;" text="Edit Profile" textFill="WHITE">
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#toSettings" style="-fx-background-color: #3A5A40; -fx-border-radius: 100;" text="Edit Details" textFill="WHITE">
                            <VBox.margin>
                               <Insets bottom="20.0" />
                            </VBox.margin>

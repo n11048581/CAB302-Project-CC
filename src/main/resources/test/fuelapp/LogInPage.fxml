@@ -1,74 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.LoginController">
-
-
-    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-      <children>
-            <AnchorPane prefHeight="50.0" prefWidth="1200.0" style="-fx-background-color: grey;">
-                <children>
-                    <Label layoutX="581.0" layoutY="15.0" text="Header" />
-                </children>
-            </AnchorPane>
-            <AnchorPane id="loginPartOne" prefHeight="755.0" prefWidth="1200.0" style="-fx-background-color: #ede7e5;">
-                <children>
-                    <TextField fx:id="tf_username" layoutX="505.0" layoutY="253.0" prefHeight="32.0" prefWidth="191.0" promptText="Username">
-                  <font>
-                     <Font size="14.0" />
-                  </font>
-               </TextField>
-               <PasswordField fx:id="pf_password" layoutX="505.0" layoutY="299.0" onAction="#onEnter" prefHeight="32.0" prefWidth="191.0" promptText="Password">
-                  <font>
-                     <Font size="14.0" />
-                  </font>
-               </PasswordField>
-                    <Label fx:id="label_welcome" layoutX="477.0" layoutY="102.0" text="Welcome!">
-                        <font>
-                            <Font name="Arial Rounded MT Bold" size="51.0" />
-                        </font>
-                    </Label>
-                    <Button fx:id="button_login" layoutX="564.0" layoutY="438.0" mnemonicParsing="false" onAction="#Login" text="Login">
-                        <font>
-                            <Font size="19.0" />
-                        </font>
-                    </Button>
-                    <Label fx:id="label_not_user" layoutX="505.0" layoutY="351.0" text="Not a user?">
-                        <font>
-                            <Font name="Arial Rounded MT Bold" size="12.0" />
-                        </font>
-                    </Label>
-                    <Button fx:id="button_signup" layoutX="630.0" layoutY="347.0" mnemonicParsing="false" onAction="#SignUp" style="-fx-background-color: transparent;" text="Sign Up!" textFill="#0400ff" underline="true">
-                        <font>
-                            <Font name="Arial Rounded MT Bold" size="12.0" />
-                        </font>
-                    </Button>
-                    <Label fx:id="isConnectedUsername" layoutX="716.0" layoutY="253.0" prefHeight="32.0" prefWidth="392.0" textFill="RED" />
-               <ImageView fitHeight="105.0" fitWidth="140.0" layoutX="337.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" />
-               <Label fx:id="label_loading" layoutX="394.0" layoutY="242.0" text="Fetching User Data..." visible="false">
-                  <font>
-                     <Font name="Arial Rounded MT Bold" size="40.0" />
-                  </font>
-               </Label>
-               <ImageView fx:id="loading_gif" fitHeight="105.0" fitWidth="109.0" layoutX="547.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                  <image>
-                     <Image url="@loading.gif" />
-                  </image>
-               </ImageView>
-               <Label fx:id="label_redirect" layoutX="286.0" layoutY="279.0" prefHeight="40.0" prefWidth="177.0" text="Account created! Please log in!" visible="false" />
-                </children>
-            </AnchorPane>
-      </children>
-    </VBox>
-
-
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: A3B18A;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.LoginController">
+   <children>
+      <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="1200.0" spacing="20.0" style="-fx-background-color: #344E41;">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fitHeight="33.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@logo.PNG" />
+                     </image>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="NEVER">
+               <children>
+                  <Button mnemonicParsing="false" style="-fx-background-color: transparent;" />
+               </children>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </HBox>
+         </children>
+      </HBox>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                       <Label fx:id="label_welcome" text="Welcome!">
+                           <font>
+                               <Font name="SansSerif Bold" size="51.0" />
+                           </font>
+                       </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="label_loading" prefHeight="67.0" prefWidth="436.0" text="Fetching User Data..." visible="false">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="loading_gif" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@loading.gif" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="57.0" prefWidth="1200.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label fx:id="label_redirect" prefHeight="40.0" prefWidth="177.0" text="Account created! Please log in!" visible="false" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                       <TextField fx:id="tf_username" minWidth="191.0" prefHeight="32.0" prefWidth="191.0" promptText="Username">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="413.0" />
+                     </HBox.margin>
+                  </TextField>
+                       <Label fx:id="isConnectedUsername" prefHeight="32.0" prefWidth="392.0" textFill="RED">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin></Label>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <PasswordField fx:id="pf_password" minWidth="191.0" onAction="#onEnter" prefHeight="32.0" prefWidth="191.0" promptText="Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </PasswordField>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                       <Label fx:id="label_not_user" prefHeight="25.0" prefWidth="73.0" text="Not a user?">
+                           <font>
+                               <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
+                       </Label>
+                       <Button fx:id="button_signup" mnemonicParsing="false" onAction="#SignUp" style="-fx-background-color: transparent; -fx-border-color: transparent;" text="Sign Up!" textFill="#0400ff" underline="true">
+                           <font>
+                               <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
+                       </Button>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                       <Button fx:id="button_login" mnemonicParsing="false" onAction="#Login" style="-fx-background-color: #344E41;" text="Login" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                               <Font size="19.0" />
+                           </font>
+                       </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+ </VBox>

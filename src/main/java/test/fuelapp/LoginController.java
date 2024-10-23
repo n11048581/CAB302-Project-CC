@@ -64,6 +64,10 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (SignUpController.isARedirect){
             label_redirect.setVisible(true);
+            SignUpController.isARedirect = false;
+        }
+        else {
+            label_redirect.setVisible(false);
         }
     }
 
