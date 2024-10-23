@@ -5,22 +5,19 @@ import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import org.apache.commons.lang.ArrayUtils;
+import javafx.scene.paint.Color;
 import test.fuelapp.sample.FuelPriceAPI;
-import test.fuelapp.sample.FuelPriceAPI.StationDetails;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ComparePageController {
     Connection connection;
     DatabaseOperations databaseOperations = new DatabaseOperations();
     SQLiteLink sqLiteLink = new SQLiteLink();
     FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
+
+    ArrayList<String> currentSearchResults = new ArrayList<String>();
 
     public ComparePageController() {
         connection = SQLiteLink.Connector();
@@ -39,8 +36,6 @@ public class ComparePageController {
 
     public int currentPageNumber = 0;
 
-    private boolean distanceSelected = true;
-
     @FXML
     private TextField searchBar;
 
@@ -48,17 +43,9 @@ public class ComparePageController {
     private Button searchButton;
 
     @FXML
-    private VBox comparePriceBox;
-    @FXML
-    private ToggleGroup Compare;
-
-    @FXML
     private RadioButton priceRadioButton;
     @FXML
     private RadioButton distanceRadioButton;
-
-    @FXML
-    private Label label_nothing_to_show;
 
     @FXML
     private Label label_search0, label_search1, label_search2, label_search3, label_search4, label_search5, label_search6, label_search7, label_search8, label_search9;
@@ -75,6 +62,7 @@ public class ComparePageController {
 
     @FXML
     private void initialize() throws SQLException {
+        // Initialise page by loading user details, sorting by distance and initialising page number button
         button_previous_page.setDisable(true);
         loadUserDetailsComparePage();
         handlePriceCompare("crow_flies_to_user");
@@ -123,6 +111,7 @@ public class ComparePageController {
 */
     }
 
+    // Load current user's details from database
     public void loadUserDetailsComparePage() {
         IUser user = databaseOperations.getUserDetails(LoginController.current_user);
         if (user != null) {
@@ -135,7 +124,7 @@ public class ComparePageController {
         }
     }
 
-    // Update UI with each station's details, called in getStationsData()
+    /* Update UI with each station's details, called in getStationsData()
     private void updateUIWithStation(StationDetails station) {
 
         double distance = StationCalculations.calculateDistance(station.getDistance());
@@ -150,34 +139,34 @@ public class ComparePageController {
         comparePriceBox.getChildren().add(label);
         comparePriceBox.getChildren().add(new Separator());
     }
+    */
 
+    // Read radio button and load data accordingly
     public void checkRadioButton() throws SQLException{
         searchBar.setText("");
         if (priceRadioButton.isSelected()) {
-            System.out.println("Price Selected");
             handlePriceCompare("price");
         } else if (distanceRadioButton.isSelected()) {
-            System.out.println("Distance Selected");
             handlePriceCompare("crow_flies_to_user");
         }
     }
+
+    // Event that triggers when a radio button is changed
     public void watchRadioButtons(ActionEvent event) throws SQLException{
         checkRadioButton();
     }
 
 
-
     @FXML
     public void handlePriceCompare(String orderByVal) throws SQLException {
-        // Get the list of StationDetails objects
-        int[] currentSearchResults = new int[]{};
-        String currentLabel;
-        String label_search;
-
+        // Reset list and initialise
+        currentSearchResults.clear();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+
         // Set SQL command to match user input against database
         try {
+            // If the user wishes to see all fuel types perform an unfiltered search
             if (Objects.equals(userFuelType, "All")) {
                 String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ? ORDER BY " + orderByVal + " LIMIT 10 OFFSET ?";
                 preparedStatement = connection.prepareStatement(query);
@@ -185,6 +174,7 @@ public class ComparePageController {
                 preparedStatement.setDouble(2, currentPageNumber * 10);
 
             }
+            // If the user specifies a specific fuel type, perform a filtered search
             else {
                 String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ? AND fuel_type = ? ORDER BY " + orderByVal + " LIMIT 10 OFFSET ?";
                 preparedStatement = connection.prepareStatement(query);
@@ -193,35 +183,52 @@ public class ComparePageController {
                 preparedStatement.setDouble(3, currentPageNumber * 10);
             }
 
-            // Query if all data is requested
+            // Execute chosen query
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
 
 
-            // While there is an entry to show, create a label that displays station data
+            // While there is an entry to show, create a label, HBox and button that displays data
             Label[] comparePageLabels =new Label[]{label_search0,label_search1, label_search2, label_search3, label_search4, label_search5, label_search6, label_search7, label_search8, label_search9};
             HBox[] comparePageHBoxes =new HBox[]{hbox_search0, hbox_search1, hbox_search2, hbox_search3, hbox_search4, hbox_search5, hbox_search6, hbox_search7, hbox_search8, hbox_search9};
             Button[] comparePageButtons =new Button[]{button_search0, button_search1, button_search2, button_search3, button_search4, button_search5, button_search6, button_search7, button_search8, button_search9};
 
+            // Create a string array containing the users current bookmarks
             String[] rawBookmarks = bookmark.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
-            Integer[] bookmarkArray = new Integer[rawBookmarks.length];
-            for (int q = 0; q < rawBookmarks.length; q++) {
-                bookmarkArray[q] = Integer.parseInt(rawBookmarks[q]);
+            String[] bookmarkArray = new String[rawBookmarks.length];
+            for (int i = 0; i < rawBookmarks.length; i++) {
+                bookmarkArray[i] = String.valueOf(rawBookmarks[i]);
             }
 
+            // For each of the 10 results being shown per page
             for (int i = 0; i < 10; i++) {
                 try {
-                    comparePageHBoxes[i].setStyle("-fx-background-color: DAD7CD; -fx-background-radius: 30;");
+                    // Create a label showing the data for the current station
                     comparePageLabels[i].setText(resultSet.getString("station_name") +
                             " : " + resultSet.getString("station_address") +
                             " - Price: " + resultSet.getDouble("price") / 10 +
                             " - Fuel type: " + resultSet.getString("fuel_type") +
                             " - Distance: " + String.format("%.2f", Double.parseDouble(resultSet.getString("crow_flies_to_user"))) + "kms");
+                    // Adapt UI to what data is being shown, only displaying containers when there is data available
 
+                    comparePageHBoxes[i].setStyle("-fx-background-color: DAD7CD; -fx-background-radius: 30;");
+                    comparePageButtons[i].setTextFill(Color.web("#000000"));
                     comparePageButtons[i].setDisable(false);
+                    comparePageButtons[i].setText("♥");
 
+                    // If the current station has been bookmarked already, display a red heart
+                    if (Arrays.asList(bookmarkArray).contains(resultSet.getString("id"))){
+                        comparePageButtons[i].setTextFill(Color.web("#ff0000"));
+                    }
+
+                    // Add the current stations id to a list, used to manage bookmarks
+                    currentSearchResults.add(resultSet.getString("id"));
+
+                    // Move to next station
                     resultSet.next();
+                // If no more stations to show, ie Null exception
                 } catch (NullPointerException e){
+                    // Set UI elements, disabling buttons and hiding unneeded elements
                     comparePageHBoxes[i].setStyle("-fx-background-color: A3B18A;");
                     comparePageLabels[i].setText("");
                     comparePageButtons[i].setText("");
@@ -229,7 +236,6 @@ public class ComparePageController {
                     button_next_page.setDisable(true);
                 }
             }
-
             // Close statements to prevent database freezing up
             resultSet.close();
             preparedStatement.close();
@@ -240,46 +246,90 @@ public class ComparePageController {
 
     @FXML
     public void handleDistanceSearch(String orderByVal) throws SQLException {
-        // Get the search query from the search bar
+        // Initialise page numbers, read the search bar and reset query result list
         String searchQuery = searchBar.getText();
         int i = 0;
+        currentPageNumber = 0;
+        button_previous_page.setDisable(true);
+        currentSearchResults.clear();
+
         // Initialise prepared statement and variable to store query results
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         // Set SQL command to match user input against database
-        String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? AND crow_flies_to_user < ? ORDER BY " + orderByVal + " LIMIT 10 OFFSET ?";
         try {
+             // If the user wishes to see all fuel types perform an unfiltered search
+            if (Objects.equals(userFuelType, "All")) {
+                String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? AND crow_flies_to_user < ? ORDER BY " + orderByVal + " LIMIT 10 OFFSET ?";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, "%" + searchQuery.toLowerCase() + "%");
+                preparedStatement.setString(2, userMaxTravelDistance);
+                preparedStatement.setDouble(3, currentPageNumber * 10);
+
+            }
+            // If the user specifies a specific fuel type, perform a filtered search
+            else {
+                String query = "SELECT * FROM gas_stations WHERE LOWER(station_name) LIKE ? AND crow_flies_to_user < ? AND fuel_type = ? ORDER BY " + orderByVal + " LIMIT 10 OFFSET ?";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, "%" + searchQuery.toLowerCase() + "%");
+                preparedStatement.setString(2, userMaxTravelDistance);
+                preparedStatement.setString(3, userFuelType);
+                preparedStatement.setDouble(4, currentPageNumber * 10);
+            }
+
             // Execute query on entered username and password
-            preparedStatement = connection.prepareStatement(query);
-
-            preparedStatement.setString(1, "%" + searchQuery.toLowerCase() + "%");
-            preparedStatement.setString(2, userMaxTravelDistance);
-            preparedStatement.setDouble(3, currentPageNumber * 10);
-
             resultSet = preparedStatement.executeQuery();
+            resultSet.next();
 
 
-            // While there is an entry to show, create a label that displays station data
+            // While there is an entry to show, create a label, HBox and button that displays data
             Label[] comparePageLabels =new Label[]{label_search0,label_search1, label_search2, label_search3, label_search4, label_search5, label_search6, label_search7, label_search8, label_search9};
             HBox[] comparePageHBoxes =new HBox[]{hbox_search0, hbox_search1, hbox_search2, hbox_search3, hbox_search4, hbox_search5, hbox_search6, hbox_search7, hbox_search8, hbox_search9};
-            Array[] currentSearchResults = new Array[]{};
-            while (i < 10) {
-                try {
-                    comparePageHBoxes[i].setStyle("-fx-background-color: DAD7CD; -fx-background-radius: 30;");
+            Button[] comparePageButtons =new Button[]{button_search0, button_search1, button_search2, button_search3, button_search4, button_search5, button_search6, button_search7, button_search8, button_search9};
 
-                    comparePageLabels[i].setText(resultSet.getString("station_name") +
+            // Create a string array containing the users current bookmarks
+            String[] rawBookmarks = bookmark.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
+            String[] bookmarkArray = new String[rawBookmarks.length];
+            for (int q = 0; q < rawBookmarks.length; q++) {
+                bookmarkArray[q] = String.valueOf(rawBookmarks[q]);
+            }
+
+            // For each of the 10 results being shown per page
+            for (int q = 0; q < 10; q++) {
+                try {
+                    // Create a label showing the data for the current station
+                    comparePageLabels[q].setText(resultSet.getString("station_name") +
                             " : " + resultSet.getString("station_address") +
                             " - Price: " + resultSet.getDouble("price") / 10 +
                             " - Fuel type: " + resultSet.getString("fuel_type") +
                             " - Distance: " + String.format("%.2f", Double.parseDouble(resultSet.getString("crow_flies_to_user"))) + "kms");
+
+                    // Adapt UI to what data is being shown, only displaying containers when there is data avaliable
+                    comparePageHBoxes[q].setStyle("-fx-background-color: DAD7CD; -fx-background-radius: 30;");
+                    comparePageButtons[q].setTextFill(Color.web("#000000"));
+                    comparePageButtons[q].setDisable(false);
+                    comparePageButtons[q].setText("♥");
+                    // If the current station has been bookmarked already, display a red heart
+                    if (Arrays.asList(bookmarkArray).contains(resultSet.getString("id"))){
+                        comparePageButtons[q].setTextFill(Color.web("#ff0000"));
+                    }
+
+                    // Add the current stations id to a list, used to manage bookmarks
+                    currentSearchResults.add(resultSet.getString("id"));
+
+                    // Move to next station
+                    resultSet.next();
+
+                // If no more stations
                 } catch (NullPointerException e){
-                    comparePageHBoxes[i].setStyle("-fx-background-color: A3B18A;");
-                    comparePageLabels[i].setText("");
+                    // Set UI elements, disabling buttons and hiding unneeded elements
+                    comparePageHBoxes[q].setStyle("-fx-background-color: A3B18A;");
+                    comparePageLabels[q].setText("");
+                    comparePageButtons[q].setText("");
+                    comparePageButtons[q].setDisable(true);
                     button_next_page.setDisable(true);
                 }
-                i = i + 1;
-                resultSet.next();
             }
             // Close statements to prevent database freezing up
             resultSet.close();
@@ -291,11 +341,10 @@ public class ComparePageController {
 
     @FXML
     public void handleFilter() throws SQLException{
+        // Check which radio button is selected and perform filtered search
         if (priceRadioButton.isSelected()) {
-            System.out.println("Price Selected");
             handleDistanceSearch("price");
         } else if (distanceRadioButton.isSelected()) {
-            System.out.println("Distance Selected");
             handleDistanceSearch("crow_flies_to_user");
         }
     }
@@ -318,18 +367,20 @@ public class ComparePageController {
         alert.showAndWait();
     }
 
+
     @FXML
     public void handleProfile(ActionEvent event) {
         // For now, just display an alert
         sqLiteLink.changeScene(event, "Profile.fxml", "Profile");
-
     }
+
 
     @FXML
     public void LogOut(ActionEvent event) {
         // Logout and go back to the login page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
+
 
     @FXML
     public void PageForward(ActionEvent event) throws SQLException {
@@ -340,15 +391,17 @@ public class ComparePageController {
 
     }
 
+
     @FXML
     public void PageBack(ActionEvent event) throws SQLException {
         // Logout and go back to the login page
         currentPageNumber = currentPageNumber - 1;
         if (currentPageNumber == 0) {
             button_previous_page.setDisable(true);
-            button_next_page.setDisable(false);
         }
+        button_next_page.setDisable(false);
         checkRadioButton();
+
     }
 
 
@@ -363,18 +416,71 @@ public class ComparePageController {
        }
     }
 
+
     @FXML
-    public void handleBookmark(ActionEvent event) throws SQLException{
+    public void handleBookmark(ActionEvent event) throws SQLException {
+        // Initialise variables to index lists and track whether a result if found in list
+        int matchFoundCounter = 0;
+        boolean matchFound = false;
+
+        // JavaFX buttons that correspond to the "bookmark" buttons
+        Button[] comparePageButtons = new Button[]{button_search0, button_search1, button_search2, button_search3, button_search4, button_search5, button_search6, button_search7, button_search8, button_search9};
+
+        // Read from IUser to get the latest bookmarks and convert text to a string array.
         String[] rawBookmarks = bookmark.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
-        int[] bookmarkArray = new int[rawBookmarks.length];
+        String[] bookmarkArray = new String[rawBookmarks.length];
         for (int i = 0; i < rawBookmarks.length; i++) {
-            bookmarkArray[i] = Integer.parseInt(rawBookmarks[i]);
+            bookmarkArray[i] = String.valueOf(rawBookmarks[i]);
         }
 
-        System.out.println(Arrays.toString(bookmarkArray));
-        EventTarget target = event.getTarget();
-        System.out.println(target);
-        String numberOnly = target.toString().replaceAll("[^0-9]", "");
-        System.out.println(numberOnly);
+        // Get the fx:id of the button that is pressed, performing a regex operation to extract only the number, used to track which button is pressed
+        EventTarget targetString = event.getTarget();
+        String numberOnly = targetString.toString().replaceAll("[^0-9]", "");
+        int numberOnlyInt = Integer.parseInt(numberOnly);
+
+        // For every element in the bookmark array, containing the users current bookmarks, check whether the pressed button is already bookmarked
+        for (int bmarkCounter = 0; bmarkCounter < bookmarkArray.length; bmarkCounter++) {
+            // If bookmark exists for this station
+            if (bookmarkArray[bmarkCounter].contains(currentSearchResults.get(numberOnlyInt))) {
+                matchFoundCounter = bmarkCounter;
+                matchFound = true;
+                break;
+            }
+        }
+
+        // If a bookmark does exist for this record
+        if (matchFound) {
+            // Create an arraylist out of the string array
+            ArrayList<String> updatedRemovedBookmarks = new ArrayList<String>();
+            Collections.addAll(updatedRemovedBookmarks, rawBookmarks);
+
+            // Use the ArrayList to remove the bookmark at the index found by the above for loop
+            updatedRemovedBookmarks.remove(matchFoundCounter);
+
+            // Convert ArrayList to a string so that it can be saved to the user table in database
+            String bookmarkRemoveListString = String.join(", ", updatedRemovedBookmarks);
+            databaseOperations.updateBookmarks(LoginController.current_user, bookmarkRemoveListString);
+
+            // Set colour of heart icon to black
+            comparePageButtons[numberOnlyInt].setTextFill(Color.web("#000000"));
+        }
+        // Else if bookmark does not exist
+        else {
+            // Create an arraylist out of the string array
+            ArrayList<String> updatedNewBookmarks = new ArrayList<String>();
+            updatedNewBookmarks.add(Arrays.toString(bookmarkArray).replaceAll("\\[", "").replaceAll("\\]", ""));
+
+            // Add new element to array matching the id of the station the user selected
+            updatedNewBookmarks.add(currentSearchResults.get(numberOnlyInt));
+
+            // Convert to string and update user table with new bookmark data
+            String bookmarkUpdateListString = String.join(", ", updatedNewBookmarks);
+            databaseOperations.updateBookmarks(LoginController.current_user, bookmarkUpdateListString);
+
+            // Set colour of heart icon to red
+            comparePageButtons[numberOnlyInt].setTextFill(Color.web("#ff0000"));
+        }
+        // Ensure latest user data is fetched
+        loadUserDetailsComparePage();
     }
 }

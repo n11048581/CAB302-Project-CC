@@ -69,15 +69,19 @@ public class DatabaseOperations {
             return false;
         } finally {
             // Close prepared statement
-            prepStatement.close();
-            resultSet.close();
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+            if (resultSet != null) {
+                resultSet.close();
+            }
         }
     }
 
     public void canCreateAccount(ILogin login) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
-            String sql = "INSERT INTO users (username, password, fuel_type, fuel_efficiency, latitude, longitude, max_travel_distance) VALUES(?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (username, password, fuel_type, fuel_efficiency, latitude, longitude, max_travel_distance, bookmarks) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Initialise prepared statement and replace question marks in SQL string with data entered by user
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -91,6 +95,7 @@ public class DatabaseOperations {
             preparedStatement.setDouble(5, -27.4772309);
             preparedStatement.setDouble(6, 153.0270303);
             preparedStatement.setDouble(7, 1000);
+            preparedStatement.setString(8, "0");
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -242,6 +247,50 @@ public class DatabaseOperations {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateBookmarks(String username, String newBookmarks) throws SQLException{
+        PreparedStatement prepStatement = null;
+        try {
+            String sql = "UPDATE users SET bookmarks = ? WHERE username = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, newBookmarks);
+            preparedStatement.setString(2, username);
+
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }  finally {
+            // Close prepared statement
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+        }
+    }
+
+    public String fetchBookmarks(int stationID) throws SQLException {
+        PreparedStatement prepStatement = null;
+        ResultSet resultSet = null;
+        String query = "SELECT station_name, price FROM gas_stations WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, stationID);
+
+            resultSet = preparedStatement.executeQuery();
+            return resultSet.getString("station_name") + " - " + resultSet.getDouble("price") / 10;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            // Close prepared statement
+            if (prepStatement != null) {
+                prepStatement.close();
+            }
+            if (resultSet != null) {
+                resultSet.close();
+            }
         }
     }
 }
