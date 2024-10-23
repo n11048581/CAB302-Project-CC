@@ -10,67 +10,75 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import test.fuelapp.sample.FuelPriceAPI;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 
 public class LandingPageController {
+    Connection connection;
+    DatabaseOperations databaseOperations = new DatabaseOperations();
     SQLiteLink sqLiteLink = new SQLiteLink();
+    FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
+
+    ArrayList<String> currentSearchResults = new ArrayList<String>();
+
+    public LandingPageController() {
+        connection = SQLiteLink.Connector();
+        if (connection == null) {
+            System.out.println("Database Connection Unsuccessful");
+            System.exit(1);
+        }
+    }
 
     @FXML
     private VBox gluonMap;
 
     private double userLat;
     private double userLong;
+    private String userMaxTravelDistance;
+    private String bookmark;
 
-    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
+
     private DatabaseOperations dbOperations = new DatabaseOperations();
 
     @FXML
-    public void initialize() {
-        IUser user = dbOperations.getUserDetails(LoginController.current_user);
+    public void initialize() throws SQLException {
 
-        if (user != null) {
-            // Get lat and long from the user object
-            userLat = user.getLatitude();
-            userLong = user.getLongitude();
-            System.out.println("Received Coordinates: " + userLat + ", " + userLong); // Debugging statement
-        } else {
-            // Handle the case where user details are not available
-            System.err.println("User details not found.");
-
-            // Fallback values
-            userLat = -27.823611;
-            userLong = 153.182556;
-        }
+        loadUserDetails();
+        loadStationLocation();
 
         MapView mapView = Map.createMapView(userLat, userLong);
         gluonMap.getChildren().add(mapView);
-        VBox.setVgrow(mapView, Priority.ALWAYS);
 
-        Thread thread = getThread(mapView);
-        thread.start();
+        //Thread thread = getThread(mapView);
+        //thread.start();
 
     }
 
-    private Thread getThread(MapView mapView) {
-        Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
-            @Override
-            protected Void call() throws Exception {
-                // userLat and userLong pulled from Users db table, assigned in Settings
-                fuelPriceAPI.getStationsData(String.valueOf(userLat), String.valueOf(userLong), station -> {
-                    Platform.runLater(() -> Map.updateStationLayer(station));
-                });
-                return null;
-            }
-        };
-
-        task.setOnFailed(e -> {
-            System.err.println("Failed to fetch station data: " + task.getException().getMessage());
-        });
-
-        // Run task in separate thread
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        return thread;
-    }
+//    private Thread getThread(MapView mapView) {
+//        Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
+//            @Override
+//            protected Void call() throws Exception {
+//                // userLat and userLong pulled from Users db table, assigned in Settings
+//                fuelPriceAPI.getStationsData(String.valueOf(userLat), String.valueOf(userLong), station -> {
+//                    Platform.runLater(() -> Map.updateStationLayer(station));
+//                });
+//                return null;
+//            }
+//        };
+//
+//        task.setOnFailed(e -> {
+//            System.err.println("Failed to fetch station data: " + task.getException().getMessage());
+//        });
+//
+//        // Run task in separate thread
+//        Thread thread = new Thread(task);
+//        thread.setDaemon(true);
+//        return thread;
+//    }
 
 
     @FXML
@@ -98,5 +106,49 @@ public class LandingPageController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * Retrieves user details from the database.
+     * Does nothing if a user is not found.
+     */
+    public void loadUserDetails() {
+        IUser user = databaseOperations.getUserDetails(LoginController.current_user);
+        if (user != null) {
+            userLat = user.getLatitude();
+            userLong= user.getLongitude();
+            userMaxTravelDistance = String.valueOf(user.getMaxTravelDistance());
+            //bookmark = String.valueOf(user.getBookmark());
+        }
+    }
+
+    /**
+     * Resets the map if it already exists, then retrieves a set of all gas stations less than userMaxDistance.
+     * Automatically updates map with the retrieved information.
+     * @throws SQLException
+     */
+    public void loadStationLocation() throws SQLException {
+        // Reset map, list and initialise
+        Map.resetStationLayer();
+        currentSearchResults.clear();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            //Select all stations with a distance less than the user's max travel distance
+            String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, userMaxTravelDistance);
+            resultSet = preparedStatement.executeQuery();
+
+
+            //While there are still results in the set, update the map with the stations
+            while (resultSet.next()) {
+                Map.updateStationLayerDB(resultSet.getString("station_latitude"),resultSet.getString("station_longitude"),resultSet.getString("station_name"));
+            }
+
+            resultSet.close();
+        } catch (Exception e) {
+        e.printStackTrace();
+        }
     }
 }

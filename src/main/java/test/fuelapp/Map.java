@@ -16,24 +16,27 @@ import static test.fuelapp.sample.SampleData.getSampleData;
 
 public class Map {
 
-    private FuelPriceAPI fuelPriceAPI = new FuelPriceAPI();
 
-    private static MapMarker stationMarkers = new MapMarker();
+    private static final MapMarker stationMarkers = new MapMarker();
 
     /**
-     * Creates a map view
+     * Creates a map view.
      * @return a map of the world
+     * @param latitude
+     * @param longitude
      */
     public static MapView createMapView(double latitude, double longitude) {
         MapView mapView = new MapView();
-        //these values should be adjustable later - such as for screen size and user preferences
+
+
+
         mapView.setPrefSize(1600,1200);
         mapView.setZoom(15);
         mapView.setCenter(latitude, longitude);
-        //probably put this in a conditional of some sorts? retrieve from database probably
-        //issue - not sure if i can add a layer afterwards...
+
         mapView.addLayer(stationMarkers);
         mapView.addLayer(createCenterLayer(latitude,longitude));
+
         return mapView;
     }
 
@@ -43,8 +46,21 @@ public class Map {
      */
     public static void updateStationLayer(FuelPriceAPI.StationDetails stationDetails) {
         //mapView.removeLayer(stationMarkers);
-        stationMarkers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
+
+            stationMarkers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
+
         //mapView.addLayer(stationMarkers);
+    }
+
+    /**
+     * Updates the station marker MapLayer with the provided station coordinates and name,
+     * creating a point on the mapView at position with a label.
+     * @param stationLatitude
+     * @param stationLongitude
+     * @param stationName
+     */
+    public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName) {
+        stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName));
     }
 
 
@@ -63,10 +79,20 @@ public class Map {
 //    }
 
 
+    /**
+     *
+     * @param latitude
+     * @param longitude
+     * @return
+     */
     public static MapLayer createCenterLayer(double latitude, double longitude) {
         MapMarker marker = new MapMarker();
         marker.addPoint(new MapPoint(latitude, longitude), new Circle(4, Color.BLUE));
         return marker;
+    }
+
+    public static void createBookmarkLayer() {
+
     }
 
 
@@ -82,6 +108,23 @@ public class Map {
         return new MapPoint(latitude, longitude);
     }
 
+    /**
+     *
+     * @param lati
+     * @param longi
+     * @return
+     */
+    public static MapPoint loadCoordinatesDB(String lati, String longi) {
+        double latitude = Double.parseDouble(lati);
+        double longitude = Double.parseDouble(longi);
+        return new MapPoint(latitude,longitude);
+    }
+
+    /**
+     *
+     * @param stationDetails
+     * @return
+     */
     public static Group createMapIcon(FuelPriceAPI.StationDetails stationDetails) {
         String stationName = stationDetails.getName();
         Group icon = new Group();
@@ -94,4 +137,45 @@ public class Map {
         return icon;
     }
 
+    /**
+     *
+     * @param stationName
+     * @return
+     */
+    public static Group createMapIconDB(String stationName) {
+        Group icon = new Group();
+        Text name = new Text(10,10,stationName);
+        name.setFill(Color.WHITE);
+        name.setStroke(Color.BLACK);
+        name.setStrokeWidth(0.5);
+        icon.getChildren().add(name);
+        icon.getChildren().add(new Circle(4,Color.RED));
+        return icon;
+    }
+
+    /**
+     *
+     */
+    public static void resetStationLayer() {
+        stationMarkers.clearPoints();
+        System.out.println("points cleared");
+    }
+
+    /**
+     *
+     * @param map
+     */
+    public static void unloadMap(MapView map) {
+        map.removeLayer(stationMarkers);
+    }
+
+    /**
+     *
+     * @param map
+     */
+    public static void loadMap(MapView map) {
+        map.addLayer(stationMarkers);
+    }
+
 }
+
