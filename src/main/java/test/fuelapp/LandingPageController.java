@@ -12,7 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+/**
+ * The controller class for the Landing Page view of the application.
+ */
 public class LandingPageController {
     Connection connection;
     DatabaseOperations databaseOperations = new DatabaseOperations();
@@ -20,6 +22,9 @@ public class LandingPageController {
 
     ArrayList<String> currentSearchResults = new ArrayList<String>();
 
+    /**
+     * Starts SQL connection.
+     */
     public LandingPageController() {
         connection = SQLiteLink.Connector();
         if (connection == null) {

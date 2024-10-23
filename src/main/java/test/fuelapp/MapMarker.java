@@ -8,6 +8,9 @@ import javafx.scene.Node;
 import javafx.util.Pair;
 
 
+/**
+ * A class that represents the main station marker layer for the map.
+ */
 public class MapMarker extends MapLayer {
 
     private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();

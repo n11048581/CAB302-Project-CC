@@ -9,7 +9,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import test.fuelapp.sample.FuelPriceAPI;
 
-
+/**
+ * A class that represents the main map on the Landing Page
+ */
 public class Map {
 
 
