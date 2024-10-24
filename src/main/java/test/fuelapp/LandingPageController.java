@@ -150,7 +150,12 @@ public class LandingPageController {
                 resultSet.next();
 
                 while (resultSet.next()) {
-                    Map.updateStationLayerDB(resultSet.getString("station_latitude"), resultSet.getString("station_longitude"), resultSet.getString("station_name"));
+
+                    String station_latitude = resultSet.getString("station_latitude");
+                    String station_longitude = resultSet.getString("station_longitude");
+                    String station_name = resultSet.getString("station_name");
+                    double station_distance = resultSet.getDouble("crow_flies_to_user");
+                    Map.updateStationLayerDB(station_latitude, station_longitude, station_name, station_distance);
                 }
 
             }
@@ -166,7 +171,12 @@ public class LandingPageController {
                 resultSet.next();
 
                 while (resultSet.next()) {
-                    Map.updateStationLayerDB(resultSet.getString("station_latitude"), resultSet.getString("station_longitude"), resultSet.getString("station_name"), resultSet.getDouble("price") / 10);
+                    String station_latitude = resultSet.getString("station_latitude");
+                    String station_longitude = resultSet.getString("station_longitude");
+                    String station_name = resultSet.getString("station_name");
+                    double station_distance = resultSet.getDouble("crow_flies_to_user");
+                    double station_price = resultSet.getDouble("price") / 10;
+                    Map.updateStationLayerDB(station_latitude, station_longitude, station_name, station_distance,station_price);
                 }
             }
             //Select all stations with a distance less than the user's max travel distance

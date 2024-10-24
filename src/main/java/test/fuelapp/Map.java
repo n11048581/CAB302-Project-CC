@@ -57,8 +57,8 @@ public class Map {
      * @param stationLongitude Longitude of the station
      * @param stationName Name of the station
      */
-    public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName) {
-        stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName));
+    public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName, double distance) {
+        stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName, distance));
     }
 
 
@@ -71,8 +71,8 @@ public class Map {
      * @param stationName
      * @param fuelPrice
      */
-    public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName, double fuelPrice) {
-        stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName, fuelPrice));
+    public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName, double distance, double fuelPrice) {
+        stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName, distance, fuelPrice));
     }
 
 
@@ -149,13 +149,18 @@ public class Map {
      * @param stationName Name of the station
      * @return a MapIcon group
      */
-    public static Group createMapIconDB(String stationName) {
+    public static Group createMapIconDB(String stationName, double distance) {
         Group icon = new Group();
         Text name = new Text(10,10,stationName);
+        Text travel = new Text(10, 25, String.format("%.2f", distance) + " km");
         name.setFill(Color.WHITE);
         name.setStroke(Color.BLACK);
         name.setStrokeWidth(0.5);
+        travel.setFill(Color.WHITE);
+        travel.setStroke(Color.BLACK);
+        travel.setStrokeWidth(0.5);
         icon.getChildren().add(name);
+        icon.getChildren().add(travel);
         icon.getChildren().add(new Circle(4,Color.RED));
         return icon;
     }
@@ -166,18 +171,23 @@ public class Map {
      * @param fuelPrice price of the fuel
      * @return a MapIcon group
      */
-    public static Group createMapIconDB(String stationName, double fuelPrice) {
+    public static Group createMapIconDB(String stationName, double distance, double fuelPrice) {
         Group icon = new Group();
         Text name = new Text(10,10,stationName);
-        Text price = new Text(20, 20, String.valueOf(fuelPrice));
+        Text travel = new Text(10, 25, String.format("%.2f", distance) + " km");
+        Text price = new Text(10, 40, String.format("%.1f", fuelPrice) + " c");
         name.setFill(Color.WHITE);
         name.setStroke(Color.BLACK);
         name.setStrokeWidth(0.5);
         price.setFill(Color.WHITE);
         price.setStroke(Color.BLACK);
         price.setStrokeWidth(0.5);
+        travel.setFill(Color.WHITE);
+        travel.setStroke(Color.BLACK);
+        travel.setStrokeWidth(0.5);
         icon.getChildren().add(name);
         icon.getChildren().add(price);
+        icon.getChildren().add(travel);
         icon.getChildren().add(new Circle(4,Color.RED));
         return icon;
     }
