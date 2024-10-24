@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * The controller class for the Landing Page view of the application.
@@ -39,6 +40,7 @@ public class LandingPageController {
     private double userLat;
     private double userLong;
     private String userMaxTravelDistance;
+    private String userFuelType;
     private String bookmark;
 
 
@@ -116,6 +118,7 @@ public class LandingPageController {
             userLat = user.getLatitude();
             userLong= user.getLongitude();
             userMaxTravelDistance = String.valueOf(user.getMaxTravelDistance());
+            userFuelType = String.valueOf(user.getFuelType());
             //bookmark = String.valueOf(user.getBookmark());
         }
     }
@@ -132,17 +135,37 @@ public class LandingPageController {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            //Select all stations with a distance less than the user's max travel distance
-            String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ?";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, userMaxTravelDistance);
-            resultSet = preparedStatement.executeQuery();
+            // If the user wishes to see all fuel types perform an unfiltered search
+            if (Objects.equals(userFuelType, "All")) {
+                System.out.println("All fuel types");
+                String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ?";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, userMaxTravelDistance);
 
+                resultSet = preparedStatement.executeQuery();
+                resultSet.next();
 
-            //While there are still results in the set, update the map with the stations
-            while (resultSet.next()) {
-                Map.updateStationLayerDB(resultSet.getString("station_latitude"),resultSet.getString("station_longitude"),resultSet.getString("station_name"));
+                while (resultSet.next()) {
+                    Map.updateStationLayerDB(resultSet.getString("station_latitude"), resultSet.getString("station_longitude"), resultSet.getString("station_name"));
+                }
+
             }
+            // If the user specifies a specific fuel type, perform a filtered search
+            else {
+                System.out.println("custom fuel type");
+                String query = "SELECT * FROM gas_stations WHERE crow_flies_to_user < ? AND fuel_type = ?";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, userMaxTravelDistance);
+                preparedStatement.setString(2, userFuelType);
+
+                resultSet = preparedStatement.executeQuery();
+                resultSet.next();
+
+                while (resultSet.next()) {
+                    Map.updateStationLayerDB(resultSet.getString("station_latitude"), resultSet.getString("station_longitude"), resultSet.getString("station_name"), resultSet.getDouble("price") / 10);
+                }
+            }
+            //Select all stations with a distance less than the user's max travel distance
 
             resultSet.close();
         } catch (Exception e) {
