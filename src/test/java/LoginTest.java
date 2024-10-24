@@ -28,7 +28,7 @@ class LoginTest {
     void testIsValidLogin() throws SQLException {
         boolean ans = true;
         boolean val;
-        val = databaseOperations.isValidLogin("test", "test");
+        val = databaseOperations.isValidLogin("goodusername", "GoodPassword@1");
         assertEquals(ans, val);
     }
 
@@ -39,4 +39,14 @@ class LoginTest {
         val = databaseOperations.isValidLogin("badusername", "badpassword");
         assertEquals(ans, val);
     }
+
+    @Test
+    void testDoubleLogin() throws SQLException {
+        boolean val;
+        boolean val2;
+        val = databaseOperations.isValidLogin("user1", "Password@1");
+        val2 = databaseOperations.isValidLogin("user2", "Password@1");
+        assertEquals(val,val2);
+    }
 }
+

@@ -45,7 +45,9 @@ public class DatabaseOperations {
             return false;
         } finally {
             // Close prepared statement
+            assert prepStatement != null;
             prepStatement.close();
+            assert resultSet != null;
             resultSet.close();
         }
     }
