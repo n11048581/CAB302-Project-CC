@@ -4,6 +4,7 @@ import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.util.Pair;
 
@@ -34,6 +35,18 @@ public class MapMarker extends MapLayer {
         points.clear();
         this.getChildren().clear();
         this.markDirty();
+    }
+
+    @Override
+    protected void layoutLayer() {
+        for (Pair<MapPoint, Node> candidate : points) {
+            MapPoint point = candidate.getKey();
+            Node icon = candidate.getValue();
+            Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude());
+            icon.setVisible(true);
+            icon.setTranslateX(mapPoint.getX());
+            icon.setTranslateY(mapPoint.getY());
+        }
     }
 
 }
