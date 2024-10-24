@@ -28,7 +28,7 @@ class LoginTest {
     void testIsValidLogin() throws SQLException {
         boolean ans = true;
         boolean val;
-        val = databaseOperations.isValidLogin("goodusername", "GoodPassword@1");
+        val = databaseOperations.isValidLogin("test", "test");
         assertEquals(ans, val);
     }
 
@@ -49,4 +49,3 @@ class LoginTest {
         assertEquals(val,val2);
     }
 }
-
