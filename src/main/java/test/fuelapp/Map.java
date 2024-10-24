@@ -56,6 +56,7 @@ public class Map {
      * @param stationLatitude Latitude of the station
      * @param stationLongitude Longitude of the station
      * @param stationName Name of the station
+     * @param distance distance of the station
      */
     public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName, double distance) {
         stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName, distance));
@@ -66,10 +67,11 @@ public class Map {
      * Overloaded method.
      * Updates the station marker MapLayer with the provided coordinates, name and price
      * creating a point on the mapView at position with a label.
-     * @param stationLatitude
-     * @param stationLongitude
-     * @param stationName
-     * @param fuelPrice
+     * @param stationLatitude latitude of the station
+     * @param stationLongitude longitude of the station
+     * @param stationName name of the station
+     * @param fuelPrice fuel price of the station
+     * @param distance distance of the station
      */
     public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName, double distance, double fuelPrice) {
         stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName, distance, fuelPrice));
@@ -147,6 +149,7 @@ public class Map {
     /**
      * Creates a MapIcon Group with label set to station name
      * @param stationName Name of the station
+     * @param distance distance of the station
      * @return a MapIcon group
      */
     public static Group createMapIconDB(String stationName, double distance) {
@@ -168,6 +171,7 @@ public class Map {
     /**
      * Overloaded method. Creates a MapIcon Group with labels set to station name and price
      * @param stationName name of the station
+     * @param distance distance of the station
      * @param fuelPrice price of the fuel
      * @return a MapIcon group
      */

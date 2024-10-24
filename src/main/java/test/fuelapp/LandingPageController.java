@@ -129,6 +129,7 @@ public class LandingPageController {
 
     /**
      * Resets the map if it already exists, then retrieves a set of all gas stations less than userMaxDistance.
+     * If a specific fuel type is set, also retrieve fuel prices.
      * Automatically updates map with the retrieved information.
      * @throws SQLException
      */
