@@ -38,7 +38,11 @@ public class ProfileController {
     private VBox vbox_fav_stations;
 
     @FXML
+    private Label label_current_user;
+
+    @FXML
     public void initialize() throws SQLException{
+        label_current_user.setText(LoginController.current_user);
         loadUserDetailsProfile();
         displayBookmarks();
     }

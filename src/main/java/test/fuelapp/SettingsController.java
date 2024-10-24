@@ -57,10 +57,14 @@ public class SettingsController  extends Thread {
     @FXML
     private Label label_loading;
 
+    @FXML
+    private Label label_current_user;
+
     private String currentUsername = LoginController.current_user;
 
     @FXML
     public void initialize() {
+        label_current_user.setText(LoginController.current_user);
         loadUserDetailsSettings();
     }
 

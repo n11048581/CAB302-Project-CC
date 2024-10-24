@@ -4,6 +4,7 @@ import com.gluonhq.maps.MapView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.sql.Connection;
@@ -43,9 +44,12 @@ public class LandingPageController {
     private String userFuelType;
     private String bookmark;
 
+    @FXML
+    private Label label_current_user;
 
     @FXML
     public void initialize() throws SQLException {
+        label_current_user.setText(LoginController.current_user);
 
         loadUserDetails();
         loadStationLocation();
