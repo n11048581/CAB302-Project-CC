@@ -62,6 +62,20 @@ public class Map {
     }
 
 
+    /**
+     * Overloaded method.
+     * Updates the station marker MapLayer with the provided coordinates, name and price
+     * creating a point on the mapView at position with a label.
+     * @param stationLatitude
+     * @param stationLongitude
+     * @param stationName
+     * @param fuelPrice
+     */
+    public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName, double fuelPrice) {
+        stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName, fuelPrice));
+    }
+
+
 //    /**
 //     * Takes in a list of station details and returns a map layer containing markers placed at the locations of those stations
 //     * @param stationDetailsList a list containing station details
@@ -142,6 +156,28 @@ public class Map {
         name.setStroke(Color.BLACK);
         name.setStrokeWidth(0.5);
         icon.getChildren().add(name);
+        icon.getChildren().add(new Circle(4,Color.RED));
+        return icon;
+    }
+
+    /**
+     * Overloaded method. Creates a MapIcon Group with labels set to station name and price
+     * @param stationName name of the station
+     * @param fuelPrice price of the fuel
+     * @return a MapIcon group
+     */
+    public static Group createMapIconDB(String stationName, double fuelPrice) {
+        Group icon = new Group();
+        Text name = new Text(10,10,stationName);
+        Text price = new Text(20, 20, String.valueOf(fuelPrice));
+        name.setFill(Color.WHITE);
+        name.setStroke(Color.BLACK);
+        name.setStrokeWidth(0.5);
+        price.setFill(Color.WHITE);
+        price.setStroke(Color.BLACK);
+        price.setStrokeWidth(0.5);
+        icon.getChildren().add(name);
+        icon.getChildren().add(price);
         icon.getChildren().add(new Circle(4,Color.RED));
         return icon;
     }
