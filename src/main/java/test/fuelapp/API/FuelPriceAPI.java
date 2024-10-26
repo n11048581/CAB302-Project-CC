@@ -6,21 +6,38 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import test.fuelapp.*;
+import java.io.IOException;
+import java.sql.SQLException;
 
+/**
+ *  FuelPriceAPI is a class providing methods for interacting with the Queensland Mandatory Fuel Reporting API.
+ *  It fetches fuel type, petrol station location, and petrol price data for each petrol listing in Queensland
+ *  and stores them in a map named StationDetails.
+ *
+ *  <p>Example usage:</p>
+ *  <pre>
+ *      FuelPriceAPI api = new FuelPriceAPI();
+ *      fuelPriceAPI.getStationsData();
+ *  </pre>
+ */
 
 public class FuelPriceAPI {
     private static final String BASE_API_URL = "https://fppdirectapi-prod.fuelpricesqld.com.au";
     private static final String TOKEN = "5552f2b5-d71d-454f-909d-c0aefa2057c4";
     private Map<String, StationDetails> stationsMap;
 
-
+    /**
+     * Joins data from the three API call methods and stores them in stationsMap.
+     * <p>
+     *     This method catches and handles exceptions which occur during API calls or database updates.
+     *     Any Errors are logged to console to provide feedback on the nature of issues, such as network or database errors.
+     * </p>
+     */
     public void getStationsData() {
         stationsMap = new HashMap<>();
         int counter = 0;
@@ -29,8 +46,16 @@ public class FuelPriceAPI {
             // Fuel type map
             Map<String, String> fuelTypesMap = getFuelTypes();
 
+            if (fuelTypesMap.isEmpty()) {
+                throw new IOException("Failed to fetch fuel types. Empty API response returned.");
+            }
+
             // Full site details map
             stationsMap = getFullSiteDetails();
+
+            if (stationsMap.isEmpty()) {
+                throw new IOException("Failed to fetch site details. Empty API response returned.");
+            }
 
             // Update stationsMap with site prices
             getSitesPrices(stationsMap, fuelTypesMap);
@@ -49,21 +74,30 @@ public class FuelPriceAPI {
                         counter = counter + 1;
                         System.out.println("Update" + counter);
 
-                    } catch (Exception e) {
-                        System.err.println("Error in API database update");
+                    } catch (SQLException e) {
+                        System.err.println("Database update failed for station: " + station.getName() + " -- " + e.getMessage());
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid data format in price for station: " + station.getName() + " -- " + e.getMessage());
                     }
                 }
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Error during API call: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public Map<String, StationDetails> getStationsMap() {
-        return stationsMap;
-    }
-
+    /**
+     * Fetches fuel types from API and stores them in a fuelTypesMap
+     * @param connection used in the non-overloaded method for testing purposes - relevant tests can be found in FuelPriceAPITest.java
+     * @return a Map in which the keys are fuel type IDs and values are the fuel type names
+     * @throws IOException if there is a network connection error or non-200 HTTP response code
+     * @throws IllegalStateException if JSON response does not match expected format (e.g., missing Fuels array)
+     */
     public static Map<String, String> getFuelTypes(HttpURLConnection connection) throws Exception {
         Map<String, String> fuelTypesMap = new HashMap<>();
 
@@ -112,19 +146,21 @@ public class FuelPriceAPI {
                         //System.out.println("Fuel ID: " + fuelId + ", Fuel Name: " + fuelName);
                     }
                 } else {
-                    System.err.println("Error: 'Fuels' key not found or is not an array.");
+                    throw new IllegalStateException("Fuel array missing from JSON response.");
                 }
             } else {
-                System.err.println("Error: Expected JSON object in getFuelTypes.");
+                throw new IllegalStateException("JSON object missing from API response.");
             }
         } else {
-            System.err.println("Error: HTTP response code " + responseCode);
+            throw new IOException("Unexpected HTTP response code: " + responseCode);
         }
 
         return fuelTypesMap;
     }
 
-    // Overloaded getFuelTypes method for production use
+    /**
+     * Overloaded method for production use
+     */
     private static Map<String, String> getFuelTypes() throws Exception {
         URL url = new URL(BASE_API_URL + "/Subscriber/GetCountryFuelTypes?countryId=21");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -132,8 +168,13 @@ public class FuelPriceAPI {
     }
 
 
-
-
+    /**
+     * Fetches site details from API and stores in stationsMap.
+     * @param connection used in the non-overloaded method for testing purposes - relevant tests can be found in FuelPriceAPITest.java.
+     * @return a Map where keys are site IDs and values are StationDetails objects for each petrol station site.
+     * @throws IOException if there is a network connection error or non-200 HTTP response code
+     * @throws IllegalStateException if JSON response does not match expected format (e.g., missing Site key array)
+     */
     public static Map<String, StationDetails> getFullSiteDetails(HttpURLConnection connection) throws Exception {
         Map<String, StationDetails> stationsMap = new HashMap<>();
 
@@ -182,17 +223,21 @@ public class FuelPriceAPI {
                         }
                     }
                 } else {
-                    System.err.println("Error: 'S' key not found or is not an array.");
+                    throw new IllegalStateException("Site key not found or is not an array.");
                 }
             } else {
-                System.err.println("Error: Unexpected JSON structure in getFullSiteDetails.");
+                throw new IllegalStateException("JSON object missing from API response.");
             }
         } else {
-            System.err.println("Error: HTTP response code " + responseCode);
+            throw new IOException("Unexpected HTTP response code: " + responseCode);
         }
 
         return stationsMap;
     }
+
+    /**
+     * Overloaded method for production use.
+     */
     public static Map<String, StationDetails> getFullSiteDetails() throws Exception {
         URL url = new URL(BASE_API_URL + "/Subscriber/GetFullSiteDetails?countryId=21&geoRegionLevel=3&geoRegionId=1");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -204,10 +249,20 @@ public class FuelPriceAPI {
     }
 
 
-
-
-
-
+    /**
+     * Fetches fuel prices from the API and updates the stationsMap with prices and the contents of fuelTypesMap
+     * <p>
+     *     This method makes a HTTP GET request to fetch site prices from the API, then updates each station's fuel type
+     *     and cost in the stationsMap.
+     * </p>
+     * @param connection used in the non-overloaded method for testing purposes - relevant tests can be found in
+     * FuelPriceAPITest.java.
+     * @param stationsMap a map of site IDs and their corresponding StationDetails objects to be updated with prices
+     * from this method
+     * @param fuelTypesMap a map of fuel type IDs and the corresponding fuel type names used to set the fuel type for each station
+     * @throws IOException if there is a network connection error or non-200 HTTP response code
+     * @throws IllegalStateException if JSON response does not match expected format (e.g., missing SitePrices key)
+     */
     public static void getSitesPrices(HttpURLConnection connection, Map<String, StationDetails> stationsMap, Map<String, String> fuelTypesMap) throws Exception {
 
 
@@ -258,18 +313,21 @@ public class FuelPriceAPI {
                         }
                     }
                 } else {
-                    System.err.println("Error: 'SitePrices' key not found or is not an array.");
+                    throw new IllegalStateException("SitePrices key not found or is not an array.");
                 }
             } else {
-                System.err.println("Error: Unexpected JSON structure in getSitesPrices.");
+                throw new IllegalStateException("JSON object missing from API response.");
             }
         } else {
-            System.err.println("Error: HTTP response code " + responseCode);
+            throw new IOException("Unexpected HTTP response code: " + responseCode);
         }
 
 
     }
 
+    /**
+     *  Overloaded method for production use
+     */
     private static void getSitesPrices(Map<String, StationDetails> stationsMap, Map<String, String> fuelTypesMap) throws Exception {
         // Create URL for GetSitesPrices endpoint
         URL url = new URL(BASE_API_URL + "/Price/GetSitesPrices?countryId=21&geoRegionLevel=3&geoRegionId=1");
