@@ -15,7 +15,7 @@ module test.fuelapp {
 
     opens test.fuelapp to javafx.fxml;
     exports test.fuelapp;
-    exports test.fuelapp.sample;
-    opens test.fuelapp.sample to javafx.fxml;
+    exports test.fuelapp.API;
+    opens test.fuelapp.API to javafx.fxml;
 }
 

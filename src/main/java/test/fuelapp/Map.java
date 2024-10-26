@@ -7,7 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import test.fuelapp.sample.FuelPriceAPI;
+import test.fuelapp.API.FuelPriceAPI;
 
 /**
  * A class that represents the main map on the Landing Page

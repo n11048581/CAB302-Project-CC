@@ -4,13 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
-import test.fuelapp.sample.FuelPriceAPI;
+import test.fuelapp.API.FuelPriceAPI;
 
 import java.sql.*;
 import java.util.*;
@@ -42,8 +38,7 @@ public class ComparePageController {
 
     @FXML
     private Label label_current_user;
-    @FXML
-    private ImageView image_profile;
+
 
     @FXML
     private TextField searchBar;
@@ -393,11 +388,10 @@ public class ComparePageController {
 
     @FXML
     public void PageForward(ActionEvent event) throws SQLException {
-        // Logout and go back to the login page
+        // Move to next 10 results and allow user to go back a page
         currentPageNumber = currentPageNumber + 1;
         button_previous_page.setDisable(false);
         checkRadioButton();
-
     }
 
 
@@ -414,28 +408,26 @@ public class ComparePageController {
     }
 
 
-   @FXML
+    // Wait for user to press enter button
+    @FXML
     public void onEnter(ActionEvent event) throws SQLException {
        if (priceRadioButton.isSelected()) {
-           System.out.println("Price Selected");
            handleDistanceSearch("price");
        } else if (distanceRadioButton.isSelected()) {
-           System.out.println("Distance Selected");
            handleDistanceSearch("crow_flies_to_user");
        }
     }
 
-
+    // Manage saving and reading user bookmarks
     @FXML
     public void handleBookmark(ActionEvent event) throws SQLException {
-        // Initialise variables to index lists and track whether a result if found in list
         int matchFoundCounter = 0;
         boolean matchFound = false;
 
         // JavaFX buttons that correspond to the "bookmark" buttons
         Button[] comparePageButtons = new Button[]{button_search0, button_search1, button_search2, button_search3, button_search4, button_search5, button_search6, button_search7, button_search8, button_search9};
 
-        // Read from IUser to get the latest bookmarks and convert text to a string array.
+        // Read from IUser to get the latest bookmarks
         String[] rawBookmarks = bookmark.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
         String[] bookmarkArray = new String[rawBookmarks.length];
         for (int i = 0; i < rawBookmarks.length; i++) {
@@ -449,7 +441,6 @@ public class ComparePageController {
 
         // For every element in the bookmark array, containing the users current bookmarks, check whether the pressed button is already bookmarked
         for (int bmarkCounter = 0; bmarkCounter < bookmarkArray.length; bmarkCounter++) {
-            // If bookmark exists for this station
             if (bookmarkArray[bmarkCounter].contains(currentSearchResults.get(numberOnlyInt))) {
                 matchFoundCounter = bmarkCounter;
                 matchFound = true;
@@ -457,32 +448,26 @@ public class ComparePageController {
             }
         }
 
-        // If a bookmark does exist for this record
+        // If a bookmark does exist for this record, remove the bookmark at the index found by the above for loop
         if (matchFound) {
-            // Create an arraylist out of the string array
             ArrayList<String> updatedRemovedBookmarks = new ArrayList<String>();
             Collections.addAll(updatedRemovedBookmarks, rawBookmarks);
 
-            // Use the ArrayList to remove the bookmark at the index found by the above for loop
             updatedRemovedBookmarks.remove(matchFoundCounter);
 
-            // Convert ArrayList to a string so that it can be saved to the user table in database
             String bookmarkRemoveListString = String.join(", ", updatedRemovedBookmarks);
             databaseOperations.updateBookmarks(LoginController.current_user, bookmarkRemoveListString);
 
             // Set colour of heart icon to black
             comparePageButtons[numberOnlyInt].setTextFill(Color.web("#000000"));
         }
-        // Else if bookmark does not exist
+        // Else if bookmark does not exist, add new element to array matching the id of the station the user selected
         else {
-            // Create an arraylist out of the string array
             ArrayList<String> updatedNewBookmarks = new ArrayList<String>();
             updatedNewBookmarks.add(Arrays.toString(bookmarkArray).replaceAll("\\[", "").replaceAll("\\]", ""));
 
-            // Add new element to array matching the id of the station the user selected
             updatedNewBookmarks.add(currentSearchResults.get(numberOnlyInt));
 
-            // Convert to string and update user table with new bookmark data
             String bookmarkUpdateListString = String.join(", ", updatedNewBookmarks);
             databaseOperations.updateBookmarks(LoginController.current_user, bookmarkUpdateListString);
 
@@ -491,5 +476,10 @@ public class ComparePageController {
         }
         // Ensure latest user data is fetched
         loadUserDetailsComparePage();
+    }
+
+    @FXML
+    public void handleAPIUpdate() {
+
     }
 }

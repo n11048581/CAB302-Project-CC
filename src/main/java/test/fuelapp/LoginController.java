@@ -66,9 +66,6 @@ public class LoginController implements Initializable {
             label_redirect.setVisible(true);
             SignUpController.isARedirect = false;
         }
-        else {
-            label_redirect.setVisible(false);
-        }
     }
 
 

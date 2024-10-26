@@ -1,5 +1,5 @@
 package test.fuelapp;
-import test.fuelapp.sample.FuelPriceAPI.StationDetails;
+import test.fuelapp.API.FuelPriceAPI.StationDetails;
 
 public class StationCalculations {
 

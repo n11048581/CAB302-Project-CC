@@ -1,4 +1,4 @@
-package test.fuelapp.sample;
+package test.fuelapp.API;
 
 import java.util.ArrayList;
 import java.util.List;

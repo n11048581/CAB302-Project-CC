@@ -20,7 +20,7 @@
             <children>
                <ImageView fitHeight="33.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@logo.PNG" />
+                     <Image url="@logo.png" />
                   </image>
                </ImageView>
                  <Button onAction="#map" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Map" textFill="WHITE">
@@ -83,6 +83,11 @@
          <font>
             <Font name="SansSerif Regular" size="12.0" />
          </font></Button>
+      <Button onAction="#handleAPIUpdate" style="-fx-background-color: #344E41;" text="Update Data" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </Button>
       <VBox.margin>
          <Insets />
       </VBox.margin>

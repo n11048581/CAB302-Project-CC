@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
 import java.util.Map;
-import test.fuelapp.sample.FuelPriceAPI;
+import test.fuelapp.API.FuelPriceAPI;
 
 
 

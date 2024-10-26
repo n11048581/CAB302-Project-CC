@@ -1,4 +1,4 @@
-package test.fuelapp.sample;
+package test.fuelapp.API;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

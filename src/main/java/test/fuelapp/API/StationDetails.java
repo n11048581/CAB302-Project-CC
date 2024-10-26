@@ -1,4 +1,4 @@
-package test.fuelapp.sample;
+package test.fuelapp.API;
 
 public class StationDetails {
     private String name;

@@ -41,35 +41,38 @@ public class SignUpController implements Initializable {
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
 
+    public void clearAllText() {
+        usernameTaken.setText("");
+        passwordNotMatch.setText("");
+        passwordNotSecure.setText("");
+    }
+
     public void CreateAccount(ActionEvent event) {
         try {
             // Regex to match against entered password
-            String passwordRegex = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+            String passwordRegex = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{7,}";
+            // Clear all fields
+            usernameTaken.setText("");
+            passwordNotMatch.setText("");
+            passwordNotSecure.setText("");
             if (databaseOperations.isExistingAccount(tf_username.getText())) {
                 // If entered username matches one in database, alert the user the username is taken
-                passwordNotMatch.setText("");
-                passwordNotSecure.setText("");
+
                 usernameTaken.setText("Username taken");
             } else if (!pf_password.getText().matches(passwordRegex)) {
                 // If entered password doesn't match regex, alert the user of password requirements
-                usernameTaken.setText("");
-                passwordNotMatch.setText("");
                 passwordNotSecure.setText("""
                         Passwords must contain:\
                         
-                        - At least 8 characters\
+                        - At least 7 characters\
                         
                         - At least one digit\
                         
                         - At least one uppercase character and one lowercase character\
                         
-                        - At least one special character (@#%$^ etc.)\
-                        
                         - And cannot contain spaces""");
             } else if (!Objects.equals(pf_password.getText(), pf_password_repeat.getText())) {
                 // If password and repeated password do not match, alert the user
-                usernameTaken.setText("");
-                passwordNotSecure.setText("");
                 passwordNotMatch.setText("Passwords do not match");
             }
             else {
