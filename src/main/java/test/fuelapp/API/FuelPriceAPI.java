@@ -35,25 +35,22 @@ public class FuelPriceAPI {
             // Update stationsMap with site prices
             getSitesPrices(stationsMap, fuelTypesMap);
 
-            DistanceMatrix distanceMatrix = new DistanceMatrix();
-
             // Variable to track primary keys in database and match with api call
             int DatabaseIdCounter = 1;
 
             // Print combined data
             for (StationDetails station : stationsMap.values()) {
                 // Only print stations that have a real fuel type and price
-                if (!station.fuelType.equals("N/A") && !station.price.equals("N/A")) {
+                if (station.isValid()) {
                     try {
-                        // Get and set distance between user and station (Google Distance Matrix)
 
-                        IApiUpdate newApiUpdate = new ApiUpdateImplementation(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
+                        IApiUpdate newApiUpdate = new ApiUpdateImplementation(DatabaseIdCounter, station.getName(), station.getAddress(), station.getFuelType(), Double.parseDouble(station.getPrice()), station.getLatitude(), station.getLongitude());
                         databaseOperations.updateStationData(newApiUpdate);
                         counter = counter + 1;
                         System.out.println("Update" + counter);
 
                     } catch (Exception e) {
-                        System.err.println("Error calculating distance for station: " + station.name);
+                        System.err.println("Error in API database update");
                     }
                 }
             }
@@ -256,8 +253,8 @@ public class FuelPriceAPI {
                         // Update the corresponding station with price and fuel type
                         if (stationsMap.containsKey(siteId)) {
                             StationDetails station = stationsMap.get(siteId);
-                            station.fuelType = fuelTypesMap.getOrDefault(fuelId, "Unknown Fuel Type");
-                            station.price = price;
+                            station.setFuelType(fuelTypesMap.getOrDefault(fuelId, "Unknown Fuel Type"));
+                            station.setPrice(price);
                         }
                     }
                 } else {
@@ -280,92 +277,6 @@ public class FuelPriceAPI {
 
         // Call the overloaded method with connection object
         getSitesPrices(connection, stationsMap, fuelTypesMap);
-    }
-
-
-
-
-
-    // Store station details
-    public static class StationDetails {
-        private String name;
-        private String address;
-        private String latitude;
-        private String longitude;
-        private String distance;
-        private String fuelType = "N/A";
-        private String price = "N/A";
-        private double travelCost;
-
-
-        public StationDetails(String name, String address, String latitude, String longitude) {
-            this.name = name;
-            this.address = address;
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
-
-        // Getters
-        public String getLatitude() {
-            return latitude;
-        }
-
-        public String getLongitude() {
-            return longitude;
-        }
-
-        public String getDistance() {
-            return distance;
-        }
-
-        public void setDistance(String distance) {
-            this.distance = distance;
-        }
-
-        public String getFuelType() {
-            return fuelType;
-        }
-
-        public String getPrice() {
-            return price;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public double getTravelCost() { // New getter for travel cost
-            return travelCost;
-        }
-
-        public void setTravelCost(double travelCost) { // New setter for travel cost
-            this.travelCost = travelCost;
-        }
-
-        /*
-
-
-
-
-
-
-
-
-        // Setters
-        public void setFuelType(String fuelType) {
-            this.fuelType = fuelType;
-        }
-
-        public void setPrice(String price) {
-            this.price = price;
-        }
-
- */
-
     }
 
 }

@@ -1,5 +1,6 @@
 package test.fuelapp.API;
 
+// Store station details
 public class StationDetails {
     private String name;
     private String address;
@@ -8,13 +9,18 @@ public class StationDetails {
     private String distance;
     private String fuelType = "N/A";
     private String price = "N/A";
+    private double travelCost;
 
 
-    public StationDetails(String bpBrisbane, String string, String s, String name, String address, String latitude, String longitude) {
+    public StationDetails(String name, String address, String latitude, String longitude) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public boolean isValid() {
+        return !fuelType.equals("N/A") && !price.equals("N/A");
     }
 
     // Getters
@@ -50,11 +56,14 @@ public class StationDetails {
         return address;
     }
 
+    public double getTravelCost() { // New getter for travel cost
+        return travelCost;
+    }
 
+    public void setTravelCost(double travelCost) { // New setter for travel cost
+        this.travelCost = travelCost;
+    }
 
-
-
-    // Setters
     public void setFuelType(String fuelType) {
         this.fuelType = fuelType;
     }
@@ -62,6 +71,14 @@ public class StationDetails {
     public void setPrice(String price) {
         this.price = price;
     }
+
+
+
+
+
+
+
+
 
 
 }
