@@ -97,7 +97,7 @@ public class LoginController implements Initializable {
 
                 // Start thread that will execute database updates and notify listener when completed.
                 // Functionally, will read the current users last location and set app to display those details when first loading in
-                executeTaskInSeparateThread(listener);
+                executeTaskInSeparateThread(loginListener);
             }
             // Else display error message
             else {
@@ -111,13 +111,13 @@ public class LoginController implements Initializable {
 
 
     // Small interface to assist listener thread
-    public interface MyThreadListener{
+    public interface LoginListener{
         public void threadFinished();
     }
 
 
     // Method to run functionality in separate thread
-    public void executeTaskInSeparateThread(final MyThreadListener listener){
+    public void executeTaskInSeparateThread(final LoginListener loginListener){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -131,14 +131,14 @@ public class LoginController implements Initializable {
                     throw new RuntimeException(e);
                 }
                 //Notify the listener when thread is finished
-                listener.threadFinished();
+                loginListener.threadFinished();
             }
         }).start();
     }
 
 
     // Implement the listener
-    MyThreadListener listener = new MyThreadListener() {
+    LoginListener loginListener = new LoginListener() {
         @Override
         public void threadFinished() {
             // An additional fix to ensure the application thread is being run, as more UI updates need to happen (switching scenes). I am amazed this works

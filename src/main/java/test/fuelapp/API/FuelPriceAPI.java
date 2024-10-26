@@ -21,8 +21,9 @@ public class FuelPriceAPI {
     private Map<String, StationDetails> stationsMap;
 
 
-    public void getStationsData(String fixedLat, String fixedLong, Consumer<StationDetails> stationCallback) {
+    public void getStationsData() {
         stationsMap = new HashMap<>();
+        int counter = 0;
         DatabaseOperations databaseOperations = new DatabaseOperations();
         try {
             // Fuel type map
@@ -45,28 +46,11 @@ public class FuelPriceAPI {
                 if (!station.fuelType.equals("N/A") && !station.price.equals("N/A")) {
                     try {
                         // Get and set distance between user and station (Google Distance Matrix)
-                        String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
-                        station.setDistance(distance);
 
-                        /* Update all data in the database with all data from API
                         IApiUpdate newApiUpdate = new ApiUpdateImplementation(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
                         databaseOperations.updateStationData(newApiUpdate);
-                        */
-
-                        // Update only the price data in the database with data from API
-                        //databaseOperations.updatePriceData(Double.valueOf(station.price), DatabaseIdCounter);
-
-                        //DatabaseIdCounter = DatabaseIdCounter + 1;
-
-                        // READ IF YOU THINK THE API ISN'T WORKING RIGHT
-                        // Demo for purpose of testing, delete later
-                        /*
-                        if (DatabaseIdCounter >= 100) {
-                            break;
-                        }
-                        */
-
-                        stationCallback.accept(station); // Calls UI updating function
+                        counter = counter + 1;
+                        System.out.println("Update" + counter);
 
                     } catch (Exception e) {
                         System.err.println("Error calculating distance for station: " + station.name);

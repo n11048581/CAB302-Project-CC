@@ -1,13 +1,19 @@
 package test.fuelapp;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import test.fuelapp.API.FuelPriceAPI;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
@@ -39,6 +45,9 @@ public class ComparePageController {
     @FXML
     private Label label_current_user;
 
+    @FXML
+    private Label label_loading_update;
+
 
     @FXML
     private TextField searchBar;
@@ -68,6 +77,7 @@ public class ComparePageController {
     private void initialize() throws SQLException {
         // Set username
         label_current_user.setText(LoginController.current_user);
+        label_loading_update.setVisible(false);
 
         // Initialise page by loading user details, sorting by distance and initialising page number button
         button_previous_page.setDisable(true);
@@ -479,7 +489,40 @@ public class ComparePageController {
     }
 
     @FXML
-    public void handleAPIUpdate() {
-
+    public void handleAPIUpdate(ActionEvent event) throws SQLException{
+        label_loading_update.setVisible(true);
+        executeTaskInSeparateThread(updateAPIListener);
     }
+
+    public interface UpdateAPIListener{
+        public void threadAPIFinished();
+    }
+
+    public void executeTaskInSeparateThread(final UpdateAPIListener updateAPIListener){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Update database with the newest API data
+                fuelPriceAPI.getStationsData();
+                //Notify the listener when thread is finished
+                updateAPIListener.threadAPIFinished();
+            }
+        }).start();
+    }
+
+    UpdateAPIListener updateAPIListener = new UpdateAPIListener() {
+        @Override
+        public void threadAPIFinished() {
+            // Allow UI to update and will return updated data when finished
+            Platform.runLater(
+                    () -> {
+                        try {
+                            initialize();
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+            );
+        }
+    };
 }
