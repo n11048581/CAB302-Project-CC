@@ -9,7 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class DistanceMatrix {
-    private static final String API_KEY = "AIzaSyCAw7bmtK1OCKCExICGGI8M3E-X70kh49I";
+    private static final String API_KEY = "";
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json";
 
     // Method to get the driving distance between two points (Google Distance Matrix API call)
