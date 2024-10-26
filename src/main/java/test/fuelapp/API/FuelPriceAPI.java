@@ -23,7 +23,10 @@ public class FuelPriceAPI {
 
 
 
-    public void getStationsData(String fixedLat, String fixedLong, Consumer<StationDetails> stationCallback) {
+
+    public void getStationsData() {
+        stationsMap = new HashMap<>();
+        int counter = 0;
         DatabaseOperations databaseOperations = new DatabaseOperations();
         try {
             Map<String, String> fuelTypesMap = getFuelTypes();
@@ -31,17 +34,20 @@ public class FuelPriceAPI {
             getSitesPrices(stationsMap, fuelTypesMap);
 
             DistanceMatrix distanceMatrix = new DistanceMatrix();
-            int databaseIdCounter = 1;
+            int DatabaseIdCounter = 1;
 
             for (StationDetails station : stationsMap.values()) {
                 if (station.isValid()) {
                     try {
-                        String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
-                        station.setDistance(distance);
 
-                        stationCallback.accept(station); // Calls UI updating function
-                        // Uncomment the following line to update database
-                        // databaseOperations.updateStationData(new ApiUpdateImplementation(databaseIdCounter++, station));
+                        // Get and set distance between user and station (Google Distance Matrix)
+
+                        IApiUpdate newApiUpdate = new ApiUpdateImplementation(DatabaseIdCounter, station.getName(), station.getAddress(), station.getFuelType(), Double.parseDouble(station.getPrice()), station.getLatitude(), station.getLongitude());
+                        databaseOperations.updateStationData(newApiUpdate);
+                        counter = counter + 1;
+                        System.out.println("Update" + counter);
+
+
                     } catch (Exception e) {
                         System.err.println("Error calculating distance for station: " + station.getName());
                     }
