@@ -124,6 +124,7 @@ public class ComparePageController {
         checkRadioButton();
     }
 
+
     /**
      * The default system to order and display station data from the database
      * @param orderByVal Based on radiobuttons, the manner in which the user wants results ordered
@@ -175,11 +176,18 @@ public class ComparePageController {
             // For each of the 10 results being shown per page
             for (int i = 0; i < 10; i++) {
                 try {
+                    // Calculate travel cost
+                    double fuelRequired = (Double.parseDouble(resultSet.getString("crow_flies_to_user")) / 100) * userFuelEfficiency;
+                    double pricePerLiter = resultSet.getDouble("price") / 1000.0;
+                    double travelCost = fuelRequired * pricePerLiter;
+                    double roundedTravelCost = Double.parseDouble(String.format("%.2f", travelCost));
+
                     // Create a label showing the data for the current station
                     comparePageLabels[i].setText(resultSet.getString("station_name") +
                             " : " + resultSet.getString("station_address") +
                             " - Price: " + resultSet.getDouble("price") / 10 +
                             " - Fuel type: " + resultSet.getString("fuel_type") +
+                            " - Travel Cost: $" + roundedTravelCost +
                             " - Distance: " + String.format("%.2f", Double.parseDouble(resultSet.getString("crow_flies_to_user"))) + "kms");
                     // Adapt UI to what data is being shown, only displaying containers when there is data available
 
@@ -215,6 +223,7 @@ public class ComparePageController {
             e.printStackTrace();
         }
     }
+
 
     /**
      * The method to order and display station data, taking into account the users search preference
@@ -273,11 +282,19 @@ public class ComparePageController {
             // For each of the 10 results being shown per page
             for (int q = 0; q < 10; q++) {
                 try {
+
+                    // Calculate travel cost
+                    double fuelRequired = (Double.parseDouble(resultSet.getString("crow_flies_to_user")) / 100) * userFuelEfficiency;
+                    double pricePerLiter = resultSet.getDouble("price") / 1000.0;
+                    double travelCost = fuelRequired * pricePerLiter;
+                    double roundedTravelCost = Double.parseDouble(String.format("%.2f", travelCost));
+
                     // Create a label showing the data for the current station
                     comparePageLabels[q].setText(resultSet.getString("station_name") +
                             " : " + resultSet.getString("station_address") +
                             " - Price: " + resultSet.getDouble("price") / 10 +
                             " - Fuel type: " + resultSet.getString("fuel_type") +
+                            " - Travel Cost: $" + roundedTravelCost +
                             " - Distance: " + String.format("%.2f", Double.parseDouble(resultSet.getString("crow_flies_to_user"))) + "kms");
 
                     // Adapt UI to what data is being shown, only displaying containers when there is data avaliable
@@ -314,6 +331,7 @@ public class ComparePageController {
         }
     }
 
+
     /**
      * Tied to an action event that triggers when the user searches for a station, reads the radio button and sorts
      * @throws SQLException If the database cannot be accessed
@@ -326,6 +344,7 @@ public class ComparePageController {
             handleDistanceSearch("crow_flies_to_user");
         }
     }
+
 
     /**
      * Redirect to map screen
@@ -357,6 +376,7 @@ public class ComparePageController {
         sqLiteLink.changeScene(event, "Profile.fxml", "Profile");
     }
 
+
     /**
      * Log user out and redirect to login page
      * @param event Triggers when the logout menu button is pressed
@@ -364,6 +384,7 @@ public class ComparePageController {
     public void LogOut(ActionEvent event) {
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
+
 
     /**
      * Advance the page counter and display the next 10 results from the user's query
@@ -375,6 +396,7 @@ public class ComparePageController {
         button_previous_page.setDisable(false);
         checkRadioButton();
     }
+
 
     /**
      * Reduce the page counter and display the previous 10 results from the user's query
@@ -403,6 +425,7 @@ public class ComparePageController {
            handleDistanceSearch("crow_flies_to_user");
        }
     }
+
 
     /**
      * Save or delete bookmark from the user table in the database
