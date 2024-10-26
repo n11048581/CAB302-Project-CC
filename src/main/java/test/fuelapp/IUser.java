@@ -1,5 +1,8 @@
 package test.fuelapp;
 
+/**
+ * An interface to handle changing user data, excluding login information
+ */
 public interface IUser {
 
     String getName();

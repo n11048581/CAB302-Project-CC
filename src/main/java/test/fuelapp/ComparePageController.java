@@ -13,7 +13,7 @@ import java.sql.*;
 import java.util.*;
 
 /**
- *
+ * Class to handle the back end of the compare page
  */
 public class ComparePageController {
     Connection connection;
@@ -24,7 +24,7 @@ public class ComparePageController {
     ArrayList<String> currentSearchResults = new ArrayList<String>();
 
     /**
-     *
+     * Exits app if database connection cannot be made
      */
     public ComparePageController() {
         connection = SQLiteLink.Connector();
@@ -34,6 +34,8 @@ public class ComparePageController {
         }
     }
 
+    public int currentPageNumber = 0;
+
     private double userFuelEfficiency;
     private String userFuelType;
     private String userLat;
@@ -41,7 +43,6 @@ public class ComparePageController {
     private String userMaxTravelDistance;
     private String bookmark;
 
-    public int currentPageNumber = 0;
 
     @FXML
     private Label label_current_user;
@@ -56,6 +57,7 @@ public class ComparePageController {
     @FXML
     private RadioButton distanceRadioButton;
 
+
     @FXML
     private Label label_search0, label_search1, label_search2, label_search3, label_search4, label_search5, label_search6, label_search7, label_search8, label_search9;
     @FXML
@@ -68,20 +70,24 @@ public class ComparePageController {
     @FXML
     private Button button_previous_page;
 
-
+    /**
+     * Initialise page by calling method to load user data and setting fxml elements
+     * @throws SQLException If database cannot be accessed
+     */
     @FXML
     private void initialize() throws SQLException {
         // Set username
         label_current_user.setText(LoginController.current_user);
         label_loading_update.setVisible(false);
-
-        // Initialise page by loading user details, sorting by distance and initialising page number button
         button_previous_page.setDisable(true);
+
         loadUserDetailsComparePage();
         handlePriceCompare("crow_flies_to_user");
     }
 
-    // Load current user's details from database
+    /**
+     * From user interface, load the current users data
+     */
     public void loadUserDetailsComparePage() {
         IUser user = databaseOperations.getUserDetails(LoginController.current_user);
         if (user != null) {
@@ -95,7 +101,10 @@ public class ComparePageController {
     }
 
 
-    // Read radio button and load data accordingly
+    /**
+     * Read which radio button is selected and load the corresponding data
+     * @throws SQLException If database cannot be accessed
+     */
     public void checkRadioButton() throws SQLException{
         searchBar.setText("");
         if (priceRadioButton.isSelected()) {
@@ -106,12 +115,20 @@ public class ComparePageController {
     }
 
 
-    // Event that triggers when a radio button is changed
+    /**
+     * Activate when either radio button is pressed
+     * @param event A radiobutton's status is updated
+     * @throws SQLException If database can't be accessed
+     */
     public void watchRadioButtons(ActionEvent event) throws SQLException{
         checkRadioButton();
     }
 
-
+    /**
+     * The default system to order and display station data from the database
+     * @param orderByVal Based on radiobuttons, the manner in which the user wants results ordered
+     * @throws SQLException If the database cannot be accessed
+     */
     @FXML
     public void handlePriceCompare(String orderByVal) throws SQLException {
         // Reset list and initialise
@@ -199,12 +216,14 @@ public class ComparePageController {
         }
     }
 
-
+    /**
+     * The method to order and display station data, taking into account the users search preference
+     * @param orderByVal Based on radiobuttons, the manner in which the user wants results ordered
+     * @throws SQLException If the database cannot be accessed
+     */
     @FXML
     public void handleDistanceSearch(String orderByVal) throws SQLException {
-        // Initialise page numbers, read the search bar and reset query result list
         String searchQuery = searchBar.getText();
-        int i = 0;
         currentPageNumber = 0;
         button_previous_page.setDisable(true);
         currentSearchResults.clear();
@@ -295,10 +314,12 @@ public class ComparePageController {
         }
     }
 
-
+    /**
+     * Tied to an action event that triggers when the user searches for a station, reads the radio button and sorts
+     * @throws SQLException If the database cannot be accessed
+     */
     @FXML
     public void handleFilter() throws SQLException{
-        // Check which radio button is selected and perform filtered search
         if (priceRadioButton.isSelected()) {
             handleDistanceSearch("price");
         } else if (distanceRadioButton.isSelected()) {
@@ -306,13 +327,18 @@ public class ComparePageController {
         }
     }
 
-
+    /**
+     * Redirect to map screen
+     * @param event Triggers when map menu button is pressed
+     */
     public void map(ActionEvent event) {
-        // Go back to the landing page
         sqLiteLink.changeScene(event, "LandingPage.fxml", "Map");
     }
 
 
+    /**
+     *  Redirect to David's fuel efficiency calculator
+     */
     @FXML
     public void handleCalculator() {
         // For now, just display an alert
@@ -323,19 +349,26 @@ public class ComparePageController {
         alert.showAndWait();
     }
 
-
+    /**
+     * Redirect to profile page
+     * @param event Triggers when profile menu button, or profile username/image is pressed
+     */
     public void goToProfile(ActionEvent event) {
-        // go to profile page
         sqLiteLink.changeScene(event, "Profile.fxml", "Profile");
     }
 
-
+    /**
+     * Log user out and redirect to login page
+     * @param event Triggers when the logout menu button is pressed
+     */
     public void LogOut(ActionEvent event) {
-        // Logout and go back to the login page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
 
-
+    /**
+     * Advance the page counter and display the next 10 results from the user's query
+     * @throws SQLException If the database cannot be accessed
+     */
     public void PageForward() throws SQLException {
         // Move to next 10 results and allow user to go back a page
         currentPageNumber = currentPageNumber + 1;
@@ -343,8 +376,11 @@ public class ComparePageController {
         checkRadioButton();
     }
 
-
-    public void PageBack(ActionEvent event) throws SQLException {
+    /**
+     * Reduce the page counter and display the previous 10 results from the user's query
+     * @throws SQLException If the database cannot be accessed
+     */
+    public void PageBack() throws SQLException {
         // Logout and go back to the login page
         currentPageNumber = currentPageNumber - 1;
         if (currentPageNumber == 0) {
@@ -356,7 +392,10 @@ public class ComparePageController {
     }
 
 
-    // Wait for user to press enter button
+    /**
+     * Wait for user to press enter button and perform a search when they do
+     * @throws SQLException If the database cannot be accessed
+     */
     public void onEnter() throws SQLException {
        if (priceRadioButton.isSelected()) {
            handleDistanceSearch("price");
@@ -365,7 +404,11 @@ public class ComparePageController {
        }
     }
 
-    // Manage saving and reading user bookmarks
+    /**
+     * Save or delete bookmark from the user table in the database
+     * @param event The fx-id of the object that triggered the event
+     * @throws SQLException If the database cannot be accessed
+     */
     @FXML
     public void handleBookmark(ActionEvent event) throws SQLException {
         int matchFoundCounter = 0;
@@ -425,27 +468,45 @@ public class ComparePageController {
         loadUserDetailsComparePage();
     }
 
+
+    /**
+     * Call a thread to update database with new data from API
+     * @throws SQLException
+     */
     public void handleAPIUpdate() throws SQLException{
         label_loading_update.setVisible(true);
         executeTaskInSeparateThread(updateAPIListener);
     }
 
+
+    /**
+     * Interface to support thread finish tracking
+     */
     public interface UpdateAPIListener{
         public void threadAPIFinished();
     }
 
+
+    /**
+     * Run API update in thread
+     * @param updateAPIListener Take the declared api update interface
+     */
     public void executeTaskInSeparateThread(final UpdateAPIListener updateAPIListener){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // Update database with the newest API data
-                fuelPriceAPI.getStationsData();
+                fuelPriceAPI.updateNewStationsData();
                 //Notify the listener when thread is finished
                 updateAPIListener.threadAPIFinished();
             }
         }).start();
     }
 
+
+    /**
+     * Reload page when thread is finished
+     */
     UpdateAPIListener updateAPIListener = new UpdateAPIListener() {
         @Override
         public void threadAPIFinished() {

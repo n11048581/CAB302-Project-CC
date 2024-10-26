@@ -9,9 +9,18 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class DistanceMatrix {
+    // DO NOT USE
     private static final String API_KEY = "AIzaSyCAw7bmtK1OCKCExICGGI8M3E-X70kh49I";
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json";
 
+    /**
+     * Method to use the Google Distance Matrix API to get the live travel distance between two points
+     * @param originLat The user's latitude
+     * @param originLon The user's longitude
+     * @param destLat The user's destination latitude
+     * @param destLon The users destination longitude
+     * @return A string containing the difference in kms
+     */
     // Method to get the driving distance between two points (Google Distance Matrix API call)
     public String getDistance(String originLat, String originLon, String destLat, String destLon) {
         String urlString = BASE_URL +

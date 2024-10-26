@@ -134,7 +134,7 @@ public class LoginController implements Initializable {
 
     /**
      * Run database updates in a separate thread
-     * @param loginListener Take the declared interface
+     * @param loginListener Take the declared login interface
      */
     // Method to run functionality in separate thread
     public void executeTaskInSeparateThread(final LoginListener loginListener){
@@ -157,7 +157,9 @@ public class LoginController implements Initializable {
     }
 
 
-    // Implement the listener
+    /**
+     * Listen for when database is done updating, and change to landing page scene
+     */
     LoginListener loginListener = new LoginListener() {
         @Override
         public void threadFinished() {
@@ -182,8 +184,12 @@ public class LoginController implements Initializable {
         }
     };
 
+
+    /**
+     * Redirect to the sign-in page
+     * @param event triggers when user clicks the 'create account' button
+     */
     public void SignUp (ActionEvent event) {
-        // Redirect to sign in scene
         sqLiteLink.changeScene(event, "SignUp.fxml", "Sign Up");
     }
 }

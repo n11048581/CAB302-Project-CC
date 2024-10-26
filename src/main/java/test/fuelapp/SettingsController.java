@@ -15,7 +15,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class SettingsController  extends Thread {
+/**
+ * Class to handle back end of setting page
+ */
+public class SettingsController extends Thread {
     private DatabaseOperations databaseOperations = new DatabaseOperations();
     private SQLiteLink sqLiteLink = new SQLiteLink();
 
@@ -62,13 +65,20 @@ public class SettingsController  extends Thread {
 
     private String currentUsername = LoginController.current_user;
 
+
+    /**
+     * Initialise page by loading current user details
+     */
     @FXML
     public void initialize() {
         label_current_user.setText(LoginController.current_user);
         loadUserDetailsSettings();
     }
 
-    // Method for displaying existing Settings user account values
+
+    /**
+     * Allow for creation of an instance of the user interface containing the most recent data
+     */
     public void loadUserDetailsSettings() {
         IUser user = databaseOperations.getUserDetails(currentUsername);
         if (user != null) {
@@ -80,7 +90,11 @@ public class SettingsController  extends Thread {
         }
     }
 
-    // Method for setting the Settings page values, calls saveUserDetails to store in DB
+
+    /**
+     * Show a temporary loading screen and start a thread to save the new data to database
+     * @param event Triggers when the user presses the save button
+     */
     public void handleSave(ActionEvent event) {
         try {
             double fuelEfficiency = Double.parseDouble(tf_fuelEfficiency.getText());
@@ -127,12 +141,19 @@ public class SettingsController  extends Thread {
         }
     }
 
-    // Small interface to assist listener thread
-    public interface MyThreadListener{
-        public void threadFinished();
+    /**
+     * Interface to handle tracking thread
+     */
+    public interface SettingsUpdateListener {
+         void threadFinished();
     }
 
-    public void executeSettingsTaskInSeparateThread(final SettingsController.MyThreadListener settingsListener){
+
+    /**
+     * Update database with most recent data, including distance calculations
+     * @param settingsListener Listener to track when thread finishes
+     */
+    public void executeSettingsTaskInSeparateThread(final SettingsUpdateListener settingsListener){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -151,10 +172,12 @@ public class SettingsController  extends Thread {
         }).start();
     }
 
-    SettingsController.MyThreadListener settingsListener = new SettingsController.MyThreadListener() {
+    /**
+     * Redirect back to profile page when database is finished updating
+     */
+    SettingsUpdateListener settingsListener = new SettingsUpdateListener() {
         @Override
         public void threadFinished() {
-            // An additional fix to ensure the application thread is being run, as more UI updates need to happen (switching scenes). I am amazed this works
             Platform.runLater(
                     () -> {
                         Stage stage;

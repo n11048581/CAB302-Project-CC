@@ -38,7 +38,8 @@ public class FuelPriceAPI {
      *     Any Errors are logged to console to provide feedback on the nature of issues, such as network or database errors.
      * </p>
      */
-    public void getStationsData() {
+
+    public void updateNewStationsData() {
         stationsMap = new HashMap<>();
         int counter = 0;
         DatabaseOperations databaseOperations = new DatabaseOperations();

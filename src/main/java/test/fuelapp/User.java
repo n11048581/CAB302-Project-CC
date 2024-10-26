@@ -1,6 +1,8 @@
 package test.fuelapp;
 
-// The User class can be instantiated to access DB values - these values are set by the user on the Settings page
+/**
+ * User interface that can be instantiated to access user details
+ */
 public class User implements IUser {
     private String name;
     private double fuelEfficiency;

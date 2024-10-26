@@ -47,6 +47,10 @@ public class LandingPageController {
     @FXML
     private Label label_current_user;
 
+    /**
+     * Initialise landing page with correct UI elements, including the map, and load most recent user data
+     * @throws SQLException If database cannot be accessed
+     */
     @FXML
     public void initialize() throws SQLException {
         label_current_user.setText(LoginController.current_user);
@@ -56,54 +60,51 @@ public class LandingPageController {
 
         MapView mapView = Map.createMapView(userLat, userLong);
         gluonMap.getChildren().add(mapView);
-
-        //Thread thread = getThread(mapView);
-        //thread.start();
-
     }
 
-//    private Thread getThread(MapView mapView) {
-//        Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
-//            @Override
-//            protected Void call() throws Exception {
-//                // userLat and userLong pulled from Users db table, assigned in Settings
-//                fuelPriceAPI.getStationsData(String.valueOf(userLat), String.valueOf(userLong), station -> {
-//                    Platform.runLater(() -> Map.updateStationLayer(station));
-//                });
-//                return null;
-//            }
-//        };
-//
-//        task.setOnFailed(e -> {
-//            System.err.println("Failed to fetch station data: " + task.getException().getMessage());
-//        });
-//
-//        // Run task in separate thread
-//        Thread thread = new Thread(task);
-//        thread.setDaemon(true);
-//        return thread;
-//    }
 
-
+    /**
+     * Redirect to price compare page
+     * @param event Triggers when compare page menu button is pressed
+     */
     @FXML
     public void handlePriceCompare(ActionEvent event) {
         sqLiteLink.changeScene(event, "PricePage.fxml", "Compare Page");
     }
 
+
+    /**
+     * Redirect to David's fuel efficiency calculator
+     */
     @FXML
     public void handleCalculator(ActionEvent event) {
         showAlert("Calculator button clicked", "This would take you to the fuel efficiency calculator.");
     }
 
+
+    /**
+     * Redirect to profile page
+     * @param event Triggers when profile menu button is pressed, or username is pressed
+     */
     public void handleProfile(ActionEvent event) {
         sqLiteLink.changeScene(event, "Profile.fxml", "Profile");
     }
 
+
+    /**
+     * Log user out and redirect to login page
+     * @param event Triggers when logout button is pressed
+     */
     public void LogOut (ActionEvent event) {
-        // Redirect to log in page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
 
+
+    /**
+     * Method to display an alert for the user
+     * @param title A string designating the alert title
+     * @param message A string designating the alert message
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

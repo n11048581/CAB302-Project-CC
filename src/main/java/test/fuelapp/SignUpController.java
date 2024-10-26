@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+
+/**
+ * Class to handle back end of sign up page
+ */
 public class SignUpController implements Initializable {
     static boolean isARedirect = false;
 
@@ -33,21 +37,22 @@ public class SignUpController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
+    /**
+     * Redirect back to the login page
+     * @param event Triggers when the user presses the 'already a user' button
+     */
     public void BackToLogin(ActionEvent event) {
         // Redirect to log in page
         sqLiteLink.changeScene(event, "LogInPage.fxml", "Log In");
     }
 
-    public void clearAllText() {
-        usernameTaken.setText("");
-        passwordNotMatch.setText("");
-        passwordNotSecure.setText("");
-    }
-
-    public void CreateAccount(ActionEvent event) {
+    /**
+     * Method that checks the entered username and password to ensure validity
+     * @param event Triggers when user presses sign-up account button
+     */
+    public void createAccount(ActionEvent event) {
         try {
             // Regex to match against entered password
             String passwordRegex = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{7,}";
@@ -90,8 +95,13 @@ public class SignUpController implements Initializable {
         }
     }
 
+
+    /**
+     * Call sign up method
+     * @param event Triggers when the user presses enter
+     */
     @FXML
     public void onEnter(ActionEvent event) {
-        CreateAccount(event);
+        createAccount(event);
     }
 }

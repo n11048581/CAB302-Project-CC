@@ -10,87 +10,86 @@
 <?import javafx.scene.text.Font?>
 
 <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test.fuelapp.LandingPageController">
-   <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="1200.0" spacing="20.0" style="-fx-background-color: #344E41;">
-      <children>
-         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="ALWAYS">
-            <children>
-               <ImageView fitHeight="33.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@logo.PNG" />
-                  </image>
-               </ImageView>
-               <Button style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Map" textFill="#ffffff8f">
-                  <font>
-                     <Font name="SansSerif Regular" size="15.0" />
-                  </font>
-               </Button>
-               <Button mnemonicParsing="false" onAction="#handlePriceCompare" style="-fx-background-color: transparent;" text="Compare Page" textFill="WHITE">
-                  <font>
-                     <Font name="SansSerif Regular" size="15.0" />
-                  </font>
-               </Button>
-               <Button onAction="#handleCalculator" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Efficiency Calculator" textFill="WHITE">
-                  <font>
-                     <Font name="SansSerif Regular" size="15.0" />
-                  </font>
-               </Button>
-               <Button onAction="#handleProfile" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Profile" textFill="WHITE">
-                  <font>
-                     <Font name="SansSerif Regular" size="15.0" />
-                  </font>
-               </Button>
-               <Button fx:id="button_logout1" mnemonicParsing="false" onAction="#LogOut" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Log Out" textFill="WHITE">
-                  <font>
-                     <Font name="SansSerif Regular" size="15.0" />
-                  </font>
-               </Button>
-            </children>
-            <HBox.margin>
-               <Insets left="20.0" />
-            </HBox.margin>
-         </HBox>
-         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="NEVER">
-            <children>
-               <Button mnemonicParsing="false" onAction="#handleProfile" style="-fx-background-color: transparent;">
-                  <graphic>
-                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: transparent;">
-                        <children>
-                           <Label fx:id="label_current_user" textFill="#dad7cd" />
-                           <ImageView fx:id="image_profile" fitHeight="44.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@profile.png" />
-                              </image>
-                           </ImageView>
-                        </children>
-                     </HBox>
-                  </graphic>
-               </Button>
-            </children>
-            <HBox.margin>
-               <Insets right="20.0" />
-            </HBox.margin>
-         </HBox>
-      </children>
-   </HBox>
-   <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-background-color: A3B18A;" VBox.vgrow="ALWAYS">
-      <children>
-      
-                <Label text="Price Tracker">
+   <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="1200.0" spacing="20.0"
+         style="-fx-background-color: #344E41;">
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="ALWAYS">
+         <HBox.margin>
+            <Insets left="20.0"/>
+         </HBox.margin>
+         <ImageView fitHeight="33.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@logo.png"/>
+         </ImageView>
+         <Button style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Map"
+                 textFill="#ffffff8f">
             <font>
-               <Font name="SansSerif Bold" size="26.0" />
+               <Font name="SansSerif Regular" size="15.0"/>
             </font>
-         </Label>
-      
-          <!-- Google Maps API Map -->
-      
-          <VBox fx:id="gluonMap" alignment="TOP_CENTER" spacing="10" style="-fx-background-color: transparent; -fx-border-color: #344E41; -fx-border-width: 4;" VBox.vgrow="ALWAYS">
-            <VBox.margin>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </VBox.margin></VBox>
-      </children>
+         </Button>
+         <Button mnemonicParsing="false" onAction="#handlePriceCompare" style="-fx-background-color: transparent;"
+                 text="Compare Page" textFill="WHITE">
+            <font>
+               <Font name="SansSerif Regular" size="15.0"/>
+            </font>
+         </Button>
+         <Button onAction="#handleCalculator" style="-fx-background-color: transparent; -fx-background-radius: 30;"
+                 text="Efficiency Calculator" textFill="WHITE">
+            <font>
+               <Font name="SansSerif Regular" size="15.0"/>
+            </font>
+         </Button>
+         <Button onAction="#handleProfile" style="-fx-background-color: transparent; -fx-background-radius: 30;"
+                 text="Profile" textFill="WHITE">
+            <font>
+               <Font name="SansSerif Regular" size="15.0"/>
+            </font>
+         </Button>
+         <Button mnemonicParsing="false" onAction="#LogOut"
+                 style="-fx-background-color: transparent; -fx-background-radius: 30;" text="Log Out"
+                 textFill="WHITE">
+            <font>
+               <Font name="SansSerif Regular" size="15.0"/>
+            </font>
+         </Button>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="NEVER">
+         <HBox.margin>
+            <Insets right="20.0"/>
+         </HBox.margin>
+         <Button mnemonicParsing="false" onAction="#handleProfile" style="-fx-background-color: transparent;">
+            <graphic>
+               <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0"
+                     style="-fx-background-color: transparent;">
+                  <Label fx:id="label_current_user" textFill="#dad7cd"/>
+                  <ImageView fitHeight="44.0" fitWidth="59.0" pickOnBounds="true"
+                             preserveRatio="true">
+                     <Image url="@profile.png"/>
+                  </ImageView>
+               </HBox>
+            </graphic>
+         </Button>
+      </HBox>
+   </HBox>
+   <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="20.0"
+         style="-fx-background-color: A3B18A;" VBox.vgrow="ALWAYS">
       <padding>
-         <Insets top="20.0" />
+         <Insets top="20.0"/>
       </padding>
+
+      <Label text="Price Tracker">
+         <font>
+            <Font name="SansSerif Bold" size="26.0"/>
+         </font>
+      </Label>
+
+      <!-- Google Maps API Map -->
+
+      <VBox fx:id="gluonMap" alignment="TOP_CENTER" spacing="10"
+            style="-fx-background-color: transparent; -fx-border-color: #344E41; -fx-border-width: 4;"
+            VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+         </VBox.margin>
+      </VBox>
    </VBox>
 
 </VBox>

@@ -1,5 +1,8 @@
 package test.fuelapp;
 
+/**
+ * An interface to handle changing data received from API
+ */
 public interface IApiUpdate {
 
     int getId();

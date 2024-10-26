@@ -6,6 +6,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+
+/**
+ * Starting point of app, loads the login page first
+ */
 public class Main extends Application {
     @Override
     public void start(Stage stage) {

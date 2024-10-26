@@ -4,12 +4,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class to handle all database operations
+ */
 public class DatabaseOperations {
     // Initialise SQLite database connection
     Connection connection;
     public static List<Double> crowFliesList = new ArrayList<>();
 
 
+    /**
+     * Exit app if database cannot be found
+     */
     public DatabaseOperations() {
         connection = SQLiteLink.Connector();
         if (connection == null) {
@@ -19,6 +25,12 @@ public class DatabaseOperations {
     }
 
 
+    /**
+     * Check if entered username already exists in database
+     * @param username The username of current user
+     * @return Boolean true if user does not exist, false otherwise
+     * @throws SQLException If database cannot be accessed
+     */
     public boolean isExistingAccount(String username) throws SQLException {
         // Take username and initialise prepared statements
         PreparedStatement prepStatement = null;
@@ -43,6 +55,14 @@ public class DatabaseOperations {
         }
     }
 
+
+    /**
+     * Check whether entered username and password have a match in the database
+     * @param username The current users username
+     * @param password The current users password
+     * @return Boolean true if login is valid, false otherwise
+     * @throws SQLException If database cannot be accessed
+     */
     public boolean isValidLogin(String username, String password) throws SQLException {
         // Take username and password and initialise prepared statements
         PreparedStatement prepStatement = null;
@@ -71,6 +91,12 @@ public class DatabaseOperations {
         }
     }
 
+
+    /**
+     * Adds a new user's username and password to database, adding temporary data for all other fields in user table
+     * @param login Login details derived from user interface
+     * @throws SQLException If database cannot be accessed
+     */
     public void canCreateAccount(ILogin login) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
@@ -100,6 +126,12 @@ public class DatabaseOperations {
         }
     }
 
+
+    /**
+     * Update database with the data derived from API
+     * @param apiUpdate Petrol station details derived from API interface
+     * @throws SQLException If database cannot be accessed
+     */
     public void updateStationData(IApiUpdate apiUpdate) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
@@ -124,7 +156,14 @@ public class DatabaseOperations {
         }
     }
 
-
+    /**
+     * Perform calculations on two coordinates to generate the distance between them in kms
+     * @param lat1 x value of first coordinate
+     * @param lon1 y value of first coordinate
+     * @param lat2 x value of second coordinate
+     * @param lon2 y value of second coordinate
+     * @return A double storing the number of kilometres between the two given point
+     */
     public Double getCrowFlies(double lat1, double lon1, double lat2, double lon2){
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
@@ -135,6 +174,11 @@ public class DatabaseOperations {
         return dist;
     }
 
+
+    /**
+     * Read from a list and store the distances between the current user and every petrol station
+     * @throws SQLException If database cannot be accessed
+     */
     public void updateCrowFlies() throws SQLException {
         PreparedStatement prepStatement = null;
         for (int q = 0; q < crowFliesList.size(); q++)
@@ -156,18 +200,31 @@ public class DatabaseOperations {
     }
 
 
-    // Converts decimal degrees to radians
+    /**
+     * Converts decimal degrees to radians
+     * @param deg A double decimal degree
+     * @return A double radian degree
+     */
     private double deg2rad(double deg) {
             return (deg * Math.PI / 180.0);
     }
 
 
-    // Converts radians to decimal degrees
+    /**
+     * Converts radians to decimal degrees
+     * @param rad A double radian degree
+     * @return A double decimal degree
+     */
     private double rad2deg(double rad) {
             return (rad * 180.0 / Math.PI);
     }
 
-    // Update database with new user details
+
+    /**
+     * Update users table with entered user data
+     * @param user An interface containing the user's freshly entered details
+     * @throws SQLException If database cannot be accessed
+     */
     public void saveUserDetails(IUser user) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
@@ -191,7 +248,12 @@ public class DatabaseOperations {
         }
     }
 
-    // Gets Settings values from DB (Users table)
+
+    /**
+     * Read the current users data from the users table
+     * @param username The username of the current user
+     * @return An instance of the user interface containing the most recent user data
+     */
     public IUser getUserDetails(String username) {
         String query = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -216,7 +278,11 @@ public class DatabaseOperations {
     }
 
 
-    // Create a list of all station distances, to be ordered
+    /**
+     * Read data from station table and order each entry by their distance from the user, saving it to a list
+     * @param userLatitude The current users latitude
+     * @param userLongitude The current users longitude
+     */
     public void generateCrowFliesList(String userLatitude, String userLongitude) {
         String query = "SELECT * FROM gas_stations";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -230,7 +296,12 @@ public class DatabaseOperations {
         }
     }
 
-    //
+    /**
+     * Update users table with new bookmarks
+     * @param username The current user
+     * @param newBookmarks A string containing the id of every station bookmarked
+     * @throws SQLException If database cannot be accessed
+     */
     public void updateBookmarks(String username, String newBookmarks) throws SQLException{
         PreparedStatement prepStatement = null;
         try {
@@ -251,6 +322,13 @@ public class DatabaseOperations {
         }
     }
 
+
+    /**
+     * Read the name and price of a station from the database
+     * @param stationID The id of the requested station
+     * @return A string that formats the station name and price to be displayed
+     * @throws SQLException If database cannot be accessed
+     */
     public String fetchBookmarks(int stationID) throws SQLException {
         PreparedStatement prepStatement = null;
         ResultSet resultSet = null;
