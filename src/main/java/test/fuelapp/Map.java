@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import test.fuelapp.API.FuelPriceAPI;
+import test.fuelapp.API.StationDetails;
 
 /**
  * A class that represents the main map on the Landing Page
@@ -42,7 +43,7 @@ public class Map {
      * Updates the station MapLayer with the provided station
      * @param stationDetails Station details
      */
-    public static void updateStationLayer(FuelPriceAPI.StationDetails stationDetails) {
+    public static void updateStationLayer(StationDetails stationDetails) {
         //mapView.removeLayer(stationMarkers);
 
             stationMarkers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
@@ -111,7 +112,7 @@ public class Map {
      * @param stationDetails station details
      * @return MapPoint
      */
-    public static MapPoint loadCoordinates(FuelPriceAPI.StationDetails stationDetails) {
+    public static MapPoint loadCoordinates(StationDetails stationDetails) {
         double latitude = Double.parseDouble(stationDetails.getLatitude());
         double longitude = Double.parseDouble(stationDetails.getLongitude());
         return new MapPoint(latitude, longitude);
@@ -134,7 +135,7 @@ public class Map {
      * @param stationDetails station details
      * @return a Map Icon Group
      */
-    public static Group createMapIcon(FuelPriceAPI.StationDetails stationDetails) {
+    public static Group createMapIcon(StationDetails stationDetails) {
         String stationName = stationDetails.getName();
         Group icon = new Group();
         Text name = new Text(10,10,stationName);

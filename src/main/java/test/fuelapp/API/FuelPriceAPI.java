@@ -15,61 +15,35 @@ import com.google.gson.JsonParser;
 import test.fuelapp.*;
 
 
+
 public class FuelPriceAPI {
     private static final String BASE_API_URL = "https://fppdirectapi-prod.fuelpricesqld.com.au";
     private static final String TOKEN = "5552f2b5-d71d-454f-909d-c0aefa2057c4";
-    private Map<String, StationDetails> stationsMap;
+    private Map<String, StationDetails> stationsMap = new HashMap<>();
+
 
 
     public void getStationsData(String fixedLat, String fixedLong, Consumer<StationDetails> stationCallback) {
-        stationsMap = new HashMap<>();
         DatabaseOperations databaseOperations = new DatabaseOperations();
         try {
-            // Fuel type map
             Map<String, String> fuelTypesMap = getFuelTypes();
-
-            // Full site details map
             stationsMap = getFullSiteDetails();
-
-            // Update stationsMap with site prices
             getSitesPrices(stationsMap, fuelTypesMap);
 
             DistanceMatrix distanceMatrix = new DistanceMatrix();
+            int databaseIdCounter = 1;
 
-            // Variable to track primary keys in database and match with api call
-            int DatabaseIdCounter = 1;
-
-            // Print combined data
             for (StationDetails station : stationsMap.values()) {
-                // Only print stations that have a real fuel type and price
-                if (!station.fuelType.equals("N/A") && !station.price.equals("N/A")) {
+                if (station.isValid()) {
                     try {
-                        // Get and set distance between user and station (Google Distance Matrix)
                         String distance = distanceMatrix.getDistance(fixedLat, fixedLong, station.getLatitude(), station.getLongitude());
                         station.setDistance(distance);
 
-                        /* Update all data in the database with all data from API
-                        IApiUpdate newApiUpdate = new ApiUpdateImplementation(DatabaseIdCounter, station.name, station.address, station.fuelType, Double.valueOf(station.price), station.latitude, station.longitude);
-                        databaseOperations.updateStationData(newApiUpdate);
-                        */
-
-                        // Update only the price data in the database with data from API
-                        //databaseOperations.updatePriceData(Double.valueOf(station.price), DatabaseIdCounter);
-
-                        //DatabaseIdCounter = DatabaseIdCounter + 1;
-
-                        // READ IF YOU THINK THE API ISN'T WORKING RIGHT
-                        // Demo for purpose of testing, delete later
-                        /*
-                        if (DatabaseIdCounter >= 100) {
-                            break;
-                        }
-                        */
-
                         stationCallback.accept(station); // Calls UI updating function
-
+                        // Uncomment the following line to update database
+                        // databaseOperations.updateStationData(new ApiUpdateImplementation(databaseIdCounter++, station));
                     } catch (Exception e) {
-                        System.err.println("Error calculating distance for station: " + station.name);
+                        System.err.println("Error calculating distance for station: " + station.getName());
                     }
                 }
             }
@@ -272,8 +246,8 @@ public class FuelPriceAPI {
                         // Update the corresponding station with price and fuel type
                         if (stationsMap.containsKey(siteId)) {
                             StationDetails station = stationsMap.get(siteId);
-                            station.fuelType = fuelTypesMap.getOrDefault(fuelId, "Unknown Fuel Type");
-                            station.price = price;
+                            station.setFuelType(fuelTypesMap.getOrDefault(fuelId, "Unknown Fuel Type"));
+                            station.setPrice(price);
                         }
                     }
                 } else {
@@ -302,86 +276,6 @@ public class FuelPriceAPI {
 
 
 
-    // Store station details
-    public static class StationDetails {
-        private String name;
-        private String address;
-        private String latitude;
-        private String longitude;
-        private String distance;
-        private String fuelType = "N/A";
-        private String price = "N/A";
-        private double travelCost;
 
-
-        public StationDetails(String name, String address, String latitude, String longitude) {
-            this.name = name;
-            this.address = address;
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
-
-        // Getters
-        public String getLatitude() {
-            return latitude;
-        }
-
-        public String getLongitude() {
-            return longitude;
-        }
-
-        public String getDistance() {
-            return distance;
-        }
-
-        public void setDistance(String distance) {
-            this.distance = distance;
-        }
-
-        public String getFuelType() {
-            return fuelType;
-        }
-
-        public String getPrice() {
-            return price;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public double getTravelCost() { // New getter for travel cost
-            return travelCost;
-        }
-
-        public void setTravelCost(double travelCost) { // New setter for travel cost
-            this.travelCost = travelCost;
-        }
-
-        /*
-
-
-
-
-
-
-
-
-        // Setters
-        public void setFuelType(String fuelType) {
-            this.fuelType = fuelType;
-        }
-
-        public void setPrice(String price) {
-            this.price = price;
-        }
-
- */
-
-    }
 
 }
