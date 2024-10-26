@@ -19,6 +19,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ *  Class to handle backend of the login system, not including sign up
+ */
 public class LoginController implements Initializable {
     static String current_user;
 
@@ -53,13 +56,22 @@ public class LoginController implements Initializable {
     @FXML
     private Label label_redirect;
 
-    // Log user in when enter key is pressed
+    /**
+     * Attempt to log user in when enter key is pressed
+     * @param event User presses the enter key
+     * @throws SQLException Cannot form a database connection
+     * @throws InterruptedException Thread error catch
+     */
     @FXML
     public void onEnter(ActionEvent event) throws SQLException, InterruptedException{
-        Login(event);
+        login(event);
     }
 
-
+    /**
+     * This method is run when the login fxml page is loaded, occurring on app launch
+     * @param url Obtained from main when starting app
+     * @param resourceBundle Obtained from main when starting app
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (SignUpController.isARedirect){
@@ -69,13 +81,15 @@ public class LoginController implements Initializable {
     }
 
 
-    public void Login (ActionEvent event) throws InterruptedException, SQLException{
+    /**
+     * Method to validate user's entered login, calling a thread to load their details if successful
+     * @param event Used to assign onEnter() to this method
+     */
+    public void login(ActionEvent event){
         try {
-            // Ensure text fields aren't empty
             if (tf_username.getText().isEmpty() || pf_password.getText().isEmpty()) {
                 isConnectedUsername.setText("Please enter username and password");
             }
-            // If entered login details match an entry in the database, log user in
             else if (databaseOperations.isValidLogin(tf_username.getText(), pf_password.getText())){
                 // Set current username to static variable, is used on every page
                 isConnectedUsername.setText("");
@@ -99,7 +113,6 @@ public class LoginController implements Initializable {
                 // Functionally, will read the current users last location and set app to display those details when first loading in
                 executeTaskInSeparateThread(loginListener);
             }
-            // Else display error message
             else {
                 isConnectedUsername.setText("Credentials are incorrect");
             }
@@ -109,13 +122,20 @@ public class LoginController implements Initializable {
         }
     }
 
-
-    // Small interface to assist listener thread
+    /**
+     * Interface to assist listener thread
+     */
     public interface LoginListener{
-        public void threadFinished();
+        /**
+         *  Detect when a thread finishes
+         */
+        void threadFinished();
     }
 
-
+    /**
+     * Run database updates in a separate thread
+     * @param loginListener Take the declared interface
+     */
     // Method to run functionality in separate thread
     public void executeTaskInSeparateThread(final LoginListener loginListener){
         new Thread(new Runnable() {

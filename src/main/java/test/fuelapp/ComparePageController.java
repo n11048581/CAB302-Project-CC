@@ -4,19 +4,17 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import test.fuelapp.API.FuelPriceAPI;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
+/**
+ *
+ */
 public class ComparePageController {
     Connection connection;
     DatabaseOperations databaseOperations = new DatabaseOperations();
@@ -25,6 +23,9 @@ public class ComparePageController {
 
     ArrayList<String> currentSearchResults = new ArrayList<String>();
 
+    /**
+     *
+     */
     public ComparePageController() {
         connection = SQLiteLink.Connector();
         if (connection == null) {
@@ -44,16 +45,11 @@ public class ComparePageController {
 
     @FXML
     private Label label_current_user;
-
     @FXML
     private Label label_loading_update;
-
-
     @FXML
     private TextField searchBar;
 
-    @FXML
-    private Button searchButton;
 
     @FXML
     private RadioButton priceRadioButton;
@@ -83,49 +79,6 @@ public class ComparePageController {
         button_previous_page.setDisable(true);
         loadUserDetailsComparePage();
         handlePriceCompare("crow_flies_to_user");
-
-        /*
-        String userLong;
-        String userLat;
-        if (user != null) {
-            // Get lat and long from the user object
-            userLat = String.valueOf(user.getLatitude());
-            userLong = String.valueOf(user.getLongitude());
-            System.out.println("Received Coordinates: " + userLat + ", " + userLong); // Debugging statement
-        } else {
-            // Handle the case where user details are not available
-            System.err.println("User details not found.");
-
-            // Fallback values
-            userLat = "-27.823611";
-            userLong = "153.182556";
-            userFuelEfficiency = 15.0;
-        }
-*/
-
-
-
-        /*
-        Task<Void> task = new Task<Void>() {     // Background thread to fetch API data progressively
-            @Override
-            protected Void call() throws Exception {
-                // userLat and userLong pulled from Users db table, assigned in Settings
-                fuelPriceAPI.getStationsData(userLat, userLong, station -> {
-                    Platform.runLater(() -> updateUIWithStation(station));
-                });
-                return null;
-            }
-        };
-
-        task.setOnFailed(e -> {
-            System.err.println("Failed to fetch station data: " + task.getException().getMessage());
-        });
-
-        // Run task in separate thread
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
-*/
     }
 
     // Load current user's details from database
@@ -141,22 +94,6 @@ public class ComparePageController {
         }
     }
 
-    /* Update UI with each station's details, called in getStationsData()
-    private void updateUIWithStation(StationDetails station) {
-
-        double distance = StationCalculations.calculateDistance(station.getDistance());
-        double travelCost = StationCalculations.calculateTravelCost(station, userFuelEfficiency, distance);
-
-        Label label = new Label("Station: " + station.getName() +
-                " - Price: " + station.getPrice() +
-                " - Address: " + station.getAddress() +
-                " - Distance: " + distance +
-                " - Travel Cost: $" + travelCost +
-                " - Fuel Type: " + station.getFuelType());
-        comparePriceBox.getChildren().add(label);
-        comparePriceBox.getChildren().add(new Separator());
-    }
-    */
 
     // Read radio button and load data accordingly
     public void checkRadioButton() throws SQLException{
@@ -167,6 +104,7 @@ public class ComparePageController {
             handlePriceCompare("crow_flies_to_user");
         }
     }
+
 
     // Event that triggers when a radio button is changed
     public void watchRadioButtons(ActionEvent event) throws SQLException{
@@ -260,6 +198,7 @@ public class ComparePageController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     public void handleDistanceSearch(String orderByVal) throws SQLException {
@@ -356,6 +295,7 @@ public class ComparePageController {
         }
     }
 
+
     @FXML
     public void handleFilter() throws SQLException{
         // Check which radio button is selected and perform filtered search
@@ -396,8 +336,7 @@ public class ComparePageController {
     }
 
 
-    @FXML
-    public void PageForward(ActionEvent event) throws SQLException {
+    public void PageForward() throws SQLException {
         // Move to next 10 results and allow user to go back a page
         currentPageNumber = currentPageNumber + 1;
         button_previous_page.setDisable(false);
@@ -405,7 +344,6 @@ public class ComparePageController {
     }
 
 
-    @FXML
     public void PageBack(ActionEvent event) throws SQLException {
         // Logout and go back to the login page
         currentPageNumber = currentPageNumber - 1;
@@ -419,8 +357,7 @@ public class ComparePageController {
 
 
     // Wait for user to press enter button
-    @FXML
-    public void onEnter(ActionEvent event) throws SQLException {
+    public void onEnter() throws SQLException {
        if (priceRadioButton.isSelected()) {
            handleDistanceSearch("price");
        } else if (distanceRadioButton.isSelected()) {
@@ -488,8 +425,7 @@ public class ComparePageController {
         loadUserDetailsComparePage();
     }
 
-    @FXML
-    public void handleAPIUpdate(ActionEvent event) throws SQLException{
+    public void handleAPIUpdate() throws SQLException{
         label_loading_update.setVisible(true);
         executeTaskInSeparateThread(updateAPIListener);
     }

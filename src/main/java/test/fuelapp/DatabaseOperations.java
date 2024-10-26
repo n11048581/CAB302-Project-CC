@@ -18,15 +18,6 @@ public class DatabaseOperations {
         }
     }
 
-    public boolean isDbConnected() {
-        // Method to help check database is connected
-        try {
-            return !connection.isClosed();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public boolean isExistingAccount(String username) throws SQLException {
         // Take username and initialise prepared statements
@@ -133,24 +124,6 @@ public class DatabaseOperations {
         }
     }
 
-    public void updatePriceData (Double price, int id) throws SQLException {
-        PreparedStatement prepStatement = null;
-        try {
-            String sql = "UPDATE gas_stations SET price = ? WHERE id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setDouble(1, price);
-            preparedStatement.setInt(2, id);
-
-            preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (prepStatement != null) {
-                prepStatement.close();
-            }
-        }
-    }
 
     public Double getCrowFlies(double lat1, double lon1, double lat2, double lon2){
         double theta = lon1 - lon2;
@@ -182,16 +155,19 @@ public class DatabaseOperations {
             }
     }
 
-        /*::  This function converts decimal degrees to radians             :*/
+
+    // Converts decimal degrees to radians
     private double deg2rad(double deg) {
             return (deg * Math.PI / 180.0);
     }
 
-        /*::  This function converts radians to decimal degrees             :*/
+
+    // Converts radians to decimal degrees
     private double rad2deg(double rad) {
             return (rad * 180.0 / Math.PI);
     }
 
+    // Update database with new user details
     public void saveUserDetails(IUser user) throws SQLException {
         PreparedStatement prepStatement = null;
         try {
@@ -239,6 +215,8 @@ public class DatabaseOperations {
         return null;
     }
 
+
+    // Create a list of all station distances, to be ordered
     public void generateCrowFliesList(String userLatitude, String userLongitude) {
         String query = "SELECT * FROM gas_stations";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -252,6 +230,7 @@ public class DatabaseOperations {
         }
     }
 
+    //
     public void updateBookmarks(String username, String newBookmarks) throws SQLException{
         PreparedStatement prepStatement = null;
         try {
