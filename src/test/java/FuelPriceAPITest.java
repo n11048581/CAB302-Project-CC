@@ -3,32 +3,28 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Map;
 import test.fuelapp.API.FuelPriceAPI;
 import test.fuelapp.API.StationDetails;
 
-
-
 public class FuelPriceAPITest {
 
     @Test
-    public void testGetFuelTypes_NetworkError() throws Exception {
+    public void testGetFuelTypes_NetworkError() throws IOException {
         // Mock HttpURLConnection to simulate network error
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
 
         // Simulate 500 error
         when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_INTERNAL_ERROR);
 
-        // Call getFuelTypes with the mocked connection
-        Map<String, String> fuelTypesMap = FuelPriceAPI.getFuelTypes(mockConnection);
-
-        // Check fuelTypesMap is empty following error
-        assertTrue(fuelTypesMap.isEmpty());
+        // Verify that IOException is thrown
+        assertThrows(IOException.class, () -> FuelPriceAPI.getFuelTypes(mockConnection));
     }
 
     @Test
-    public void testGetFuelTypes_InvalidJson() throws Exception {
+    public void testGetFuelTypes_InvalidJson() throws IOException {
         // Simulate a successful HTTP response
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
 
@@ -39,32 +35,24 @@ public class FuelPriceAPITest {
         String invalidJsonResponse = "INVALID_JSON";
         when(mockConnection.getInputStream()).thenReturn(new ByteArrayInputStream(invalidJsonResponse.getBytes()));
 
-        // Call getFuelTypes with the mocked connection
-        Map<String, String> fuelTypesMap = FuelPriceAPI.getFuelTypes(mockConnection);
-
-        // Check fuelTypesMap is empty after JSON parsing error
-        assertTrue(fuelTypesMap.isEmpty());
+        // Verify that IllegalStateException is thrown due to invalid JSON structure
+        assertThrows(IllegalStateException.class, () -> FuelPriceAPI.getFuelTypes(mockConnection));
     }
 
-
-
     @Test
-    public void testGetFullSiteDetails_NetworkError() throws Exception {
+    public void testGetFullSiteDetails_NetworkError() throws IOException {
         // Mock HttpURLConnection to simulate network error
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
 
         // Simulate 500 error
         when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_INTERNAL_ERROR);
 
-        // Call getFullSiteDetails with the mocked connection
-        Map<String, StationDetails> stationsMap = FuelPriceAPI.getFullSiteDetails(mockConnection);
-
-        // Check stationMap is empty following error
-        assertTrue(stationsMap.isEmpty());
+        // Verify that IOException is thrown
+        assertThrows(IOException.class, () -> FuelPriceAPI.getFullSiteDetails(mockConnection));
     }
 
     @Test
-    public void testGetFullSiteDetails_InvalidJson() throws Exception {
+    public void testGetFullSiteDetails_InvalidJson() throws IOException {
         // Simulate a successful HTTP response
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
 
@@ -75,14 +63,12 @@ public class FuelPriceAPITest {
         String invalidJsonResponse = "INVALID_JSON";
         when(mockConnection.getInputStream()).thenReturn(new ByteArrayInputStream(invalidJsonResponse.getBytes()));
 
-        // Call getFuelTypes with the mocked connection
-        Map<String, StationDetails> stationsMap = FuelPriceAPI.getFullSiteDetails(mockConnection);
-        // Check fuelTypesMap is empty after JSON parsing error
-        assertTrue(stationsMap.isEmpty());
+        // Verify that IllegalStateException is thrown due to invalid JSON structure
+        assertThrows(IllegalStateException.class, () -> FuelPriceAPI.getFullSiteDetails(mockConnection));
     }
 
     @Test
-    public void testGetSitesPrices_NetworkError() throws Exception {
+    public void testGetSitesPrices_NetworkError() throws IOException {
         // Mock HttpURLConnection to simulate network error
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
 
@@ -97,24 +83,12 @@ public class FuelPriceAPITest {
         Map<String, String> fuelTypesMap = new HashMap<>();
         fuelTypesMap.put("2", "Unleaded");
 
-        // Print the map before the mocked getSitesPrices call
-        System.out.println("Before Network Error:");
-        printStationsMap(stationsMap);
-
-        // Call getSitesPrices with the mocked connection
-        FuelPriceAPI.getSitesPrices(mockConnection, stationsMap, fuelTypesMap);
-
-        // Print the map after the mocked call
-        System.out.println("After Network Error:");
-        printStationsMap(stationsMap);
-
-        // Check that the station details remain unchanged (no prices or fuel types added)
-        assertEquals("N/A", station.getFuelType());
-        assertEquals("N/A", station.getPrice());
+        // Verify that IOException is thrown
+        assertThrows(IOException.class, () -> FuelPriceAPI.getSitesPrices(mockConnection, stationsMap, fuelTypesMap));
     }
 
     @Test
-    public void testGetSitesPrices_InvalidJson() throws Exception {
+    public void testGetSitesPrices_InvalidJson() throws IOException {
         // Mock HttpURLConnection to simulate an invalid JSON response
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
 
@@ -133,28 +107,7 @@ public class FuelPriceAPITest {
         Map<String, String> fuelTypesMap = new HashMap<>();
         fuelTypesMap.put("2", "Unleaded");
 
-        // Print the map before getSitesPrices mocked call
-        System.out.println("Before Invalid JSON Response:");
-        printStationsMap(stationsMap);
-
-        // Call getSitesPrices with the mocked connection
-        FuelPriceAPI.getSitesPrices(mockConnection, stationsMap, fuelTypesMap);
-
-        // Print the map after the mocked call
-        System.out.println("After Invalid JSON Response:");
-        printStationsMap(stationsMap);
-
-        // Visual confirmation that station is unchanged by invalid JSON response
-        assertEquals("N/A", station.getFuelType());
-        assertEquals("N/A", station.getPrice());
-    }
-
-    // Helper method for printing stationsMap entries
-    private void printStationsMap(Map<String, StationDetails> stationsMap) {
-        for (Map.Entry<String, StationDetails> entry : stationsMap.entrySet()) {
-            StationDetails station = entry.getValue();
-            System.out.println("Station ID: " + entry.getKey() + ", Name: " + station.getName() +
-                    ", Fuel Type: " + station.getFuelType() + ", Price: " + station.getPrice());
-        }
+        // Verify that IllegalStateException is thrown due to invalid JSON structure
+        assertThrows(IllegalStateException.class, () -> FuelPriceAPI.getSitesPrices(mockConnection, stationsMap, fuelTypesMap));
     }
 }
