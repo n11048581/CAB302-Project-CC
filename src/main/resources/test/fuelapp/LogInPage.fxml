@@ -19,7 +19,7 @@
                <children>
                   <ImageView fitHeight="33.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@logo.PNG" />
+                        <Image url="logo.png" />
                      </image>
                   </ImageView>
                </children>
@@ -100,7 +100,7 @@
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                       <Button fx:id="button_login" mnemonicParsing="false" onAction="#Login" style="-fx-background-color: #344E41;" text="Login" textAlignment="CENTER" textFill="WHITE">
+                       <Button fx:id="button_login" mnemonicParsing="false" onAction="#login" style="-fx-background-color: #344E41;" text="Login" textAlignment="CENTER" textFill="WHITE">
                            <font>
                                <Font size="19.0" />
                            </font>
