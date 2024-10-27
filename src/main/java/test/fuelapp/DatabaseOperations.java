@@ -110,7 +110,7 @@ public class DatabaseOperations {
             preparedStatement.setString(2, login.getPassword());
             // Insert preset details to fill out database
             preparedStatement.setString(3, "All");
-            preparedStatement.setDouble(4, 0.0);
+            preparedStatement.setDouble(4, 15.0);
             preparedStatement.setDouble(5, -27.4772309);
             preparedStatement.setDouble(6, 153.0270303);
             preparedStatement.setDouble(7, 1000);
