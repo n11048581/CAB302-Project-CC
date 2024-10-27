@@ -42,7 +42,6 @@ public class LandingPageController {
     private double userLong;
     private String userMaxTravelDistance;
     private String userFuelType;
-    private String bookmark;
 
     @FXML
     private Label label_current_user;
@@ -132,7 +131,7 @@ public class LandingPageController {
      * Resets the map if it already exists, then retrieves a set of all gas stations less than userMaxDistance.
      * If a specific fuel type is set, also retrieve fuel prices.
      * Automatically updates map with the retrieved information.
-     * @throws SQLException
+     * @throws SQLException If database cannot be accessed
      */
     public void loadStationLocation() throws SQLException {
         // Reset map, list and initialise
@@ -157,7 +156,8 @@ public class LandingPageController {
                     String station_longitude = resultSet.getString("station_longitude");
                     String station_name = resultSet.getString("station_name");
                     double station_distance = resultSet.getDouble("crow_flies_to_user");
-                    Map.updateStationLayerDB(station_latitude, station_longitude, station_name, station_distance);
+                    double station_price = resultSet.getDouble("price") / 10;
+                    Map.updateStationLayerDB(station_latitude, station_longitude, station_name, station_distance, station_price);
                 }
 
             }

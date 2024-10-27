@@ -7,7 +7,6 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import test.fuelapp.API.FuelPriceAPI;
 import test.fuelapp.API.StationDetails;
 
 /**
@@ -46,7 +45,7 @@ public class Map {
     public static void updateStationLayer(StationDetails stationDetails) {
         //mapView.removeLayer(stationMarkers);
 
-            stationMarkers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
+        stationMarkers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
 
         //mapView.addLayer(stationMarkers);
     }
@@ -77,21 +76,6 @@ public class Map {
     public static void updateStationLayerDB(String stationLatitude, String stationLongitude, String stationName, double distance, double fuelPrice) {
         stationMarkers.addPoint(loadCoordinatesDB(stationLatitude,stationLongitude),createMapIconDB(stationName, distance, fuelPrice));
     }
-
-
-//    /**
-//     * Takes in a list of station details and returns a map layer containing markers placed at the locations of those stations
-//     * @param stationDetailsList a list containing station details
-//     * @return MapLayer
-//     */
-//    public static MapLayer createMarkerLayer(List<StationDetails> stationDetailsList) {
-//        MapMarker markers = new MapMarker();
-//        for (StationDetails stationDetails : stationDetailsList) {
-//            //issue is, the api returns a map. going to need a conversion process
-//            markers.addPoint(loadCoordinates(stationDetails), createMapIcon(stationDetails));
-//        }
-//        return markers;
-//    }
 
 
     /**
