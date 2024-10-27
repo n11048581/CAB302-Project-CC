@@ -109,7 +109,7 @@
                 <Insets right="10.0"/>
             </HBox.margin>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                <Label fx:id="label_fe" text="Fuel Efficiency">
+                <Label fx:id="label_fe" text="Fuel Efficiency (L/100km)">
                     <font>
                         <Font name="SansSerif Regular" size="14.0"/>
                     </font>
@@ -138,7 +138,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                 <Label fx:id="label_max_distance" prefHeight="40.0" prefWidth="167.0"
-                       text="Maximum Travel Distance" wrapText="true">
+                       text="Maximum Travel Distance (km)" wrapText="true">
                     <font>
                         <Font name="SansSerif Regular" size="14.0"/>
                     </font>

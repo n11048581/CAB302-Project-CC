@@ -106,7 +106,7 @@
                         <Font name="SansSerif Bold" size="20.0"/>
                      </font>
                   </Label>
-                  <Label text="Fuel Efficiency -" textFill="#3a5a40">
+                  <Label text="Fuel Efficiency (L/100km) -" textFill="#3a5a40">
                      <font>
                         <Font name="SansSerif Bold" size="20.0"/>
                      </font>
@@ -121,7 +121,7 @@
                         <Font name="SansSerif Bold" size="20.0"/>
                      </font>
                   </Label>
-                  <Label text="Max Travel Distance -" textFill="#3a5a40">
+                  <Label text="Max Travel Distance (km) -" textFill="#3a5a40">
                      <font>
                         <Font name="SansSerif Bold" size="20.0"/>
                      </font>
